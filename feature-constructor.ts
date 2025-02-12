@@ -4,6 +4,8 @@ import {FeatureViewer} from "./FeatureViewerTypeScript/src/feature-viewer";
 // Import styles
 import './feature-constructor.scss';
 
+//Testing 1 2 3
+
 // Data from file
 declare var inputValues: string;
 
