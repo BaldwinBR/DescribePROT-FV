@@ -100,67 +100,6 @@ function extractSegments(binaryArray) {
     return { pos, neg };
 }
 
-
-function getSections(binaryArray) {
-    //Format that the Data Array requires 
-    let pos: { x: number; y: number; color: string; stroke: string }[] = [];
-    let neg: { x: number; y: number; color: string; stroke: string }[] = [];
-    
-    let currentValue = null;
-    let start = 0;
-    
-    //Cycle through array, analyze each value
-    //Looking for sets of same value
-    for (let i = 0; i < binaryArray.length; i++) {
-        //Different value found than previous so end segment
-        if (binaryArray[i] !== currentValue) {
-            if (currentValue !== null) {
-                let segment = {
-                    x: start + 1,
-                    y: i,
-                    color: "#gray",
-                    stroke: "black"
-                };
-                //TODO: Currently this checks for value of 1
-                //This is due to there being two different binary data types
-                // (0,1) and (1,2)
-                //Since they both contain 1 I split the differnce
-                //This should change!
-                //Variables above are named pos & neg in hopes of identifying type of binary
-                //and filling in accordingly instead
-                if (currentValue === 1) {
-                    pos.push(segment);
-                } else {
-                    neg.push(segment);
-                }
-            }
-            // Start a new segment
-            // set start to end of last segment
-            currentValue = binaryArray[i];
-            start = i;
-        }
-    }
-    
-    // Adds the last segment
-    if (currentValue !== null) {
-        let segment = {
-            x: start+ 1,
-            //TODO: Change
-            //Dont love assuming binary will run length of sequence
-            y: binaryArray.length,
-            color: "#gray",
-            stroke: "black"
-        };
-        if (currentValue === 1) {
-            pos.push(segment);
-        } else {
-            neg.push(segment);
-        }
-    }
-
-    return { pos, neg };
-}
-
 // function to extract line graph data
 function extractLines(LinesArray: number[]): { x: number; y: number }[] {
     // gets positions starting at 1 -> sequence length
