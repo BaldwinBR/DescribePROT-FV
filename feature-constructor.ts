@@ -1,136 +1,128 @@
-// Import feature viewer
-import {FeatureViewer} from "./FeatureViewerTypeScript/src/feature-viewer";
+/**
+ * major change: I noticed that we've been declaring the same array for data plotting. 
+ * For maintainability + reusability, I declared an interface called "Segment" and changed the code using the interface.
+ * 
+ * Also, for the data, apparently it's better to use const instead of let to prevent reassignment and works safer with objects and arrays.
+ */
 
-// Import styles
+import { FeatureViewer } from "./FeatureViewerTypeScript/src/feature-viewer";
+
 import './feature-constructor.scss';
 
-// Data from file
 declare var inputValues: string;
 
 // Split lines into array
-let lines = inputValues.split('\n');
-console.log(lines);
+const lines: string[] = inputValues.split('\n');
 
-// Data Needed for Disorder
-let sequence = lines[1];
-let unprocessed_VSL_Binary = lines[2];
-let unprocessed_VSL_Score = lines[3];
-let unprocessed_Disorder_Binary = lines[30];
-let VSL_Score: number[] = unprocessed_VSL_Score.trim().split(',').map(val => parseFloat(val));
+// **Segment Interface**
+interface Segment {
+    x: number;
+    y: number;
+    color: string;
+    stroke: string;
+    opacity?: number;
+}
 
-// Create array from binary data values
-let Disorder_Binary = Array.from(unprocessed_Disorder_Binary, Number);
-let VSL_Binary = Array.from(unprocessed_VSL_Binary, Number);
+// **Extract Disorder data**
+const sequence: string = lines[1]?.trim() || "";
+const rawDisorderBinary: string = lines[30]?.trim() || "";
+const rawVSLBinary: string = lines[2]?.trim() || "";
+const rawVSLScore: string = lines[3]?.trim() || "";
 
-// ASA Panel
-let unprocessed_RSA_binary = lines[32];
-let RSA_residues = Array.from(unprocessed_RSA_binary, Number);
+const disorderBinary: number[] = rawDisorderBinary ? Array.from(rawDisorderBinary, Number) : [];
+const vslBinary: number[] = rawVSLBinary ? Array.from(rawVSLBinary, Number) : [];
+const vslScore: number[] = rawVSLScore.trim().split(',').map(val => parseFloat(val));
 
-let unprocessed_RSA_score = lines[33];
-let RSA_score: number[] = unprocessed_RSA_score.trim().split(',').map(val => parseFloat(val));
-// let RSA_score: number[] = replaceNegativesWithZeros(unprocessed_RSA_score.trim().split(',').map(val => parseFloat(val)));
+// **ASA Panel Data**
+const rawRSABinary: string = lines[32]?.trim() || "";
+const rawRSAScore: string = lines[33]?.trim() || "";
+const rawASABinary: string = lines[14]?.trim() || "";
+const rawASAScore: string = lines[15]?.trim() || "";
 
-let unprocessed_ASA_score = lines[15];
-let ASA_score: number[] = unprocessed_ASA_score.trim().split(',').map(val => parseFloat(val));
+const rsaBinary: number[] = rawRSABinary ? Array.from(rawRSABinary, Number) : [];
+const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(val));
+const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
+const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
 
-let unprocessed_ASA_binary = lines[14];
-let buried_residues = Array.from(unprocessed_ASA_binary, Number);
-
-/* function replaceNegativesWithZeros(arr: number[]): number[] {
-    return arr.map(num => (isNaN(num) || num < 0 ? 0 : num));
-} */
-
-function extractSegments(binaryArray) {
-    //Format that the Data Array requires 
-    let pos: { x: number; y: number; color: string; stroke: string }[] = [];
-    let neg: { x: number; y: number; color: string; stroke: string }[] = [];
-    
-    let currentValue = null;
+/**
+ * Extract contiguous segments from binary arrays
+ * @param binaryArray - The array containing binary values (0,1,2)
+ * @param targetValue - The value to extract as a segment
+ * @param color - Segment fill color
+ * @returns Array of Segment objects
+ */
+function extractSegments(binaryArray: number[], targetValue: number, color: string): Segment[] {
+    const segments: Segment[] = [];
+    let inSegment = false;
     let start = 0;
-    
-    //Cycle through array, analyze each value
-    //Looking for sets of same value
+
     for (let i = 0; i < binaryArray.length; i++) {
-        //Different value found than previous so end segment
-        if (binaryArray[i] !== currentValue) {
-            if (currentValue !== null) {
-                let segment = {
-                    x: start + 1,
-                    y: i,
-                    color: "#gray",
-                    stroke: "black"
-                };
-                //TODO: Currently this checks for value of 1
-                //This is due to there being two different binary data types
-                // (0,1) and (1,2)
-                //Since they both contain 1 I split the differnce
-                //This should change!
-                //Variables above are named pos & neg in hopes of identifying type of binary
-                //and filling in accordingly instead
-                if (currentValue === 1) {
-                    pos.push(segment);
-                } else {
-                    neg.push(segment);
-                }
+        if (binaryArray[i] === targetValue) {
+            if (!inSegment) {
+                start = i;
+                inSegment = true;
             }
-            // Start a new segment
-            // set start to end of last segment
-            currentValue = binaryArray[i];
-            start = i;
-        }
-    }
-    
-    // Adds the last segment
-    if (currentValue !== null) {
-        let segment = {
-            x: start+ 1,
-            //TODO: Change
-            //Dont love assuming binary will run length of sequence
-            y: binaryArray.length,
-            color: "#gray",
-            stroke: "black"
-        };
-        if (currentValue === 1) {
-            pos.push(segment);
-        } else {
-            neg.push(segment);
+        } else if (inSegment) {
+            segments.push({ x: start + 1, y: i, color, stroke: "black" });
+            inSegment = false;
         }
     }
 
-    return { pos, neg };
+    if (inSegment) {
+        segments.push({ x: start + 1, y: binaryArray.length, color, stroke: "black" });
+    }
+
+    return segments;
 }
 
-// function to extract line graph data
-function extractLines(LinesArray: number[]): { x: number; y: number }[] {
-    // gets positions starting at 1 -> sequence length
-    const positions = Array.from({ length: LinesArray.length }, (_, i) => i + 1);
+// **Disorder panel**
+const nativeDisorderColor: Segment[] = extractSegments(disorderBinary, 1, "#75fd63"); // assigned color for data exists
+const nativeDisorderGrey: Segment[] = extractSegments(disorderBinary, 2, "grey"); // Grey overlay for not available data
 
-    return LinesArray
-        .map((value, index) => ({
-            x: positions[index], // x is the position from array
-            y: value // y is the score at that position
-        }))
+// This is to plot the available and unavailable data at the same line
+const mergedNativeDisorder: Segment[] = [
+    ...nativeDisorderColor.map(s => ({ ...s, color: "#75fd63"})),
+    ...nativeDisorderGrey.map(s => ({ ...s, color: "grey"}))
+];
+
+const putativeDisorder: Segment[] = extractSegments(vslBinary, 1, "black");
+
+
+// **RSA panel**
+const nativeRSABinaryColor: Segment[] = extractSegments(rsaBinary, 1, "#75fd63"); // assigned color for available RSA data
+const nativeRSABinaryGrey: Segment[] = extractSegments(rsaBinary, 2, "grey"); // Grey for not available RSA data
+
+// This is to plot the available and unavailable data at the same line
+const mergedRSABinary: Segment[] = [
+    ...nativeRSABinaryColor.map(s => ({ ...s, color: "#75fd63" })),
+    ...nativeRSABinaryGrey.map(s => ({ ...s, color: "grey" }))
+];
+
+
+
+/**
+ * Extract data for line plots (Score Data)
+ * @param scoreArray - Numerical score array
+ * @returns Array of `{x, y}` points
+ */
+function extractLines(scoreArray: number[]): { x: number; y: number }[] {
+    return scoreArray.map((value, index) => ({
+        x: index + 1,
+        y: value
+    }));
 }
 
+// **Extract Line Data**
+const vslScoreData = extractLines(vslScore);
+const rsaScoreData = extractLines(rsaScore);
+const asaScoreData = extractLines(asaScore);
+
+// **Extract ASA and RSA Binary Data**
+const buriedResiduesResults: Segment[] = extractSegments(asaBinary, 1, "grey");
 
 
-
-// Wait for page to load
 window.onload = () => {
-
-    let result = extractSegments(Disorder_Binary);
-    let vslResults = extractSegments(VSL_Binary);
-    let vslScoreData = extractLines(VSL_Score);
-
-    // panel 2
-    let buriedresiduesResults = extractSegments(buried_residues);
-    let RSAresidues = extractSegments(RSA_residues);
-    let RSAScoreData = extractLines(RSA_score); 
-    let ASAScoreData = extractLines(ASA_score);
-
-
     let ASA_panel = new FeatureViewer(sequence, '#feature-viewer',
-        // Define optional settings
         {
             toolbar: true,
             toolbarPosition: 'left',
@@ -140,34 +132,26 @@ window.onload = () => {
             flagTrack: 170,
             flagTrackMobile: 150
         },
-        // Define optional features
         [
             {
                 type: 'rect',
                 id: 'Native_Disorder',
                 label: 'Native Disorder',
-                data: result.pos,
-                color:'grey'
-            },
-            {
-                type: 'rect',
-                id: 'Unk_Exp_Disoredered_Residues',
-                label: 'Not Avaliable',
-                data: result.neg,
-                color:'grey'
+                data: mergedNativeDisorder,
+                color: "grey"
             },
             {
                 type: 'rect',
                 id: 'Putative_Disorder',
-                label: 'Putative Diorder',
-                data: vslResults.pos,
-                color:'grey'
+                label: 'Putative Disorder',
+                data: putativeDisorder,
+                color: 'black'
             },
             {
                 type: 'curve',
                 id: 'Curve1',
                 label: 'Predictive Disorder Score',
-                color: '#75fd63',
+                color: '#75fd63', 
                 height: 3,
                 data: vslScoreData
             },
@@ -175,43 +159,34 @@ window.onload = () => {
                 type: 'rect',
                 id: 'Native_RSA_Binary',
                 label: 'Native RSA Binary',
-                data: RSAresidues.pos,
-                color: 'grey',
-                stroke: "black",
-            },
-            {
-                type: 'rect',
-                id: 'Unk_Native_RSA_Binary',
-                label: 'Not Avaliable Native RSA Binary',
-                data: RSAresidues.neg,
-                color: 'grey',
-                stroke: "black",
+                data: mergedRSABinary,
+                color: "grey"
             },
             {
                 type: 'rect',
                 id: 'Putative_Buried_Residue',
                 label: 'Putative Buried Residue',
-                data: buriedresiduesResults.pos,
+                data: buriedResiduesResults,
                 color: 'grey',
                 stroke: "black",
             },
             {
                 type: 'curve',
                 id: 'Native_Solvent_accessibility',
-                label: 'Native Solvent accessibility',
+                label: 'Native Solvent Accessibility',
                 color: 'grey',
                 stroke: "black",
                 height: 3,
-                data: ASAScoreData, 
+                data: asaScoreData, 
             },
             {
                 type: 'curve',
                 id: 'Predicted_accessibility',
-                label: 'Predicted accessibility',
+                label: 'Predicted Accessibility',
                 color: 'grey',
                 stroke: "black",
                 height: 3,
-                data: RSAScoreData, 
+                data: rsaScoreData, 
             },
         ]);
 };
