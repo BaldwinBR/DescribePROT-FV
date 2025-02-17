@@ -76,23 +76,25 @@ function extractSegments(binaryArray: number[], targetValue: number, color: stri
 }
 
 // **Disorder panel**
-const nativeDisorderGreen: Segment[] = extractSegments(disorderBinary, 1, "#75fd63"); // Green for data exists
+const nativeDisorderColor: Segment[] = extractSegments(disorderBinary, 1, "#75fd63"); // Green for data exists
 const nativeDisorderGrey: Segment[] = extractSegments(disorderBinary, 2, "grey"); // Grey overlay for not available data
 
+// This is to plot the available and unavailable data at the same line
 const mergedNativeDisorder: Segment[] = [
-    ...nativeDisorderGreen.map(s => ({ ...s, color: "#75fd63" })),
-    ...nativeDisorderGrey.map(s => ({ ...s, color: "grey" }))
+    ...nativeDisorderColor.map(s => ({ ...s })),
+    ...nativeDisorderGrey.map(s => ({ ...s }))
 ];
 
 const putativeDisorder: Segment[] = extractSegments(vslBinary, 1, "black");
 
 
 // **RSA panel**
-const nativeRSABinaryGreen: Segment[] = extractSegments(rsaBinary, 1, "#75fd63"); // Green for available RSA data
+const nativeRSABinaryColor: Segment[] = extractSegments(rsaBinary, 1, "#75fd63"); // Green for available RSA data
 const nativeRSABinaryGrey: Segment[] = extractSegments(rsaBinary, 2, "grey"); // Grey for not available RSA data
 
+// This is to plot the available and unavailable data at the same line
 const mergedRSABinary: Segment[] = [
-    ...nativeRSABinaryGreen.map(s => ({ ...s, color: "#75fd63" })),
+    ...nativeRSABinaryColor.map(s => ({ ...s, color: "#75fd63" })),
     ...nativeRSABinaryGrey.map(s => ({ ...s, color: "grey" }))
 ];
 
