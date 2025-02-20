@@ -1,10 +1,3 @@
-/**
- * major change: I noticed that we've been declaring the same array for data plotting. 
- * For maintainability + reusability, I declared an interface called "Segment" and changed the code using the interface.
- * 
- * Also, for the data, apparently it's better to use const instead of let to prevent reassignment and works safer with objects and arrays.
- */
-
 import { FeatureViewer } from "./FeatureViewerTypeScript/src/feature-viewer";
 
 import './feature-constructor.scss';
@@ -23,7 +16,7 @@ interface Segment {
     opacity?: number;
 }
 
-// **Extract Disorder data**
+// **Disorder Panel Data**
 const sequence: string = lines[1]?.trim() || "";
 const rawDisorderBinary: string = lines[30]?.trim() || "";
 const rawVSLBinary: string = lines[2]?.trim() || "";
@@ -43,6 +36,13 @@ const rsaBinary: number[] = rawRSABinary ? Array.from(rawRSABinary, Number) : []
 const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(val));
 const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
 const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
+
+// **Conservation Panel Data**
+const rawmmseqBinary: string = lines[8]?.trim() || "";
+const rawmmseqScore: string = lines[9]?.trim() || "";
+
+const mmseqBinary: number[] = rawmmseqBinary ? Array.from(rawmmseqBinary, Number) : [];
+const mmseqScore: number[] = rawmmseqScore.trim().split(',').map(val => parseFloat(val));
 
 /**
  * Extract contiguous segments from binary arrays
@@ -75,31 +75,6 @@ function extractSegments(binaryArray: number[], targetValue: number, color: stri
     return segments;
 }
 
-// **Disorder panel**
-const nativeDisorderColor: Segment[] = extractSegments(disorderBinary, 1, "#75fd63"); // assigned color for data exists
-const nativeDisorderGrey: Segment[] = extractSegments(disorderBinary, 2, "grey"); // Grey overlay for not available data
-
-// This is to plot the available and unavailable data at the same line
-const mergedNativeDisorder: Segment[] = [
-    ...nativeDisorderColor.map(s => ({ ...s, color: "#75fd63"})),
-    ...nativeDisorderGrey.map(s => ({ ...s, color: "grey"}))
-];
-
-const putativeDisorder: Segment[] = extractSegments(vslBinary, 1, "black");
-
-
-// **RSA panel**
-const nativeRSABinaryColor: Segment[] = extractSegments(rsaBinary, 1, "#75fd63"); // assigned color for available RSA data
-const nativeRSABinaryGrey: Segment[] = extractSegments(rsaBinary, 2, "grey"); // Grey for not available RSA data
-
-// This is to plot the available and unavailable data at the same line
-const mergedRSABinary: Segment[] = [
-    ...nativeRSABinaryColor.map(s => ({ ...s, color: "#75fd63" })),
-    ...nativeRSABinaryGrey.map(s => ({ ...s, color: "grey" }))
-];
-
-
-
 /**
  * Extract data for line plots (Score Data)
  * @param scoreArray - Numerical score array
@@ -112,17 +87,94 @@ function extractLines(scoreArray: number[]): { x: number; y: number }[] {
     }));
 }
 
-// **Extract Line Data**
+// **Rescaling for psi pred score**
+function psipredRescaleScores(scores) {
+    // find min and max values in array
+    const min = Math.min(...scores);
+    const max = Math.max(...scores);
+    
+    // apply min-max scaling
+    return scores.map(value => 0.33 + ((value - min) / (max - min)) * (1 - 0.33));
+}
+
+// **Rescaling for mmseq score**
+function mmseqRescaleScores(scores) {
+    // find min and max values in array
+    const min = Math.min(...scores);
+    const max = Math.max(...scores);
+    
+    // apply min-max scaling
+    return scores.map(value => (value - min) / (max - min));
+}
+
+
+// ** CALCULATING DATA **
+
+// **Disorder panel**
+const nativeDisorderColor: Segment[] = extractSegments(disorderBinary, 1, "#2da02c"); // assigned color for data exists
+const nativeDisorderGrey: Segment[] = extractSegments(disorderBinary, 2, "grey"); // Grey overlay for not available data
+
+// This is to plot the available and unavailable data at the same line
+const mergedNativeDisorder: Segment[] = [
+    ...nativeDisorderColor.map(s => ({ ...s, color: "#2da02c"})),
+    ...nativeDisorderGrey.map(s => ({ ...s, color: "grey"}))
+];
+
+const putativeDisorder: Segment[] = extractSegments(vslBinary, 1, "#76fd63");
+
+
+// **RSA panel**
+const nativeRSABinaryColor: Segment[] = extractSegments(rsaBinary, 1, "#fc0080"); // assigned color for available RSA data
+const nativeRSABinaryGrey: Segment[] = extractSegments(rsaBinary, 2, "grey"); // Grey for not available RSA data
+
+// This is to plot the available and unavailable data at the same line
+const mergedRSABinary: Segment[] = [
+    ...nativeRSABinaryColor.map(s => ({ ...s, color: "#fc0080" })),
+    ...nativeRSABinaryGrey.map(s => ({ ...s, color: "grey" }))
+];
+
+// Extract line data
 const vslScoreData = extractLines(vslScore);
 const rsaScoreData = extractLines(rsaScore);
 const asaScoreData = extractLines(asaScore);
 
-// **Extract ASA and RSA Binary Data**
-const buriedResiduesResults: Segment[] = extractSegments(asaBinary, 1, "grey");
+// Extract ASA and RSA Binary Data
+const buriedResiduesResults: Segment[] = extractSegments(asaBinary, 1, "#ffd2df");
+
+// **Conservation Panel**
+const conv_0_residues: Segment[] = extractSegments(mmseqBinary, 0, "#f0f3f5");
+const conv_1_residues: Segment[] = extractSegments(mmseqBinary, 1, "#f0f3f5");
+const conv_2_residues: Segment[] = extractSegments(mmseqBinary, 2, "#d1dae0");
+const conv_3_residues: Segment[] = extractSegments(mmseqBinary, 3, "#b3c2cb");
+const conv_4_residues: Segment[] = extractSegments(mmseqBinary, 4, "#95aab7");
+const conv_5_residues: Segment[] = extractSegments(mmseqBinary, 5, "#7691a2");
+const conv_6_residues: Segment[] = extractSegments(mmseqBinary, 6, "#5d7889");
+const conv_7_residues: Segment[] = extractSegments(mmseqBinary, 7, "#485d6a");
+const conv_8_residues: Segment[] = extractSegments(mmseqBinary, 8, "#34434c");
+const conv_9_residues: Segment[] = extractSegments(mmseqBinary, 9, "#1f282e");
+
+// Plotting all conservation levels on the same line
+const mergedConservationLevels: Segment[] = [
+    ...conv_0_residues.map(s => ({ ...s, color: "#f0f3f5"})),
+    ...conv_1_residues.map(s => ({ ...s, color: "#f0f3f5"})),
+    ...conv_2_residues.map(s => ({ ...s, color: "#d1dae0"})),
+    ...conv_3_residues.map(s => ({ ...s, color: "#b3c2cb"})),
+    ...conv_4_residues.map(s => ({ ...s, color: "#95aab7"})),
+    ...conv_5_residues.map(s => ({ ...s, color: "#7691a2"})),
+    ...conv_6_residues.map(s => ({ ...s, color: "#5d7889"})),
+    ...conv_7_residues.map(s => ({ ...s, color: "#485d6a"})),
+    ...conv_8_residues.map(s => ({ ...s, color: "#34434c"})),
+    ...conv_9_residues.map(s => ({ ...s, color: "#1f282e"})),
+];
+
+// Rescale then extract mmseq score line data
+const mmseqScoreRescaled = mmseqRescaleScores(mmseqScore);
+const mmseqScoreData = extractLines(mmseqScoreRescaled);
+
 
 
 window.onload = () => {
-    let ASA_panel = new FeatureViewer(sequence, '#feature-viewer',
+    let panels = new FeatureViewer(sequence, '#feature-viewer',
         {
             toolbar: true,
             toolbarPosition: 'left',
@@ -133,12 +185,13 @@ window.onload = () => {
             flagTrackMobile: 150
         },
         [
+            // ** DISORDER PANEL **
             {
                 type: 'rect',
                 id: 'Native_Disorder',
                 label: 'Native Disorder',
                 data: mergedNativeDisorder,
-                color: "grey"
+                color: "black"
             },
             {
                 type: 'rect',
@@ -151,30 +204,30 @@ window.onload = () => {
                 type: 'curve',
                 id: 'Curve1',
                 label: 'Predictive Disorder Score',
-                color: '#75fd63', 
+                color: '#76fd63', 
                 height: 3,
                 data: vslScoreData
             },
+            // ** ASA PANEL **
             {
                 type: 'rect',
                 id: 'Native_RSA_Binary',
                 label: 'Native RSA Binary',
                 data: mergedRSABinary,
-                color: "grey"
+                color: "black"
             },
             {
                 type: 'rect',
                 id: 'Putative_Buried_Residue',
                 label: 'Putative Buried Residue',
                 data: buriedResiduesResults,
-                color: 'grey',
-                stroke: "black",
+                color: 'black',
             },
             {
                 type: 'curve',
                 id: 'Native_Solvent_accessibility',
                 label: 'Native Solvent Accessibility',
-                color: 'grey',
+                color: '#ffd2df',
                 stroke: "black",
                 height: 3,
                 data: asaScoreData, 
@@ -183,10 +236,27 @@ window.onload = () => {
                 type: 'curve',
                 id: 'Predicted_accessibility',
                 label: 'Predicted Accessibility',
-                color: 'grey',
+                color: '#fc0080',
                 stroke: "black",
+                height: 1,
+                data: rsaScoreData,
+            },
+            // ** CONSERVATION PANEL **
+            {
+                type: 'rect',
+                id: 'Conservation_Levels',
+                label: 'Conservation Levels',
+                color: 'black',
                 height: 3,
-                data: rsaScoreData, 
+                data: mergedConservationLevels, 
+            },
+            {
+                type: 'curve',
+                id: 'Conservation_Score',
+                label: 'Conservation Score',
+                color: '#607c8e',
+                height: 4,
+                data: mmseqScoreData, 
             },
         ]);
 };
