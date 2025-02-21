@@ -59,6 +59,13 @@ const scriberScore: number[] = lines[27].trim().split(',').map(val => parseFloat
 const morfChibiScore: number[] = lines[29].trim().split(',').map(val => parseFloat(val));
 
 
+// **Linker Data**
+const rawLinkerBinary: string = lines[12]?.trim() || "";
+const rawLinkerScore: string = lines[13]?.trim() || "";
+
+const linkerBinary: number[] = rawLinkerBinary ? Array.from(rawLinkerBinary, Number) : [];
+const linkerScore: number[] = rawLinkerScore.split(',').map(val => parseFloat(val) || 0);
+
 /**
  * Extract contiguous segments from binary arrays
  * @param binaryArray - The array containing binary values (0,1,2)
@@ -197,6 +204,11 @@ const disoRDPbindScoreData = extractLines(disoRDPbindScore);
 const scriberScoreData = extractLines(scriberScore);
 const morfChibiScoreData = extractLines(morfChibiScore);
 
+// **Linker Panel**
+const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, "#ff9408");
+const linkerScoreData = extractLines(linkerScore);
+
+
 window.onload = () => {
     let panels = new FeatureViewer(sequence, '#feature-viewer',
         {
@@ -327,6 +339,22 @@ window.onload = () => {
                 color: '#01889f',
                 height: 3,
                 data: morfChibiScoreData
+            },
+            // ** LINKER PANEL **
+            {
+                type: 'rect',
+                id: 'Linker_Residues',
+                label: 'Linker Residues',
+                data: linkerSegments,
+                color: '#ff9408'
+            },
+            {
+                type: 'curve',
+                id: 'Linker_Score',
+                label: 'Linker Score',
+                color: '#ff9408',
+                height: 3,
+                data: linkerScoreData
             }
         ]);
 };
