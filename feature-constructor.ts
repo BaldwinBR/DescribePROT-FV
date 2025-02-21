@@ -26,7 +26,6 @@ const disorderBinary: number[] = rawDisorderBinary ? Array.from(rawDisorderBinar
 const vslBinary: number[] = rawVSLBinary ? Array.from(rawVSLBinary, Number) : [];
 const vslScore: number[] = rawVSLScore.trim().split(',').map(val => parseFloat(val));
 
-
 // **ASA Panel Data**
 const rawRSABinary: string = lines[32]?.trim() || "";
 const rawRSAScore: string = lines[33]?.trim() || "";
@@ -37,7 +36,6 @@ const rsaBinary: number[] = rawRSABinary ? Array.from(rawRSABinary, Number) : []
 const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(val));
 const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
 const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
-
 
 // **Conservation Panel Data**
 const rawmmseqBinary: string = lines[8]?.trim() || "";
@@ -65,7 +63,7 @@ const morfChibiScore: number[] = lines[29].trim().split(',').map(val => parseFlo
 const rawLinkerBinary: string = lines[12]?.trim() || "";
 const rawLinkerScore: string = lines[13]?.trim() || "";
 
-const linkerBinary: number[] = rawLinkerBinary.split('').map(val => parseInt(val, 10)).filter(num => num === 0 || num === 1);
+const linkerBinary: number[] = rawLinkerBinary ? Array.from(rawLinkerBinary, Number) : [];
 const linkerScore: number[] = rawLinkerScore.split(',').map(val => parseFloat(val) || 0);
 
 /**
