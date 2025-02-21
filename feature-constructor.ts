@@ -50,13 +50,13 @@ const rawDisoRDPbindBinary: string = lines[24]?.trim() || "";
 const rawScriberBinary: string = lines[26]?.trim() || "";  
 const rawMorfChibiBinary: string = lines[28]?.trim() || "";  
 
-const scriberBinary: number[] = rawScriberBinary.trim().split('').map(val => parseInt(val, 10)).filter(num => num === 0 || num === 1);
+const scriberBinary: number[] = rawScriberBinary ? Array.from(rawScriberBinary, Number) : [];
 const disoRDPbindBinary: number[] = rawDisoRDPbindBinary ? Array.from(rawDisoRDPbindBinary, Number) : [];
 const morfChibiBinary: number[] = rawMorfChibiBinary ? Array.from(rawMorfChibiBinary, Number) : [];
 
-const disoRDPbindScore: number[] = parseScoreData(lines[25] || "");
-const scriberScore: number[] = parseScoreData(lines[27] || "");
-const morfChibiScore: number[] = parseScoreData(lines[29] || "");
+const disoRDPbindScore: number[] = lines[25].trim().split(',').map(val => parseFloat(val));
+const scriberScore: number[] = lines[27].trim().split(',').map(val => parseFloat(val));
+const morfChibiScore: number[] = lines[29].trim().split(',').map(val => parseFloat(val));
 
 
 /**
@@ -124,22 +124,6 @@ function mmseqRescaleScores(scores) {
     // apply min-max scaling
     return scores.map(value => (value - min) / (max - min));
 }
-
-/**
- * Parses a raw comma-separated string into an array of numerical scores.
- * @param {string} rawData - raw string containing comma-separated numerical values
- * @returns {number[]} An array of parsed numerical values
- */
-function parseScoreData(rawData: string): number[] {
-    return rawData
-        .trim()
-        .split(',')
-        .map(val => {
-            const num = parseFloat(val);
-            return isNaN(num) ? 0 : num; // Convert NaN values to 0
-        });
-}
-
 
 // ** CALCULATING DATA **
 
