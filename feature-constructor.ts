@@ -97,6 +97,28 @@ const rawmmseqScore: string = lines[9]?.trim() || "";
 const mmseqBinary: number[] = rawmmseqBinary ? Array.from(rawmmseqBinary, Number) : [];
 const mmseqScore: number[] = rawmmseqScore.trim().split(',').map(val => parseFloat(val));
 
+
+// **Protein Binding Data**
+const rawDisoRDPbindBinary: string = lines[24]?.trim() || "";    
+const rawScriberBinary: string = lines[26]?.trim() || "";  
+const rawMorfChibiBinary: string = lines[28]?.trim() || "";  
+
+const scriberBinary: number[] = rawScriberBinary ? Array.from(rawScriberBinary, Number) : [];
+const disoRDPbindBinary: number[] = rawDisoRDPbindBinary ? Array.from(rawDisoRDPbindBinary, Number) : [];
+const morfChibiBinary: number[] = rawMorfChibiBinary ? Array.from(rawMorfChibiBinary, Number) : [];
+
+const disoRDPbindScore: number[] = lines[25].trim().split(',').map(val => parseFloat(val));
+const scriberScore: number[] = lines[27].trim().split(',').map(val => parseFloat(val));
+const morfChibiScore: number[] = lines[29].trim().split(',').map(val => parseFloat(val));
+
+
+// **Linker Data**
+const rawLinkerBinary: string = lines[12]?.trim() || "";
+const rawLinkerScore: string = lines[13]?.trim() || "";
+
+const linkerBinary: number[] = rawLinkerBinary ? Array.from(rawLinkerBinary, Number) : [];
+const linkerScore: number[] = rawLinkerScore.split(',').map(val => parseFloat(val) || 0);
+
 /**
  * Extract contiguous segments from binary arrays
  * @param binaryArray - The array containing binary values (0,1,2)
@@ -130,9 +152,11 @@ function extractSegments(binaryArray: number[], targetValue: number, color: stri
 
 
 /**
- * Extract data for line plots (Score Data)
- * @param scoreArray - Numerical score array
- * @returns Array of `{x, y}` points
+ * Converts an array of numerical scores into an array of coordinate points `{x, y}` 
+ * for line plotting in FeatureViewer.
+ *
+ * @param {number[]} scoreArray - An array of numerical scores representing Y-values.
+ * @returns {{x: number; y: number}[]} An array of objects, where each object contains an X (position) and Y (score) value.
  */
 function extractLines(scoreArray: number[]): { x: number; y: number }[] {
     return scoreArray.map((value, index) => ({
@@ -140,6 +164,7 @@ function extractLines(scoreArray: number[]): { x: number; y: number }[] {
         y: value
     }));
 }
+
 
 // **Rescaling for psi pred score**
 function psipredRescaleScores(scores) {
@@ -161,10 +186,13 @@ function mmseqRescaleScores(scores) {
     return scores.map(value => (value - min) / (max - min));
 }
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 95d98afd109c902f367b6b013d52ea99bfe0247c
 // ** CALCULATING DATA **
 
 // **Disorder panel**
@@ -228,8 +256,24 @@ const mergedConservationLevels: Segment[] = [
 const mmseqScoreRescaled = mmseqRescaleScores(mmseqScore);
 const mmseqScoreData = extractLines(mmseqScoreRescaled);
 
+<<<<<<< HEAD
 //--------------------------------------------------------------------------------------------
 
+=======
+// **Protein Panel**
+const disoRDPbindSegments: Segment[] = extractSegments(disoRDPbindBinary, 1, "#3d7afd");
+const morfChibiSegments: Segment[] = extractSegments(morfChibiBinary, 1, "#01889f");
+const scriberSegments: Segment[] = extractSegments(scriberBinary, 1, "#3b5b92");
+
+const disoRDPbindScoreData = extractLines(disoRDPbindScore);
+const scriberScoreData = extractLines(scriberScore);
+const morfChibiScoreData = extractLines(morfChibiScore);
+
+// **Linker Panel**
+const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, "#ff9408");
+const linkerScoreData = extractLines(linkerScore);
+
+>>>>>>> 95d98afd109c902f367b6b013d52ea99bfe0247c
 // SECSSBinary Data to Segment
 const SECSSBinaryHelix: Segment[] = extractSegments(SECSSBinary, 1, "#cf6275");
 const SECSSBinaryStrand: Segment[] = extractSegments(SECSSBinary, 2, "#fffd01");
@@ -376,5 +420,67 @@ window.onload = () => {
                 height: 4,
                 data: mmseqScoreData, 
             },
+            // ** PROTEIN PANEL **
+            {
+                type: 'rect',
+                id: 'DisoRDPbind_Binding',
+                label: 'DisoRDPbind Protein Binding',
+                data: disoRDPbindSegments,
+                color: '#3d7afd'
+            },
+            {
+                type: 'rect',
+                id: 'Scriber_Binding',
+                label: 'SCRIBER',
+                data: scriberSegments,
+                color: '#3b5b92'
+            },
+            {
+                type: 'rect',
+                id: 'MoRFchibi_Binding',
+                label: 'MoRFchibi',
+                data: morfChibiSegments,
+                color: '#01889f'
+            },
+            {
+                type: 'curve',
+                id: 'DisoRDPbind_Score',
+                label: 'DisoRDPbind Score',
+                color: '#3d7afd',
+                height: 3,
+                data: disoRDPbindScoreData
+            },            
+            {
+                type: 'curve',
+                id: 'Scriber_Score',
+                label: 'SCRIBER Score',
+                color: '#3b5b92',
+                height: 3,
+                data: scriberScoreData
+            },
+            {
+                type: 'curve',
+                id: 'MoRFchibi_Score',
+                label: 'MoRFchibi Score',
+                color: '#01889f',
+                height: 3,
+                data: morfChibiScoreData
+            },
+            // ** LINKER PANEL **
+            {
+                type: 'rect',
+                id: 'Linker_Residues',
+                label: 'Linker Residues',
+                data: linkerSegments,
+                color: '#ff9408'
+            },
+            {
+                type: 'curve',
+                id: 'Linker_Score',
+                label: 'Linker Score',
+                color: '#ff9408',
+                height: 3,
+                data: linkerScoreData
+            }
         ]);
 };
