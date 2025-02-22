@@ -186,13 +186,10 @@ function mmseqRescaleScores(scores) {
     return scores.map(value => (value - min) / (max - min));
 }
 
-<<<<<<< HEAD
 
 
 
 
-=======
->>>>>>> 95d98afd109c902f367b6b013d52ea99bfe0247c
 // ** CALCULATING DATA **
 
 // **Disorder panel**
@@ -256,10 +253,6 @@ const mergedConservationLevels: Segment[] = [
 const mmseqScoreRescaled = mmseqRescaleScores(mmseqScore);
 const mmseqScoreData = extractLines(mmseqScoreRescaled);
 
-<<<<<<< HEAD
-//--------------------------------------------------------------------------------------------
-
-=======
 // **Protein Panel**
 const disoRDPbindSegments: Segment[] = extractSegments(disoRDPbindBinary, 1, "#3d7afd");
 const morfChibiSegments: Segment[] = extractSegments(morfChibiBinary, 1, "#01889f");
@@ -273,7 +266,6 @@ const morfChibiScoreData = extractLines(morfChibiScore);
 const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, "#ff9408");
 const linkerScoreData = extractLines(linkerScore);
 
->>>>>>> 95d98afd109c902f367b6b013d52ea99bfe0247c
 // SECSSBinary Data to Segment
 const SECSSBinaryHelix: Segment[] = extractSegments(SECSSBinary, 1, "#cf6275");
 const SECSSBinaryStrand: Segment[] = extractSegments(SECSSBinary, 2, "#fffd01");
