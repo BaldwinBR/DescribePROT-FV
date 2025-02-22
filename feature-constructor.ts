@@ -37,6 +37,59 @@ const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(v
 const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
 const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
 
+//--------------------------------------------------------------------------------------------------------
+
+// **Sec.Struc Panel Data**
+
+const rawSECSSBinary: string = lines[31]?.trim() || "";
+const SECSSBinary: number[] = rawDisorderBinary ? Array.from(rawSECSSBinary, Number) : [];
+
+const rawPsiPredBinary: string = lines[4]?.trim() || "";
+const PsiPredBinary: number[] = rawDisorderBinary ? Array.from(rawPsiPredBinary, Number) : [];
+
+
+if (lines[5] != "NULL"){
+    var rawHelixScore: string = lines[5]?.trim() || "";
+    var rawStrandScore: string = lines[6]?.trim() || "";
+
+    var HelixScore: number[] = rawHelixScore.trim().split(',').map(val => parseFloat(val));
+    var StrandScore: number[] = rawStrandScore.trim().split(',').map(val => parseFloat(val));  
+
+}else{
+    //TODO: Check this functionality
+    var HelixScore: number[] = null;
+    var StrandScore: number[] = null;
+}
+
+//Plddt Scores in  case of AF results
+var rawCoilScore: string = lines[7]?.trim() || "";
+var CoilScore: number[] = rawCoilScore.trim().split(',').map(val => parseFloat(val));
+
+
+let PsiPredScore  = [];
+
+//TODO: THIS CAN BE FUNCKY; LOOK INTO IT 
+const  SecStructScoresConcat = [CoilScore, StrandScore, HelixScore];
+//const  SecStructScoresConcat = [HelixScore, StrandScore, CoilScore];
+
+if (HelixScore !=  null){
+    PsiPredScore = SecStructScoresConcat.reduce(function(final, current) {
+        for (var i = 0; i < final.length; ++i) {
+            if (current[i] > final[i]) {
+            final[i] = current[i];
+            }
+        }
+        return final;
+        });
+}else{
+    //TODO: Determine if this is best way to clone array for use case
+    for (var b = 0; b < CoilScore.length; b++){
+        PsiPredScore[b] = CoilScore[b];
+    }
+}
+
+//--------------------------------------------------------------------------------------------------------
+
 // **Conservation Panel Data**
 const rawmmseqBinary: string = lines[8]?.trim() || "";
 const rawmmseqScore: string = lines[9]?.trim() || "";
@@ -97,6 +150,7 @@ function extractSegments(binaryArray: number[], targetValue: number, color: stri
     return segments;
 }
 
+
 /**
  * Converts an array of numerical scores into an array of coordinate points `{x, y}` 
  * for line plotting in FeatureViewer.
@@ -131,6 +185,10 @@ function mmseqRescaleScores(scores) {
     // apply min-max scaling
     return scores.map(value => (value - min) / (max - min));
 }
+
+
+
+
 
 // ** CALCULATING DATA **
 
@@ -208,6 +266,42 @@ const morfChibiScoreData = extractLines(morfChibiScore);
 const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, "#ff9408");
 const linkerScoreData = extractLines(linkerScore);
 
+// SECSSBinary Data to Segment
+const SECSSBinaryHelix: Segment[] = extractSegments(SECSSBinary, 1, "#cf6275");
+const SECSSBinaryStrand: Segment[] = extractSegments(SECSSBinary, 2, "#fffd01");
+const SECSSBinaryCoil: Segment[] = extractSegments(SECSSBinary, 3, "#25a36f");
+const SECSSBinaryUnavailable: Segment[] = extractSegments(SECSSBinary, 0, "#c0c0c0"); 
+
+const mergedSECSSBinary: Segment[] = [
+    ...SECSSBinaryHelix.map(s => ({ ...s, color: "#cf6275"})),
+    ...SECSSBinaryStrand.map(s => ({ ...s, color: "#fffd01"})),
+    ...SECSSBinaryCoil.map(s => ({ ...s, color: "#25a36f"})),
+    ...SECSSBinaryUnavailable.map(s => ({ ...s, color: "#c0c0c0"})),
+];
+
+//Psi Binary Data to Segment
+const PsiPrepBinaryHelix: Segment[] = extractSegments(PsiPredBinary, 0, "#cf6275");
+const PsiPrepBinaryStrand: Segment[] = extractSegments(PsiPredBinary, 1, "#fffd01");
+const PsiPrepBinaryCoil: Segment[] = extractSegments(PsiPredBinary, 2, "#25a36f");
+//For unknown assignment from DSSP on AF-derived structures
+const PsiPrepBinaryUnavailable: Segment[] = extractSegments(PsiPredBinary, 3, "#c0c0c0"); 
+
+//TODO: Is SS_Code value X needed from original?
+
+const mergedPsiPrepBinary: Segment[] = [
+    ...PsiPrepBinaryHelix.map(s => ({ ...s, color: "#cf6275"})),
+    ...PsiPrepBinaryStrand.map(s => ({ ...s, color: "#fffd01"})),
+    ...PsiPrepBinaryCoil.map(s => ({ ...s, color: "#25a36f"})),
+    ...PsiPrepBinaryUnavailable.map(s => ({ ...s, color: "#c0c0c0"})),
+];
+
+// Rescale SecStruct Scores
+//  TODO: Consider round to two digits like Python code
+//  Could impact performance to have library round it
+const PsiPredScoreRescaled = psipredRescaleScores(PsiPredScore);
+const PsiPredScoreData =  extractLines(PsiPredScoreRescaled);
+
+//--------------------------------------------------------------------------------------------
 
 window.onload = () => {
     let panels = new FeatureViewer(sequence, '#feature-viewer',
@@ -276,6 +370,30 @@ window.onload = () => {
                 stroke: "black",
                 height: 1,
                 data: rsaScoreData,
+            },
+            // ** Secondary Structure PANEL **
+            {
+                type: 'rect',
+                id: 'Native_Sec_Struc',
+                label: 'Native Sec.Struc',
+                color: 'black',
+                height: 3,
+                data: mergedSECSSBinary, 
+            },
+            {
+                type: 'rect',
+                id: 'Putative_Sec_Struc',
+                label: 'Putative Sec.Struc',
+                color: 'black',
+                height: 3,
+                data: mergedPsiPrepBinary, 
+            },
+            {
+                type: 'curve',
+                id: 'Secondary_Struct_Score',
+                label: 'Secondary Struct Score',
+                height: 3,
+                data: PsiPredScoreData, 
             },
             // ** CONSERVATION PANEL **
             {
