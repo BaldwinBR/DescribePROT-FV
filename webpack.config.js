@@ -74,7 +74,7 @@ if(isProduction){
   // Template for live dev server
   config["plugins"].push(
     new HtmlWebpackPlugin({
-      template: "dev_template.html",
+      template: "dev_template_alt.html",
     })
   )
 }
