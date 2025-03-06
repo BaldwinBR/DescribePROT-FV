@@ -301,6 +301,41 @@ const mergedPsiPrepBinary: Segment[] = [
 const PsiPredScoreRescaled = psipredRescaleScores(PsiPredScore);
 const PsiPredScoreData =  extractLines(PsiPredScoreRescaled);
 
+// TODO: Potenitally overhaul --Ben
+// Works for testing
+// Sort and nested for loop bring complexity questions
+function lineColorSegments(data : {x: number; y: number;}[], segments: Segment[]): any {
+
+    const colorData = data.map(point => ({...point, color: ""}));
+    segments.sort((a, b) => a.x - b.x);
+
+    let inSegment: boolean = false;
+    let colorValue: string = "";
+    for (let i = 0; i < colorData.length; i++){
+
+        for (let segIndex = 0; segIndex < segments.length; segIndex++){
+
+            if (colorData[i].x == segments[segIndex].x){
+                inSegment = true;
+                colorValue = segments[segIndex].color;
+            }
+    
+            if (inSegment){
+                colorData[i].color = colorValue;
+            }
+    
+            if (colorData[i].x == segments[segIndex].y){
+                inSegment == false;
+            }
+
+        }
+
+    }
+    return colorData;
+}
+
+const PsiPredScoreDataColored = lineColorSegments(PsiPredScoreData, mergedPsiPrepBinary);
+
 //--------------------------------------------------------------------------------------------
 
 window.onload = () => {
@@ -334,7 +369,7 @@ window.onload = () => {
                 type: 'curve',
                 id: 'Curve1',
                 label: 'Predictive Disorder Score',
-                color: '#76fd63', 
+                color: '#76fd63',
                 height: 3,
                 data: vslScoreData
             },
@@ -393,7 +428,7 @@ window.onload = () => {
                 id: 'Secondary_Struct_Score',
                 label: 'Secondary Struct Score',
                 height: 3,
-                data: PsiPredScoreData, 
+                data: PsiPredScoreDataColored, 
             },
             // ** CONSERVATION PANEL **
             {
