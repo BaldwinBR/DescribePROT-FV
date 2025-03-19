@@ -413,6 +413,7 @@ window.onload = () => {
                 label: 'Native Sec.Struc',
                 color: 'black',
                 height: 3,
+                flag: 2,
                 data: mergedSECSSBinary, 
             },
             {
@@ -421,6 +422,7 @@ window.onload = () => {
                 label: 'Putative Sec.Struc',
                 color: 'black',
                 height: 3,
+                flag: 2,
                 data: mergedPsiPrepBinary, 
             },
             {
@@ -428,6 +430,7 @@ window.onload = () => {
                 id: 'Secondary_Struct_Score',
                 label: 'Secondary Struct Score',
                 height: 3,
+                flag: 1,
                 data: PsiPredScoreDataColored, 
             },
             // ** CONSERVATION PANEL **
@@ -437,6 +440,7 @@ window.onload = () => {
                 label: 'Conservation Levels',
                 color: 'black',
                 height: 3,
+                flag: 4,
                 data: mergedConservationLevels, 
             },
             {
@@ -491,6 +495,7 @@ window.onload = () => {
                 label: 'MoRFchibi Score',
                 color: '#01889f',
                 height: 3,
+                flag: 1,
                 data: morfChibiScoreData
             },
             // ** LINKER PANEL **
