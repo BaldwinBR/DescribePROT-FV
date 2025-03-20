@@ -337,6 +337,59 @@ function lineColorSegments(data : {x: number; y: number;}[], segments: Segment[]
 const PsiPredScoreDataColored = lineColorSegments(PsiPredScoreData, mergedPsiPrepBinary);
 
 //--------------------------------------------------------------------------------------------
+// Mahmuda Panesl
+//--------------------------------------------------------------------------------------------
+
+const rawDisoRDPbindDNA: string = lines[20]?.trim() || "";
+const rawDRNApredDNA: string = lines[22]?.trim() || "";
+const rawDisoRDPbindDNAScore: string = lines[21]?.trim() || "";
+const rawDRNApredDNAScore: string = lines[23]?.trim() || "";
+
+const disoRDPbindDNA: number[] = rawDisoRDPbindDNA ? rawDisoRDPbindDNA.split('').map(Number) : [];
+const dRNApredDNA: number[] = rawDRNApredDNA ? rawDRNApredDNA.split('').map(Number) : [];
+const disoRDPbindDNAScore: number[] = rawDisoRDPbindDNAScore.split(',').map(val => parseFloat(val));
+const dRNApredDNAScore: number[] = rawDRNApredDNAScore.split(',').map(val => parseFloat(val));
+
+ const disoRDPbindDNAColour: Segment[] = extractSegments(disoRDPbindDNA, 1, "#c071fe");
+ const dRNApredDNAColour: Segment[] = extractSegments(dRNApredDNA, 1, "#ce5dae");
+
+ const disoRDPbindDNAScoreData = extractLines(disoRDPbindDNAScore);
+ const dRNApredDNAScoreData = extractLines(dRNApredDNAScore);
+
+
+//---------
+
+const rawDisoRDPbindRNA: string = lines[16]?.trim() || "";
+const rawDisoRDPbindRNAScore: string = lines[17]?.trim() || "";
+const rawDRNApredRNA: string = lines[18]?.trim() || "";
+const rawDRNApredRNAScore: string = lines[19]?.trim() || "";
+
+const disoRDPbindRNA: number[] = rawDisoRDPbindRNA ? rawDisoRDPbindRNA.split('').map(Number) : [];
+const disoRDPbindRNAScore: number[] = rawDisoRDPbindRNAScore.split(',').map(val => parseFloat(val));
+const dRNApredRNA: number[] = rawDRNApredRNA ? rawDRNApredRNA.split('').map(Number) : [];
+const dRNApredRNAScore: number[] = rawDRNApredRNAScore.split(',').map(val => parseFloat(val));
+
+
+const disoRDPbindRNAColour: Segment[] = extractSegments(disoRDPbindRNA, 1, "orange");
+const dRNApredRNAColour: Segment[] = extractSegments(dRNApredRNA, 1, "yellow");
+
+const disoRDPbindRNAScoreData = extractLines(disoRDPbindRNAScore);
+const dRNApredRNAScoreData = extractLines(dRNApredRNAScore);
+
+//---------
+
+const rawSignalPeptideBinary: string = lines[10]?.trim() || "";
+const rawSignalPeptideScore: string = lines[11]?.trim() || "";
+
+const signalPeptideBinary: number[] = rawSignalPeptideBinary ? rawSignalPeptideBinary.split('').map(Number) : [];
+const signalPeptideScore: number[] = rawSignalPeptideScore.split(',').map(val => parseFloat(val));
+
+ const signalPeptideSegments: Segment[] = extractSegments(signalPeptideBinary, 1, "brown");
+ const signalPeptideScoreData = extractLines(signalPeptideScore);
+
+ console.log("HERE: " + JSON.stringify(signalPeptideScoreData))
+
+//----------------------------------------------------------------------------------------------
 
 window.onload = () => {
     let panels = new FeatureViewer(sequence, '#feature-viewer',
@@ -390,21 +443,12 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'Native_Solvent_accessibility',
-                label: 'Native Solvent Accessibility',
-                color: '#ffd2df',
-                stroke: "black",
-                height: 3,
-                data: asaScoreData, 
-            },
-            {
-                type: 'curve',
-                id: 'Predicted_accessibility',
-                label: 'Predicted Accessibility',
-                color: '#fc0080',
+                id: 'ASA_SCORES',
+                label: ' ',
+                color: ['#ffd2df', '#fc0080'],
                 stroke: "black",
                 height: 1,
-                data: rsaScoreData,
+                data: [asaScoreData,  rsaScoreData], 
             },
             // ** Secondary Structure PANEL **
             {
@@ -412,7 +456,6 @@ window.onload = () => {
                 id: 'Native_Sec_Struc',
                 label: 'Native Sec.Struc',
                 color: 'black',
-                height: 3,
                 flag: 2,
                 data: mergedSECSSBinary, 
             },
@@ -421,7 +464,6 @@ window.onload = () => {
                 id: 'Putative_Sec_Struc',
                 label: 'Putative Sec.Struc',
                 color: 'black',
-                height: 3,
                 flag: 2,
                 data: mergedPsiPrepBinary, 
             },
@@ -429,27 +471,9 @@ window.onload = () => {
                 type: 'curve',
                 id: 'Secondary_Struct_Score',
                 label: 'Secondary Struct Score',
-                height: 3,
+                height: 5,
                 flag: 1,
                 data: PsiPredScoreDataColored, 
-            },
-            // ** CONSERVATION PANEL **
-            {
-                type: 'rect',
-                id: 'Conservation_Levels',
-                label: 'Conservation Levels',
-                color: 'black',
-                height: 3,
-                flag: 4,
-                data: mergedConservationLevels, 
-            },
-            {
-                type: 'curve',
-                id: 'Conservation_Score',
-                label: 'Conservation Score',
-                color: '#607c8e',
-                height: 4,
-                data: mmseqScoreData, 
             },
             // ** PROTEIN PANEL **
             {
@@ -475,28 +499,92 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'DisoRDPbind_Score',
-                label: 'DisoRDPbind Score',
-                color: '#3d7afd',
+                id: 'PROTEIN_SCORES',
+                label: ' ',
+                color: ['#3d7afd', '#3b5b92', '#01889f'],
                 height: 3,
                 flag: 1,
-                data: disoRDPbindScoreData
+                data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData]
             },            
+            // ** DNA PANEL **
+            { 
+                type: 'rect', 
+                id: 'DisoRDPbindDNA', 
+                label: 'DisoRDPbind DNA binding', 
+                data: disoRDPbindDNAColour, 
+                color: "#c071fe",
+            },
+            { 
+                type: 'rect', 
+                id: 'DRNApredDNA', 
+                label: 'DRNApred DNA binding', 
+                data: dRNApredDNAColour, 
+                color: "#ce5dae",
+            },
+            { 
+                type: 'curve', 
+                id: 'DNA_SCORES', 
+                label: ' ', 
+                color: ['#c071fe', '#ce5dae'], 
+                height: 3, 
+                data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData],
+            },
+            // ** RNA PANEL ** 
+            { 
+                type: 'rect', 
+                id: 'DisoRDPbindRNA', 
+                label: 'DisoRDPbind RNA binding', 
+                data: disoRDPbindRNAColour, 
+                color: "#fcc006",
+            },
+            { 
+                type: 'rect', 
+                id: 'DRNApredRNA', 
+                label: 'DRNApred RNA binding', 
+                data: dRNApredRNAColour, 
+                color: "#fdff38",
+            },
+            { 
+                type: 'curve', 
+                id: 'RNA_SCORES', 
+                label: ' ', 
+                color: ['#fcc006', '#fdff38'], 
+                height: 3, 
+                data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData],
+            },
+            // ** SIGNAL PEPTIDE **
+              { 
+                type: 'rect', 
+                id: 'Signal_Peptide', 
+                label: 'Signal peptides', 
+                data: signalPeptideSegments, 
+                color: "#964e02",
+            },
+            { 
+                type: 'curve', 
+                id: 'Signal_Peptide_Score', 
+                label: 'Signal Peptides score', 
+                color: '#964e02', 
+                height: 3, 
+                data: signalPeptideScoreData,
+            },
+             // ** CONSERVATION PANEL **
             {
-                type: 'curve',
-                id: 'Scriber_Score',
-                label: 'SCRIBER Score',
-                color: '#3b5b92',
+                type: 'rect',
+                id: 'Conservation_Levels',
+                label: 'Conservation Levels',
+                color: 'black',
                 height: 3,
-                data: scriberScoreData
+                flag: 4,
+                data: mergedConservationLevels, 
             },
             {
                 type: 'curve',
-                id: 'MoRFchibi_Score',
-                label: 'MoRFchibi Score',
-                color: '#01889f',
-                height: 3,
-                data: morfChibiScoreData
+                id: 'Conservation_Score',
+                label: 'Conservation Score',
+                color: '#607c8e',
+                height: 4,
+                data: mmseqScoreData, 
             },
             // ** LINKER PANEL **
             {
