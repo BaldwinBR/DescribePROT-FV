@@ -423,7 +423,6 @@ window.onload = () => {
                 id: 'Curve1',
                 label: 'Predictive Disorder Score',
                 color: '#76fd63',
-                height: 3,
                 data: vslScoreData
             },
             // ** ASA PANEL **
@@ -447,7 +446,6 @@ window.onload = () => {
                 label: ' ',
                 color: ['#ffd2df', '#fc0080'],
                 stroke: "black",
-                height: 1,
                 data: [asaScoreData,  rsaScoreData], 
             },
             // ** Secondary Structure PANEL **
@@ -471,7 +469,6 @@ window.onload = () => {
                 type: 'curve',
                 id: 'Secondary_Struct_Score',
                 label: 'Secondary Struct Score',
-                height: 5,
                 flag: 1,
                 data: PsiPredScoreDataColored, 
             },
@@ -502,7 +499,6 @@ window.onload = () => {
                 id: 'PROTEIN_SCORES',
                 label: ' ',
                 color: ['#3d7afd', '#3b5b92', '#01889f'],
-                height: 3,
                 flag: 1,
                 data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData]
             },            
@@ -526,7 +522,6 @@ window.onload = () => {
                 id: 'DNA_SCORES', 
                 label: ' ', 
                 color: ['#c071fe', '#ce5dae'], 
-                height: 3, 
                 data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData],
             },
             // ** RNA PANEL ** 
@@ -549,7 +544,6 @@ window.onload = () => {
                 id: 'RNA_SCORES', 
                 label: ' ', 
                 color: ['#fcc006', '#fdff38'], 
-                height: 3, 
                 data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData],
             },
             // ** SIGNAL PEPTIDE **
@@ -565,7 +559,6 @@ window.onload = () => {
                 id: 'Signal_Peptide_Score', 
                 label: 'Signal Peptides score', 
                 color: '#964e02', 
-                height: 3, 
                 data: signalPeptideScoreData,
             },
              // ** CONSERVATION PANEL **
@@ -574,7 +567,6 @@ window.onload = () => {
                 id: 'Conservation_Levels',
                 label: 'Conservation Levels',
                 color: 'black',
-                height: 3,
                 flag: 4,
                 data: mergedConservationLevels, 
             },
@@ -583,7 +575,6 @@ window.onload = () => {
                 id: 'Conservation_Score',
                 label: 'Conservation Score',
                 color: '#607c8e',
-                height: 4,
                 data: mmseqScoreData, 
             },
             // ** LINKER PANEL **
@@ -599,7 +590,6 @@ window.onload = () => {
                 id: 'Linker_Score',
                 label: 'Linker Score',
                 color: '#ff9408',
-                height: 3,
                 data: linkerScoreData
             }
         ]);
