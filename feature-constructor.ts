@@ -1,4 +1,3 @@
-import { transition } from "./FeatureViewerTypeScript/src/custom-d3";
 import { FeatureViewer } from "./FeatureViewerTypeScript/src/feature-viewer";
 
 import './feature-constructor.scss';
