@@ -1,3 +1,4 @@
+import { transition } from "./FeatureViewerTypeScript/src/custom-d3";
 import { FeatureViewer } from "./FeatureViewerTypeScript/src/feature-viewer";
 
 import './feature-constructor.scss';
@@ -387,12 +388,12 @@ const signalPeptideScore: number[] = rawSignalPeptideScore.split(',').map(val =>
  const signalPeptideSegments: Segment[] = extractSegments(signalPeptideBinary, 1, "brown");
  const signalPeptideScoreData = extractLines(signalPeptideScore);
 
- console.log("HERE: " + JSON.stringify(signalPeptideScoreData))
-
 //----------------------------------------------------------------------------------------------
+
 
 window.onload = () => {
     let panels = new FeatureViewer(sequence, '#feature-viewer',
+
         {
             toolbar: true,
             toolbarPosition: 'left',
@@ -400,7 +401,8 @@ window.onload = () => {
             zoomMax: 5,
             flagColor: 'white',
             flagTrack: 170,
-            flagTrackMobile: 150
+            flagTrackMobile: 150,
+            sideBar: 225
         },
         [
             // ** DISORDER PANEL **
@@ -409,7 +411,527 @@ window.onload = () => {
                 id: 'Native_Disorder',
                 label: 'Native Disorder',
                 data: mergedNativeDisorder,
-                color: "black"
+                color: "black",
+                className : 'Native_Disorder',
+                // All buttons are loaded into first feature's sidebar element
+                // Allows for consistent spacing and behavior between button elements 
+                sidebar: [
+                    {
+                        id: 'Header',
+                        label: 'Header',
+                        content: '<span style="font-size: .8125rem; font-family: sans-serif;">Click on Legend Item to Show/Hide</span>'
+                    },
+                    {
+                        id: 'Sequence_Button',
+                        label: 'Sequence Button',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 12px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 5px; height: 5px; background-color: black; border-radius: 50%; margin-right: 12px;"></span>
+                            Sequence
+                        </button>`
+                    },
+
+                    {
+                        id: 'Native_Disorder_Button',
+                        label: 'Native Disorder Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #2ca02c; margin-right: 5px;"></span>
+                            Native Disordered Regions
+                        </button>`
+                    },
+                    {
+                        id: 'Putative_Disorder_Button',
+                        label: 'Putative Disorder Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #75fd63; margin-right: 5px;"></span>
+                            Putative Disordered Regions
+                        </button>`
+                    },
+                    {
+                        id: 'Predictive_Disorder_Button',
+                        label: 'Predictive Disorder Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #75fd63; margin-right: 5px; vertical-align: middle;"></span>
+                            Predictive Disordered Regions
+                        </button>`
+                    },
+                     {
+                        id: 'Native_RSA_Binary_Button',
+                        label: 'Native RSA Binary Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #fc0080; margin-right: 5px;"></span>
+                            Native Buried Residue
+                        </button>`
+                    },
+                    {
+                        id: 'Putative_Buried_Residue_Button',
+                        label: 'Putative Buried Residue Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #ffd2df; margin-right: 5px;"></span>
+                            Native Buried Residue
+                        </button>`
+                     },
+                     {
+                        id: 'ASA_SCORES_Native_Button',
+                        label: 'ASA SCORES Native Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #fc0080; margin-right: 5px; vertical-align: middle;"></span>
+                            Native Solvent Accesibility
+                        </button>`
+                    },
+                    {
+                        id: 'ASA_SCORES_Predicted_Button',
+                        label: 'ASA SCORES Predicted Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #ffd2df; margin-right: 5px; vertical-align: middle;"></span>
+                            Predicted Solvent Accesibility
+                        </button>`
+                    },
+                    {
+                        id: 'Native_Sec_Struc_Unavailable_Button',
+                        label: 'Native Sec Struc Unavailable Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #c0c0c0; margin-right: 5px;"></span>
+                            Unavaliable_native
+                        </button>`
+                    },
+                    {
+                        id: 'Native_Sec_Struc_Coil_Button',
+                        label: 'Native Sec Struc Coil Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #25a36f; margin-right: 5px;"></span>
+                            Coil
+                        </button>`
+                    },
+                    {
+                        id: 'Native_Sec_Struc_Helix_Button',
+                        label: 'Native Sec Struc Helix Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #cf6275; margin-right: 5px;"></span>
+                            Helix
+                        </button>`
+                    },
+                    {
+                        id: 'Native_Sec_Struc_Strand_Button',
+                        label: 'Native Sec Struc Stand Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #fffd01; margin-right: 5px;"></span>
+                            Strand
+                        </button>`
+                    },
+                    {
+                        id: 'Secondary_Struc_Score_Button',
+                        label: 'Secondary Struc Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #25a36f; margin-right: 5px; vertical-align: middle;"></span>
+                            Secondary struc.score
+                        </button>`
+                    },
+                    {
+                        id: 'DisoRDPbind_Binding_Button',
+                        label: 'DisoRDPbind Binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #3d7afd; margin-right: 5px;"></span>
+                            DisoRDPbind Protein Binding
+                        </button>`
+                    }, 
+                    {
+                        id: 'Scriber_Binding_Button',
+                        label: 'Scriber Binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #3b5b92; margin-right: 5px;"></span>
+                            SCRIBER Protein Binding
+                        </button>`
+                    },
+                    {
+                        id: 'MoRFchibi_Binding_Button',
+                        label: 'MoRFchibi Binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #01889f; margin-right: 5px;"></span>
+                            MoRFchibi Protein Binding
+                        </button>`
+                    },
+                    {
+                        id: 'DisoRDPbind_Score_Button',
+                        label: 'DisoRDPbind Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #3d7afd; margin-right: 5px; vertical-align: middle;"></span>
+                            DisoRDPbind Score
+                        </button>`
+                    },
+                    {
+                        id: 'Scriber_Score_Button',
+                        label: 'Scriber Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #3b5b92; margin-right: 5px; vertical-align: middle;"></span>
+                            Scriber Score
+                        </button>`
+                    },
+                    {
+                        id: 'MoRFchibi_Score_Button',
+                        label: 'MoRFchibi Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #01889f; margin-right: 5px; vertical-align: middle;"></span>
+                            MoRFchibi Score
+                        </button>`
+                    },
+                    {
+                        id: 'DisoRDPbindDNA_Button',
+                        label: 'DisoRDPbind DNA binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #c071fe; margin-right: 5px;"></span>
+                            DisoRDPbind DNA Binding
+                        </button>`
+                    },
+                    {
+                        id: 'DRNApredDNA_Button',
+                        label: 'DRNApred DNA binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #ce5dae; margin-right: 5px;"></span>
+                            DRNApred DNA Binding
+                        </button>`
+                    },
+                    {
+                        id: 'DisoRDPbindDNA_Score_Button',
+                        label: 'DisoRDPbind DNA Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #c071fe; margin-right: 5px; vertical-align: middle;"></span>
+                            DisoRDPbind DNA Score
+                        </button>`
+                    },
+                    {
+                        id: 'DRNApredDNA_Score_Button',
+                        label: 'DRNApred DNA Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #ce5dae; margin-right: 5px; vertical-align: middle;"></span>
+                            DRNApred DNA Score 
+                        </button>`
+                    },
+                    {
+                        id: 'DisoRDPbindRNA_Button',
+                        label: 'DisoRDPbind RNA binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #fcc006; margin-right: 5px;"></span>
+                            DisoRDPbind RNA Binding
+                        </button>`
+                    },
+                    {
+                        id: 'DRNApredRNA_Button',
+                        label: 'DRNApred RNA binding Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #fdff38; margin-right: 5px;"></span>
+                            DRNApred RNA Binding
+                        </button>`
+                    },
+                    {
+                        id: 'DisoRDPbindRNA_Score_Button',
+                        label: 'DisoRDPbind RNA Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #fcc006; margin-right: 5px; vertical-align: middle;"></span>
+                            DisoRDPbind RNA Score
+                        </button>`
+                    },
+                    {
+                        id: 'DRNApredRNA_Score_Button',
+                        label: 'DRNApred RNA Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #fdff38; margin-right: 5px; vertical-align: middle;"></span>
+                            DRNApred RNA Score 
+                        </button>`
+                    },
+                    {
+                        id: 'Signal_Peptide_Button',
+                        label: 'Signal Peptide Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #964e02; margin-right: 5px;"></span>
+                            Signal Peptides
+                        </button>`
+                    },
+                    {
+                        id: 'Signal_Peptide_Score_Button',
+                        label: 'Signal Peptides Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #964e02; margin-right: 5px; vertical-align: middle;"></span>
+                            DisoRDPbind DNA Score
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_1_Button',
+                        label: 'Conservation Level 1 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #f0f3f5; margin-right: 5px;"></span>
+                            Conservation Level 1
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_2_Button',
+                        label: 'Conservation Level 2 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #f0f3f5; margin-right: 5px;"></span>
+                            Conservation Level 2
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_3_Button',
+                        label: 'Conservation Level 3 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #d1dae0; margin-right: 5px;"></span>
+                            Conservation Level 3
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_4_Button',
+                        label: 'Conservation Level 4 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #b3c2cb; margin-right: 5px;"></span>
+                            Conservation Level 4
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_5_Button',
+                        label: 'Conservation Level 5 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #95aab7; margin-right: 5px;"></span>
+                            Conservation Level 5
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_6_Button',
+                        label: 'Conservation Level 6 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #7691a2; margin-right: 5px;"></span>
+                            Conservation Level 6
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_7_Button',
+                        label: 'Conservation Level 7 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #5d7889; margin-right: 5px;"></span>
+                            Conservation Level 7
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_8_Button',
+                        label: 'Conservation Level 8 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #485d6a; margin-right: 5px;"></span>
+                            Conservation Level 8
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_9_Button',
+                        label: 'Conservation Level 9 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #34434c; margin-right: 5px;"></span>
+                            Conservation Level 9
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Level_10_Button',
+                        label: 'Conservation Level 10 Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #1f282e; margin-right: 5px;"></span>
+                            Conservation Level 10
+                        </button>`
+                    },
+                    {
+                        id: 'Conservation_Score_Button',
+                        label: 'Conservation Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #607c8e; margin-right: 5px; vertical-align: middle;"></span>
+                            Conservation Score
+                        </button>`
+                    },
+                    {
+                        id: 'Linker_Residues_Button',
+                        label: 'Linker Residues Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #ff9408; margin-right: 5px;"></span>
+                            Linker Residues
+                        </button>`
+                    },
+                    {
+                        id: 'Linker_Score_Button',
+                        label: 'Linker Score Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #ff9408; margin-right: 5px; vertical-align: middle;"></span>
+                            Linker Score
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Phophorylation_Button',
+                        label: 'PTM Phophorylation Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid darkslategray; margin-right: 5px;"></span>
+                            Phophorylation
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Glycosylation_Button',
+                        label: 'PTM Glycosylation Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid darkgray; margin-right: 5px;"></span>
+                            Glycosylation
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Ubiquitination_Button',
+                        label: 'PTM Ubiquitination Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid dimgray; margin-right: 5px;"></span>
+                            Ubiquitination
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_SUMOylation_Button',
+                        label: 'PTM SUMOylation Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid gainsboro; margin-right: 5px;"></span>
+                            SUMOylation
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Acetyllysine_Button',
+                        label: 'PTM Acetyllysine Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid gray; margin-right: 5px;"></span>
+                            Acetyllysine
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Methylation_Button',
+                        label: 'PTM Methylation Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid lightgray; margin-right: 5px;"></span>
+                            Methylation
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Pyrrolidone_carboxylic_acid_Button',
+                        label: 'PTM Pyrrolidone carboxylic acid Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid steelblue; margin-right: 5px;"></span>
+                            Pyrrolidone carboxylic acid
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Palmitoylation_Button',
+                        label: 'PTM Palmitoylation Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid lightsteelblue; margin-right: 5px;"></span>
+                            Palmitoylation
+                        </button>`
+                    },
+                    {
+                        id: 'PTM_Hydroxylation_Button',
+                        label: 'PTM Hydroxylation Button',
+                        tooltip: 'Click to Turn Off Line',
+                        content: `
+                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid teal; margin-right: 5px;"></span>
+                            Hydroxylation
+                        </button>`
+                    },
+                ]
             },
             {
                 type: 'rect',
@@ -421,7 +943,7 @@ window.onload = () => {
             {
                 type: 'curve',
                 id: 'Curve1',
-                label: 'Predictive Disorder Score',
+                label: ' ',
                 color: '#76fd63',
                 data: vslScoreData
             },
@@ -429,7 +951,7 @@ window.onload = () => {
             {
                 type: 'rect',
                 id: 'Native_RSA_Binary',
-                label: 'Native RSA Binary',
+                label: 'Native Buried Residues',
                 data: mergedRSABinary,
                 color: "black"
             },
@@ -438,7 +960,7 @@ window.onload = () => {
                 id: 'Putative_Buried_Residue',
                 label: 'Putative Buried Residue',
                 data: buriedResiduesResults,
-                color: 'black',
+                color: 'black'
             },
             {
                 type: 'curve',
@@ -446,7 +968,7 @@ window.onload = () => {
                 label: ' ',
                 color: ['#ffd2df', '#fc0080'],
                 stroke: "black",
-                data: [asaScoreData,  rsaScoreData], 
+                data: [asaScoreData,  rsaScoreData]
             },
             // ** Secondary Structure PANEL **
             {
@@ -476,10 +998,11 @@ window.onload = () => {
             {
                 type: 'rect',
                 id: 'DisoRDPbind_Binding',
-                label: 'DisoRDPbind Protein Binding',
+                label: 'DisoRDPbind-Protein',
                 data: disoRDPbindSegments,
                 color: '#3d7afd'
             },
+            
             {
                 type: 'rect',
                 id: 'Scriber_Binding',
@@ -493,6 +1016,7 @@ window.onload = () => {
                 label: 'MoRFchibi',
                 data: morfChibiSegments,
                 color: '#01889f'
+                
             },
             {
                 type: 'curve',
@@ -506,91 +1030,150 @@ window.onload = () => {
             { 
                 type: 'rect', 
                 id: 'DisoRDPbindDNA', 
-                label: 'DisoRDPbind DNA binding', 
+                label: 'DisoRDPbind-DNA', 
                 data: disoRDPbindDNAColour, 
-                color: "#c071fe",
+                color: "#c071fe"
             },
             { 
                 type: 'rect', 
                 id: 'DRNApredDNA', 
-                label: 'DRNApred DNA binding', 
+                label: 'DRNApred-DNA', 
                 data: dRNApredDNAColour, 
-                color: "#ce5dae",
+                color: "#ce5dae"
             },
             { 
                 type: 'curve', 
                 id: 'DNA_SCORES', 
                 label: ' ', 
                 color: ['#c071fe', '#ce5dae'], 
-                data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData],
+                data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData]
             },
             // ** RNA PANEL ** 
             { 
                 type: 'rect', 
                 id: 'DisoRDPbindRNA', 
-                label: 'DisoRDPbind RNA binding', 
+                label: 'DisoRDPbind-RNA', 
                 data: disoRDPbindRNAColour, 
-                color: "#fcc006",
+                color: "#fcc006"
             },
             { 
                 type: 'rect', 
                 id: 'DRNApredRNA', 
-                label: 'DRNApred RNA binding', 
+                label: 'DRNApred-RNA', 
                 data: dRNApredRNAColour, 
-                color: "#fdff38",
+                color: "#fdff38"
             },
             { 
                 type: 'curve', 
                 id: 'RNA_SCORES', 
                 label: ' ', 
                 color: ['#fcc006', '#fdff38'], 
-                data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData],
+                data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData]
             },
             // ** SIGNAL PEPTIDE **
               { 
                 type: 'rect', 
                 id: 'Signal_Peptide', 
-                label: 'Signal peptides', 
+                label: 'Signal Peptides', 
                 data: signalPeptideSegments, 
                 color: "#964e02",
             },
             { 
                 type: 'curve', 
                 id: 'Signal_Peptide_Score', 
-                label: 'Signal Peptides score', 
+                label: ' ', 
                 color: '#964e02', 
-                data: signalPeptideScoreData,
+                data: signalPeptideScoreData
             },
              // ** CONSERVATION PANEL **
             {
                 type: 'rect',
                 id: 'Conservation_Levels',
-                label: 'Conservation Levels',
+                label: 'Conservation',
                 color: 'black',
                 flag: 4,
-                data: mergedConservationLevels, 
+                data: mergedConservationLevels
             },
             {
                 type: 'curve',
                 id: 'Conservation_Score',
-                label: 'Conservation Score',
+                label: ' ',
                 color: '#607c8e',
-                data: mmseqScoreData, 
+                data: mmseqScoreData
             },
             // ** LINKER PANEL **
             {
                 type: 'rect',
                 id: 'Linker_Residues',
-                label: 'Linker Residues',
+                label: 'Linker',
                 data: linkerSegments,
-                color: '#ff9408'
+                color: '#ff9408',
+                sidebar: [
+                ]
             },
             {
                 type: 'curve',
                 id: 'Linker_Score',
-                label: 'Linker Score',
+                label: ' ',
                 color: '#ff9408',
                 data: linkerScoreData
             }
         ]);
+
+    panels.onButtonSelected((event) => {
+    const buttonId = event.detail.id;
+
+        const resetButtons = [
+            'Native_Disorder_Button',
+            'Putative_Disorder_Button',
+            'Predictive_Disorder_Button',
+            'Native_RSA_Binary_Button',
+            'Putative_Buried_Residue_Button',
+            'ASA_SCORES_Native_Button',
+            'ASA_SCORES_Predicted_Button',
+            'Native_Sec_Struc_Unavailable_Button',
+            'Native_Sec_Struc_Coil_Button',
+            'Native_Sec_Struc_Helix_Button',
+            'Native_Sec_Struc_Strand_Button',
+            'Secondary_Struc_Score_Button',
+            'DisoRDPbind_Binding_Button',
+            'Scriber_Binding_Button',
+            'MoRFchibi_Binding_Button',
+            'DisoRDPbind_Score_Button',
+            'Scriber_Score_Button',
+            'MoRFchibi_Score_Button',
+            'DisoRDPbindDNA_Button',
+            'DRNApredDNA_Button',
+            'DisoRDPbindDNA_Score_Button',
+            'DRNApredDNA_Score_Button',
+            'DisoRDPbindRNA_Button',
+            'DRNApredRNA_Button',
+            'DisoRDPbindRNA_Score_Button',
+            'DRNApredRNA_Score_Button',
+            'Signal_Peptide_Button',
+            'Signal_Peptide_Score_Button',
+            'Conservation_Level_1_Button',
+            'Conservation_Level_2_Button',
+            'Conservation_Level_3_Button',
+            'Conservation_Level_4_Button',
+            'Conservation_Level_5_Button',
+            'Conservation_Level_6_Button',
+            'Conservation_Level_7_Button',
+            'Conservation_Level_8_Button',
+            'Conservation_Level_9_Button',
+            'Conservation_Level_10_Button',
+            'Conservation_Score_Button',
+            'Linker_Residues_Button',
+            'Linker_Score_Button'
+        ];
+
+        if (resetButtons.includes(buttonId)) {
+            //panels.resetAll();
+            panels.featureToggle();
+            
+        }
+
+    });
+
 };
+
