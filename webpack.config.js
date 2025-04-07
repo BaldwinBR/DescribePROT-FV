@@ -4,6 +4,7 @@ const path = require("path");
 // Plugins
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
+const HtmlInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // Define whether current environment is production or not
 const isProduction = process.env.NODE_ENV === "production";
@@ -69,6 +70,7 @@ if(isProduction){
       template: "prod_template.html",
     }),
     new HtmlInlineScriptPlugin(),
+    new HtmlInlineCSSWebpackPlugin()
   )
 } else {
   // Template for live dev server
