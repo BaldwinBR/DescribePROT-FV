@@ -397,7 +397,7 @@ window.onload = () => {
             toolbar: true,
             toolbarPosition: 'left',
             brushActive: true,
-            zoomMax: 5,
+            zoomMax: 7,
             flagColor: 'white',
             flagTrack: 170,
             flagTrackMobile: 150,
