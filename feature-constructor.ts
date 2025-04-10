@@ -941,7 +941,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'Curve1',
+                id: 'Predictive_Disorder_Scores',
                 label: ' ',
                 color: '#76fd63',
                 data: vslScoreData
