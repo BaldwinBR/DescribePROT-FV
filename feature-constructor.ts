@@ -388,6 +388,96 @@ const signalPeptideScore: number[] = rawSignalPeptideScore.split(',').map(val =>
  const signalPeptideScoreData = extractLines(signalPeptideScore);
 
 //----------------------------------------------------------------------------------------------
+ // **PTM Panel**
+
+interface PTMEntry {
+    // For plotting
+    x: number;
+    // PTM Type name (ex: Phosphorylation)
+    type: string;
+    color: string;
+    stroke?: string;
+    opacity?: number;
+     // For stacking in fillSvg
+    _stackY?: number;
+}
+
+const ptmTypes: Record<string, { type: string; color: string }> = {
+    '1': { type: 'Phosphorylation', color: '#DC143C' },
+    '2': { type: 'Glycosylation', color: '#1E90FF' },
+    '3': { type: 'Ubiquitination', color: '#FF4500' },
+    '4': { type: 'SUMOylation', color: '#C71585' },
+    '5': { type: 'Acetyllysine', color: '#00CED1' },
+    '6': { type: 'Methylation', color: '#DAA520' },
+    '7': { type: 'Pyrrolidone carboxylic acid', color: '#228B22' },
+    '8': { type: 'Palmitoylation', color: '#9932CC' },
+    '9': { type: 'Hydroxylation', color: '#6A5ACD' },
+};
+
+// Parse PTM data from lines[] and return an array of PTMEntry
+function parsePTMPanel(lines: string[]): PTMEntry[] {
+    const ptmEntries: PTMEntry[] = [];
+
+    // PTM data starts from line 34
+    for (let i = 34; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        const [ptmID, binaryString] = line.split(',', 2);
+        const meta = ptmTypes[ptmID];
+
+        if (!meta || !binaryString) continue;
+
+        // For each position where PTM exists (non-zero), create PTMEntry
+        for (let j = 0; j < binaryString.length; j++) {
+            if (binaryString[j] !== '0') {
+                ptmEntries.push({
+                    x: j + 1,
+                    type: meta.type,
+                    color: meta.color
+                });
+            }
+        }
+    }
+
+    return ptmEntries;
+}
+
+// Assign _stackY value for PTMs at the same position to stack them vertically
+function stackPTMEntries(entries: PTMEntry[]): PTMEntry[] {
+    const stackMap = new Map<number, number>();
+    const spacing = 1;
+
+    for (const entry of entries) {
+        const count = stackMap.get(entry.x) ?? 0;
+        entry._stackY = spacing * count;
+        stackMap.set(entry.x, count + 1);
+    }
+
+    return entries;
+}
+
+// Compute maximum number of stacked PTMs for dynamic panel height adjustment
+function computeMaxStack(entries: PTMEntry[]): number {
+    const stackMap = new Map<number, number>();
+
+    for (const entry of entries) {
+        const count = stackMap.get(entry.x) || 0;
+        stackMap.set(entry.x, count + 1);
+    }
+
+    const maxStack = Math.max(...stackMap.values());
+    return maxStack;
+}
+
+// Raw PTM data
+const ptmEntries = parsePTMPanel(lines);
+// Add _stackY for drawing
+const ptmStacked = stackPTMEntries(ptmEntries);
+// For dynamic line height
+const ptmMaxStackSize = computeMaxStack(ptmEntries);
+
+//----------------------------------------------------------------------------------------------
 
 
 window.onload = () => {
@@ -1116,7 +1206,16 @@ window.onload = () => {
                 label: ' ',
                 color: '#ff9408',
                 data: linkerScoreData
-            }
+            },
+            // ** PTM PANEL **
+            {
+                type: 'ptmTriangle',
+                id: 'PTM_Sites',
+                label: 'PTM Sites',
+                data: ptmStacked,
+                color: 'black',
+                maxStackSize: ptmMaxStackSize
+              }
         ]);
 
     panels.onButtonSelected((event) => {
