@@ -399,8 +399,8 @@ window.onload = () => {
             brushActive: true,
             zoomMax: 7,
             flagColor: 'white',
-            flagTrack: 170,
-            flagTrackMobile: 150,
+            flagTrack: 155,
+            flagTrackMobile: 155,
             sideBar: 225
         },
         [
@@ -989,7 +989,7 @@ window.onload = () => {
             {
                 type: 'curve',
                 id: 'Secondary_Struct_Score',
-                label: 'Secondary Struct Score',
+                label: ' ',
                 flag: 1,
                 data: PsiPredScoreDataColored, 
             },
