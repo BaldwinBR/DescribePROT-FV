@@ -632,7 +632,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Predictive_Disorder_Button',
+                        id: 'Predictive_Disorder_Scores',
                         label: 'Predictive Disorder Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -1171,7 +1171,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'Secondary_Struct_Score',
+                id: ' ',
                 label: ' ',
                 flag: 1,
                 data: PsiPredScoreDataColored, 
@@ -1322,7 +1322,7 @@ window.onload = () => {
         const resetButtons = [
             'Native_Disorder_Button',
             'Putative_Disorder_Button',
-            'Predictive_Disorder_Button',
+            'Predictive_Disorder_Scores',
             'Native_RSA_Binary_Button',
             'Putative_Buried_Residue_Button',
             'ASA_SCORES_Native_Button',
@@ -1365,7 +1365,7 @@ window.onload = () => {
 
         if (resetButtons.includes(buttonId)) {
             //panels.resetAll();
-            panels.featureToggle();
+            panels.featureToggle(buttonId);
             
         }
 
