@@ -120,6 +120,37 @@ const linkerBinary: number[] = rawLinkerBinary ? Array.from(rawLinkerBinary, Num
 const linkerScore: number[] = rawLinkerScore.split(',').map(val => parseFloat(val) || 0);
 
 /**
+ * Extract contiguous segments from score arrays
+ * @param scoreArray - The array containing score values
+ * @param threshold - The minimum value to extract as a segment
+ * @param color - Segment fill color
+ * @returns Array of Segment objects
+ */
+function extractScoreSegments(scoreArray, threshold, color) {
+    const segments: Segment[] = [];
+    let inSegment = false;
+    let start = 0;
+
+    for (let i = 0; i < scoreArray.length; i++) {
+        if (scoreArray[i] >= threshold) {
+            if (!inSegment) {
+                start = i;
+                inSegment = true;
+            }
+        } else if (inSegment) {
+            segments.push({ x: start + 1, y: i, color, stroke: "black" });
+            inSegment = false;
+        }
+    }
+
+    if (inSegment) {
+        segments.push({ x: start + 1, y: scoreArray.length, color, stroke: "black" });
+    }
+
+    return segments;
+}
+
+/**
  * Extract contiguous segments from binary arrays
  * @param binaryArray - The array containing binary values (0,1,2)
  * @param targetValue - The value to extract as a segment
@@ -217,8 +248,22 @@ const mergedRSABinary: Segment[] = [
 
 // Extract line data
 const vslScoreData = extractLines(vslScore);
-const rsaScoreData = extractLines(rsaScore);
-const asaScoreData = extractLines(asaScore);
+
+// line data for RSA Score
+const rsaLines =  extractLines(rsaScore);
+const rsaSegment: Segment[] = extractScoreSegments(rsaScore, 0, "#fc0080");
+const mergedRSA: Segment[] = [
+    ...rsaSegment.map(s => ({ ...s, color: "#fc0080"})),
+];
+const rsaScoreData = lineColorSegments(rsaLines, mergedRSA);
+
+// line data for ASA Score
+const asaLines =  extractLines(asaScore);
+const asaSegment: Segment[] = extractScoreSegments(asaScore, 0, "#ffd2df");
+const mergedASA: Segment[] = [
+    ...asaSegment.map(s => ({ ...s, color: "#ffd2df"})),
+];
+const asaScoreData = lineColorSegments(asaLines, mergedASA);
 
 // Extract ASA and RSA Binary Data
 const buriedResiduesResults: Segment[] = extractSegments(asaBinary, 1, "#ffd2df");
@@ -258,9 +303,29 @@ const disoRDPbindSegments: Segment[] = extractSegments(disoRDPbindBinary, 1, "#3
 const morfChibiSegments: Segment[] = extractSegments(morfChibiBinary, 1, "#01889f");
 const scriberSegments: Segment[] = extractSegments(scriberBinary, 1, "#3b5b92");
 
-const disoRDPbindScoreData = extractLines(disoRDPbindScore);
-const scriberScoreData = extractLines(scriberScore);
-const morfChibiScoreData = extractLines(morfChibiScore);
+// line data for disoRDPbind Score
+const disoRDPbindLines =  extractLines(disoRDPbindScore);
+const disoRDPbindSegment: Segment[] = extractScoreSegments(disoRDPbindScore, 0, "#3d7afd");
+const mergeddisoRDPbind: Segment[] = [
+    ...disoRDPbindSegment.map(s => ({ ...s, color: "#3d7afd"})),
+];
+const disoRDPbindScoreData = lineColorSegments(disoRDPbindLines, mergeddisoRDPbind);
+
+// line data for scriber Score
+const scriberLines =  extractLines(scriberScore);
+const scriberSegment: Segment[] = extractScoreSegments(scriberScore, 0, "#3b5b92");
+const mergedScriber: Segment[] = [
+    ...scriberSegment.map(s => ({ ...s, color: "#3b5b92"})),
+];
+const scriberScoreData = lineColorSegments(scriberLines, mergedScriber);
+
+// line data for morfChibi Score
+const morfChibiLines =  extractLines(morfChibiScore);
+const morfChibiSegment: Segment[] = extractScoreSegments(morfChibiScore, 0, "#01889f");
+const mergedMorfChibi: Segment[] = [
+    ...morfChibiSegment.map(s => ({ ...s, color: "#01889f"})),
+];
+const morfChibiScoreData = lineColorSegments(morfChibiLines, mergedMorfChibi);
 
 // **Linker Panel**
 const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, "#ff9408");
@@ -353,8 +418,21 @@ const dRNApredDNAScore: number[] = rawDRNApredDNAScore.split(',').map(val => par
  const disoRDPbindDNAColour: Segment[] = extractSegments(disoRDPbindDNA, 1, "#c071fe");
  const dRNApredDNAColour: Segment[] = extractSegments(dRNApredDNA, 1, "#ce5dae");
 
- const disoRDPbindDNAScoreData = extractLines(disoRDPbindDNAScore);
- const dRNApredDNAScoreData = extractLines(dRNApredDNAScore);
+// line data for disoRDPbindDNA Score
+const disoRDPbindDNALines =  extractLines(disoRDPbindDNAScore);
+const disoRDPbindDNASegment: Segment[] = extractScoreSegments(disoRDPbindDNAScore, 0, "#c071fe");
+const mergedDisoRDPbindDNA: Segment[] = [
+    ...disoRDPbindDNASegment.map(s => ({ ...s, color: "#c071fe"})),
+];
+const disoRDPbindDNAScoreData = lineColorSegments(disoRDPbindDNALines, mergedDisoRDPbindDNA);
+
+// line data for dRNApredDNA Score
+const dRNApredDNALines =  extractLines(dRNApredDNAScore);
+const dRNApredDNASegment: Segment[] = extractScoreSegments(dRNApredDNAScore, 0, "#ce5dae");
+const mergedDRNApredDNA: Segment[] = [
+    ...dRNApredDNASegment.map(s => ({ ...s, color: "#ce5dae"})),
+];
+const dRNApredDNAScoreData = lineColorSegments(dRNApredDNALines, mergedDRNApredDNA);
 
 
 //---------
@@ -373,8 +451,21 @@ const dRNApredRNAScore: number[] = rawDRNApredRNAScore.split(',').map(val => par
 const disoRDPbindRNAColour: Segment[] = extractSegments(disoRDPbindRNA, 1, "orange");
 const dRNApredRNAColour: Segment[] = extractSegments(dRNApredRNA, 1, "yellow");
 
-const disoRDPbindRNAScoreData = extractLines(disoRDPbindRNAScore);
-const dRNApredRNAScoreData = extractLines(dRNApredRNAScore);
+// line data for disoRDPbindRNA Score
+const disoRDPbindRNALines =  extractLines(disoRDPbindRNAScore);
+const disoRDPbindRNASegment: Segment[] = extractScoreSegments(disoRDPbindRNAScore, 0, "#fcc006");
+const mergedDisoRDPbindRNA: Segment[] = [
+    ...disoRDPbindRNASegment.map(s => ({ ...s, color: "#fcc006"})),
+];
+const disoRDPbindRNAScoreData = lineColorSegments(disoRDPbindRNALines, mergedDisoRDPbindRNA);
+
+// line data for dRNApredRNA Score
+const dRNApredRNALines =  extractLines(dRNApredRNAScore);
+const dRNApredRNASegment: Segment[] = extractScoreSegments(dRNApredRNAScore, 0, "#fdff38");
+const mergedDRNApredRNA: Segment[] = [
+    ...dRNApredRNASegment.map(s => ({ ...s, color: "#fdff38"})),
+];
+const dRNApredRNAScoreData = lineColorSegments(dRNApredRNALines, mergedDRNApredRNA);
 
 //---------
 
@@ -944,6 +1035,7 @@ window.onload = () => {
                 id: 'Predictive_Disorder_Scores',
                 label: ' ',
                 color: '#76fd63',
+                flag: 6,
                 data: vslScoreData
             },
             // ** ASA PANEL **
@@ -967,6 +1059,7 @@ window.onload = () => {
                 label: ' ',
                 color: ['#ffd2df', '#fc0080'],
                 stroke: "black",
+                flag: 2,
                 data: [asaScoreData,  rsaScoreData]
             },
             // ** Secondary Structure PANEL **
@@ -1022,7 +1115,7 @@ window.onload = () => {
                 id: 'PROTEIN_SCORES',
                 label: ' ',
                 color: ['#3d7afd', '#3b5b92', '#01889f'],
-                flag: 1,
+                flag: 3,
                 data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData]
             },            
             // ** DNA PANEL **
@@ -1044,7 +1137,8 @@ window.onload = () => {
                 type: 'curve', 
                 id: 'DNA_SCORES', 
                 label: ' ', 
-                color: ['#c071fe', '#ce5dae'], 
+                color: ['#c071fe', '#ce5dae'],
+                flag: 4,
                 data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData]
             },
             // ** RNA PANEL ** 
@@ -1067,6 +1161,7 @@ window.onload = () => {
                 id: 'RNA_SCORES', 
                 label: ' ', 
                 color: ['#fcc006', '#fdff38'], 
+                flag: 5,
                 data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData]
             },
             // ** SIGNAL PEPTIDE **
@@ -1081,7 +1176,8 @@ window.onload = () => {
                 type: 'curve', 
                 id: 'Signal_Peptide_Score', 
                 label: ' ', 
-                color: '#964e02', 
+                color: '#964e02',
+                flag: 7,
                 data: signalPeptideScoreData
             },
              // ** CONSERVATION PANEL **
@@ -1098,6 +1194,7 @@ window.onload = () => {
                 id: 'Conservation_Score',
                 label: ' ',
                 color: '#607c8e',
+                flag: 8,
                 data: mmseqScoreData
             },
             // ** LINKER PANEL **
@@ -1115,6 +1212,7 @@ window.onload = () => {
                 id: 'Linker_Score',
                 label: ' ',
                 color: '#ff9408',
+                flag: 9,
                 data: linkerScoreData
             }
         ]);
