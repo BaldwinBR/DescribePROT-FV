@@ -200,7 +200,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: ' ',
+                id: 'Secondary_Struc_Score',
                 label: ' ',
                 flag: 1,
                 data: PsiPredScoreDataColored, 
