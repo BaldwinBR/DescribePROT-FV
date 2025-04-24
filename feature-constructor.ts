@@ -490,7 +490,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Predictive_Disorder_Scores',
+                        id: 'PREDICTIVE_DISORDER_SCORES 0',
                         label: 'Predictive Disorder Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -520,7 +520,7 @@ window.onload = () => {
                         </button>`
                      },
                      {
-                        id: 'ASA_SCORES_Native_Button',
+                        id: 'ASA_SCORES 0',
                         label: 'ASA SCORES Native Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -530,7 +530,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'ASA_SCORES_Predicted_Button',
+                        id: 'ASA_SCORES 1',
                         label: 'ASA SCORES Predicted Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -580,7 +580,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Secondary_Struc_Score_Button',
+                        id: 'SECONDARY_STRUC_SCORES 0',
                         label: 'Secondary Struc Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -620,7 +620,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'DisoRDPbind_Score_Button',
+                        id: 'PROTEIN_SCORES 0',
                         label: 'DisoRDPbind Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -630,7 +630,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Scriber_Score_Button',
+                        id: 'PROTEIN_SCORES 1',
                         label: 'Scriber Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -640,7 +640,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'MoRFchibi_Score_Button',
+                        id: 'PROTEIN_SCORES 2',
                         label: 'MoRFchibi Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -670,7 +670,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'DisoRDPbindDNA_Score_Button',
+                        id: 'DNA_SCORES 0',
                         label: 'DisoRDPbind DNA Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -680,7 +680,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'DRNApredDNA_Score_Button',
+                        id: 'DNA_SCORES 1',
                         label: 'DRNApred DNA Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -710,7 +710,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'DisoRDPbindRNA_Score_Button',
+                        id: 'RNA_SCORES 0',
                         label: 'DisoRDPbind RNA Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -720,7 +720,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'DRNApredRNA_Score_Button',
+                        id: 'RNA_SCORES 1',
                         label: 'DRNApred RNA Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -740,7 +740,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Signal_Peptide_Score_Button',
+                        id: 'SIGNAL_PEPTIDE_SCORES 0',
                         label: 'Signal Peptides Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -850,7 +850,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Conservation_Score_Button',
+                        id: 'CONSERVATION_SCORES 0',
                         label: 'Conservation Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -870,7 +870,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Linker_Score_Button',
+                        id: 'LINKER_SCORES 0',
                         label: 'Linker Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -981,7 +981,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'Predictive_Disorder_Scores',
+                id: 'PREDICTIVE_DISORDER_SCORES',
                 label: ' ',
                 color: '#76fd63',
                 flag: 6,
@@ -1030,7 +1030,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: ' ',
+                id: 'SECONDARY_STRUC_SCORES',
                 label: ' ',
                 flag: 1,
                 data: PsiPredScoreDataColored, 
@@ -1123,7 +1123,7 @@ window.onload = () => {
             },
             { 
                 type: 'curve', 
-                id: 'Signal_Peptide_Score', 
+                id: 'SIGNAL_PEPTIDE_SCORES', 
                 label: ' ', 
                 color: '#964e02',
                 flag: 7,
@@ -1140,7 +1140,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'Conservation_Score',
+                id: 'CONSERVATION_SCORES',
                 label: ' ',
                 color: '#607c8e',
                 flag: 8,
@@ -1158,7 +1158,7 @@ window.onload = () => {
             },
             {
                 type: 'curve',
-                id: 'Linker_Score',
+                id: 'LINKER_SCORES',
                 label: ' ',
                 color: '#ff9408',
                 flag: 9,
@@ -1181,32 +1181,32 @@ window.onload = () => {
         const resetButtons = [
             'Native_Disorder_Button',
             'Putative_Disorder_Button',
-            'Predictive_Disorder_Scores',
+            'PREDICTIVE_DISORDER_SCORES 0',
             'Native_RSA_Binary_Button',
             'Putative_Buried_Residue_Button',
-            'ASA_SCORES_Native_Button',
-            'ASA_SCORES_Predicted_Button',
+            'ASA_SCORES 0',
+            'ASA_SCORES 1',
             'Native_Sec_Struc_Unavailable_Button',
             'Native_Sec_Struc_Coil_Button',
             'Native_Sec_Struc_Helix_Button',
             'Native_Sec_Struc_Strand_Button',
-            'Secondary_Struc_Score_Button',
+            'SECONDARY_STRUC_SCORES 0',
             'DisoRDPbind_Binding_Button',
             'Scriber_Binding_Button',
             'MoRFchibi_Binding_Button',
-            'DisoRDPbind_Score_Button',
-            'Scriber_Score_Button',
-            'MoRFchibi_Score_Button',
+            'PROTEIN_SCORES 0',
+            'PROTEIN_SCORES 1',
+            'PROTEIN_SCORES 2',
             'DisoRDPbindDNA_Button',
             'DRNApredDNA_Button',
-            'DisoRDPbindDNA_Score_Button',
-            'DRNApredDNA_Score_Button',
+            'DNA_SCORES 0',
+            'DNA_SCORES 1',
             'DisoRDPbindRNA_Button',
             'DRNApredRNA_Button',
-            'DisoRDPbindRNA_Score_Button',
-            'DRNApredRNA_Score_Button',
+            'RNA_SCORES 0',
+            'RNA_SCORES 1',
             'Signal_Peptide_Button',
-            'Signal_Peptide_Score_Button',
+            'SIGNAL_PEPTIDE_SCORES 0',
             'Conservation_Level_1_Button',
             'Conservation_Level_2_Button',
             'Conservation_Level_3_Button',
@@ -1217,9 +1217,9 @@ window.onload = () => {
             'Conservation_Level_8_Button',
             'Conservation_Level_9_Button',
             'Conservation_Level_10_Button',
-            'Conservation_Score_Button',
+            'CONSERVATION_SCORES 0',
             'Linker_Residues_Button',
-            'Linker_Score_Button'
+            'LINKER_SCORES 0'
         ];
 
         if (resetButtons.includes(buttonId)) {
