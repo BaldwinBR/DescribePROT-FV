@@ -393,39 +393,8 @@ function parsePTMPanel(lines: string[]): PTMEntry[] {
     return ptmEntries;
 }
 
-// Assign _stackY value for PTMs at the same position to stack them vertically
-function stackPTMEntries(entries: PTMEntry[]): PTMEntry[] {
-    const stackMap = new Map<number, number>();
-    const spacing = 1;
-
-    for (const entry of entries) {
-        const count = stackMap.get(entry.x) ?? 0;
-        entry._stackY = spacing * count;
-        stackMap.set(entry.x, count + 1);
-    }
-
-    return entries;
-}
-
-// Compute maximum number of stacked PTMs for dynamic panel height adjustment
-function computeMaxStack(entries: PTMEntry[]): number {
-    const stackMap = new Map<number, number>();
-
-    for (const entry of entries) {
-        const count = stackMap.get(entry.x) || 0;
-        stackMap.set(entry.x, count + 1);
-    }
-
-    const maxStack = Math.max(...stackMap.values());
-    return maxStack;
-}
-
 // Raw PTM data
 const ptmEntries = parsePTMPanel(lines);
-// Add _stackY for drawing
-const ptmStacked = stackPTMEntries(ptmEntries);
-// For dynamic line height
-const ptmMaxStackSize = computeMaxStack(ptmEntries);
 
 //----------------------------------------------------------------------------------------------
 
@@ -746,7 +715,7 @@ window.onload = () => {
                         content: `
                         <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #964e02; margin-right: 5px; vertical-align: middle;"></span>
-                            DisoRDPbind DNA Score
+                            Signal Peptides Score
                         </button>`
                     },
                     {
@@ -880,7 +849,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Phophorylation_Button',
+                        id: 'PTM_Sites 0',
                         label: 'PTM Phophorylation Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -890,7 +859,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Glycosylation_Button',
+                        id: 'PTM_Sites 1',
                         label: 'PTM Glycosylation Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -900,7 +869,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Ubiquitination_Button',
+                        id: 'PTM_Sites 2',
                         label: 'PTM Ubiquitination Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -910,7 +879,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_SUMOylation_Button',
+                        id: 'PTM_Sites 3',
                         label: 'PTM SUMOylation Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -920,7 +889,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Acetyllysine_Button',
+                        id: 'PTM_Sites 4',
                         label: 'PTM Acetyllysine Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -930,7 +899,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Methylation_Button',
+                        id: 'PTM_Sites 5',
                         label: 'PTM Methylation Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -940,7 +909,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Pyrrolidone_carboxylic_acid_Button',
+                        id: 'PTM_Sites 6',
                         label: 'PTM Pyrrolidone carboxylic acid Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -950,7 +919,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Palmitoylation_Button',
+                        id: 'PTM_Sites 7',
                         label: 'PTM Palmitoylation Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -960,7 +929,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'PTM_Hydroxylation_Button',
+                        id: 'PTM_Sites 8',
                         label: 'PTM Hydroxylation Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -1169,9 +1138,8 @@ window.onload = () => {
                 type: 'ptmTriangle',
                 id: 'PTM_Sites',
                 label: 'PTM Sites',
-                data: ptmStacked,
+                data: ptmEntries,
                 color: 'black',
-                maxStackSize: ptmMaxStackSize
               }
         ]);
 
@@ -1219,7 +1187,16 @@ window.onload = () => {
             'Conservation_Level_10_Button',
             'Conservation_Score_Button',
             'Linker_Residues_Button',
-            'Linker_Score_Button'
+            'Linker_Score_Button',
+            'PTM_Sites 0',
+            'PTM_Sites 1',
+            'PTM_Sites 2',
+            'PTM_Sites 3',
+            'PTM_Sites 4',
+            'PTM_Sites 5',
+            'PTM_Sites 6',
+            'PTM_Sites 7',
+            'PTM_Sites 8'
         ];
 
         if (resetButtons.includes(buttonId)) {
