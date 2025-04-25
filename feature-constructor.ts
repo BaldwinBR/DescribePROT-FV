@@ -746,7 +746,7 @@ window.onload = () => {
                         content: `
                         <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #964e02; margin-right: 5px; vertical-align: middle;"></span>
-                            DisoRDPbind DNA Score
+                            Signal Peptides Score
                         </button>`
                     },
                     {
