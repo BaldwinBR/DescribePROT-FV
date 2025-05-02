@@ -76,7 +76,7 @@ window.onload = () => {
             flagColor: 'white',
             flagTrack: 155,
             flagTrackMobile: 155,
-            sideBar: 225
+            sideBar: 230
         },
         [
             // ** PTM PANEL **
@@ -191,7 +191,6 @@ window.onload = () => {
                             Hydroxylation
                         </button>`
                     }
-                    
                 ]
               }
         ]);
@@ -200,47 +199,6 @@ window.onload = () => {
     const buttonId = event.detail.id;
 
         const resetButtons = [
-            'Native_Disorder_Button',
-            'Putative_Disorder_Button',
-            'Predictive_Disorder_Scores',
-            'Native_RSA_Binary_Button',
-            'Putative_Buried_Residue_Button',
-            'ASA_SCORES_Native_Button',
-            'ASA_SCORES_Predicted_Button',
-            'Native_Sec_Struc_Unavailable_Button',
-            'Native_Sec_Struc_Coil_Button',
-            'Native_Sec_Struc_Helix_Button',
-            'Native_Sec_Struc_Strand_Button',
-            'Secondary_Struc_Score_Button',
-            'DisoRDPbind_Binding_Button',
-            'Scriber_Binding_Button',
-            'MoRFchibi_Binding_Button',
-            'DisoRDPbind_Score_Button',
-            'Scriber_Score_Button',
-            'MoRFchibi_Score_Button',
-            'DisoRDPbindDNA_Button',
-            'DRNApredDNA_Button',
-            'DisoRDPbindDNA_Score_Button',
-            'DRNApredDNA_Score_Button',
-            'DisoRDPbindRNA_Button',
-            'DRNApredRNA_Button',
-            'DisoRDPbindRNA_Score_Button',
-            'DRNApredRNA_Score_Button',
-            'Signal_Peptide_Button',
-            'Signal_Peptide_Score_Button',
-            'Conservation_Level_1_Button',
-            'Conservation_Level_2_Button',
-            'Conservation_Level_3_Button',
-            'Conservation_Level_4_Button',
-            'Conservation_Level_5_Button',
-            'Conservation_Level_6_Button',
-            'Conservation_Level_7_Button',
-            'Conservation_Level_8_Button',
-            'Conservation_Level_9_Button',
-            'Conservation_Level_10_Button',
-            'Conservation_Score_Button',
-            'Linker_Residues_Button',
-            'Linker_Score_Button',
             'PTM_Sites 0',
             'PTM_Sites 1',
             'PTM_Sites 2',

@@ -538,7 +538,7 @@ window.onload = () => {
                 data: [asaScoreData,  rsaScoreData],
                 sidebar: [
                      {
-                        id: 'ASA_SCORES 0',
+                        id: 'ASA_SCORES 1',
                         label: 'ASA SCORES Native Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -548,7 +548,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'ASA_SCORES 1',
+                        id: 'ASA_SCORES 0',
                         label: 'ASA SCORES Predicted Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `

@@ -44,7 +44,7 @@ window.onload = () => {
             flagColor: 'white',
             flagTrack: 155,
             flagTrackMobile: 155,
-            sideBar: 225
+            sideBar: 230
         },
         [
             // ** DISORDER PANEL **
@@ -82,8 +82,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #2ca02c; margin-right: 5px;"></span>
                             Native Disordered Regions
                         </button>`
-                    },
-                    {
+                    }
+                ]
+            },
+            {
+                type: 'rect',
+                id: 'Putative_Disorder',
+                label: 'Putative Disorder',
+                data: putativeDisorder,
+                color: 'black',
+                sidebar: [
+                     {
                         id: 'Putative_Disorder_Button',
                         label: 'Putative Disorder Button',
                         tooltip: 'Click to Turn Off Line',
@@ -92,9 +101,19 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #75fd63; margin-right: 5px;"></span>
                             Putative Disordered Regions
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'curve',
+                id: 'PREDICTIVE_DISORDER_SCORES',
+                label: ' ',
+                color: '#76fd63',
+                flag: 6,
+                data: vslScoreData,
+                sidebar: [
                     {
-                        id: 'Predictive_Disorder_Scores',
+                        id: 'PREDICTIVE_DISORDER_SCORES 0',
                         label: 'Predictive Disorder Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -102,25 +121,9 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #75fd63; margin-right: 5px; vertical-align: middle;"></span>
                             Predictive Disordered Regions
                         </button>`
-                    },
-                     
+                    }
                 ]
-            },
-            {
-                type: 'rect',
-                id: 'Putative_Disorder',
-                label: 'Putative Disorder',
-                data: putativeDisorder,
-                color: 'black'
-            },
-            {
-                type: 'curve',
-                id: 'Predictive_Disorder_Scores',
-                label: ' ',
-                color: '#76fd63',
-                flag: 6,
-                data: vslScoreData
-            },
+            }
         ]);
 
 
@@ -131,7 +134,7 @@ window.onload = () => {
         const resetButtons = [
             'Native_Disorder_Button',
             'Putative_Disorder_Button',
-            'Predictive_Disorder_Scores'
+            'PREDICTIVE_DISORDER_SCORES 0'
         ];
 
         if (resetButtons.includes(buttonId)) {
