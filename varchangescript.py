@@ -28,7 +28,8 @@ def main():
         "Disorder_Panel", 
         "ASA_Panel", 
         "SS_Panel",
-        "Protein_Panel", 
+        "Protein_Panel",
+        "DNA_Panel", 
         "RNA_Panel", 
         "SignalP_Panel", 
         "Conservation_Panel",
@@ -37,9 +38,16 @@ def main():
     ]
 
     for name in file_names:
-        input_html = Path(f"dist/{name}.html")
-        output_html = Path(f"dist/{name}_withdata.html")
+        # Webpack must have name set exactly to index for serve
+        # index_Canvas would break serve functionality 
+        if name == "index":
+            input_html = Path(f"dist/{name}.html")
+        else:
+            input_html = Path(f"dist/{name}_Canvas.html")
+
+        output_html = Path(f"dist/{name}.html")
         inject_data(input_html, output_html, data)
+
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,7 @@
   "name": "describeprot-fv",
   "version": "1.0.0",
   "description": "DescribePROT Feature Viewer",
-  "main": "./dist/index.js",
+  "main": "./dist/index_Canvas.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd FeatureViewerTypeScript && npm install",

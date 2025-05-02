@@ -61,7 +61,7 @@ window.onload = () => {
             flagColor: 'white',
             flagTrack: 155,
             flagTrackMobile: 155,
-            sideBar: 225
+            sideBar: 230
         },
         [
             // ** PROTEIN PANEL **
@@ -95,7 +95,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #3d7afd; margin-right: 5px;"></span>
                             DisoRDPbind Protein Binding
                         </button>`
-                    }, 
+                    }
+                ]
+            },
+            
+            {
+                type: 'rect',
+                id: 'Scriber_Binding',
+                label: 'SCRIBER',
+                data: scriberSegments,
+                color: '#3b5b92',
+                sidebar: [
                     {
                         id: 'Scriber_Binding_Button',
                         label: 'Scriber Binding Button',
@@ -105,7 +115,16 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #3b5b92; margin-right: 5px;"></span>
                             SCRIBER Protein Binding
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'rect',
+                id: 'MoRFchibi_Binding',
+                label: 'MoRFchibi',
+                data: morfChibiSegments,
+                color: '#01889f',
+                sidebar: [
                     {
                         id: 'MoRFchibi_Binding_Button',
                         label: 'MoRFchibi Binding Button',
@@ -115,9 +134,20 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #01889f; margin-right: 5px;"></span>
                             MoRFchibi Protein Binding
                         </button>`
-                    },
+                    }
+                ]
+                
+            },
+            {
+                type: 'curve',
+                id: 'PROTEIN_SCORES',
+                label: ' ',
+                color: ['#3d7afd', '#3b5b92', '#01889f'],
+                flag: 3,
+                data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData],
+                sidebar: [
                     {
-                        id: 'DisoRDPbind_Score_Button',
+                        id: 'PROTEIN_SCORES 0',
                         label: 'DisoRDPbind Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -127,7 +157,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'Scriber_Score_Button',
+                        id: 'PROTEIN_SCORES 1',
                         label: 'Scriber Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -137,7 +167,7 @@ window.onload = () => {
                         </button>`
                     },
                     {
-                        id: 'MoRFchibi_Score_Button',
+                        id: 'PROTEIN_SCORES 2',
                         label: 'MoRFchibi Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -147,77 +177,19 @@ window.onload = () => {
                         </button>`
                     }
                 ]
-            },
-            {
-                type: 'rect',
-                id: 'Scriber_Binding',
-                label: 'SCRIBER',
-                data: scriberSegments,
-                color: '#3b5b92'
-            },
-            {
-                type: 'rect',
-                id: 'MoRFchibi_Binding',
-                label: 'MoRFchibi',
-                data: morfChibiSegments,
-                color: '#01889f'
-                
-            },
-            {
-                type: 'curve',
-                id: 'PROTEIN_SCORES',
-                label: ' ',
-                color: ['#3d7afd', '#3b5b92', '#01889f'],
-                flag: 3,
-                data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData]
-            }
+            },  
         ]);
 
     panels.onButtonSelected((event) => {
     const buttonId = event.detail.id;
 
         const resetButtons = [
-            'Native_Disorder_Button',
-            'Putative_Disorder_Button',
-            'Predictive_Disorder_Scores',
-            'Native_RSA_Binary_Button',
-            'Putative_Buried_Residue_Button',
-            'ASA_SCORES_Native_Button',
-            'ASA_SCORES_Predicted_Button',
-            'Native_Sec_Struc_Unavailable_Button',
-            'Native_Sec_Struc_Coil_Button',
-            'Native_Sec_Struc_Helix_Button',
-            'Native_Sec_Struc_Strand_Button',
-            'Secondary_Struc_Score_Button',
             'DisoRDPbind_Binding_Button',
             'Scriber_Binding_Button',
             'MoRFchibi_Binding_Button',
-            'DisoRDPbind_Score_Button',
-            'Scriber_Score_Button',
-            'MoRFchibi_Score_Button',
-            'DisoRDPbindDNA_Button',
-            'DRNApredDNA_Button',
-            'DisoRDPbindDNA_Score_Button',
-            'DRNApredDNA_Score_Button',
-            'DisoRDPbindRNA_Button',
-            'DRNApredRNA_Button',
-            'DisoRDPbindRNA_Score_Button',
-            'DRNApredRNA_Score_Button',
-            'Signal_Peptide_Button',
-            'Signal_Peptide_Score_Button',
-            'Conservation_Level_1_Button',
-            'Conservation_Level_2_Button',
-            'Conservation_Level_3_Button',
-            'Conservation_Level_4_Button',
-            'Conservation_Level_5_Button',
-            'Conservation_Level_6_Button',
-            'Conservation_Level_7_Button',
-            'Conservation_Level_8_Button',
-            'Conservation_Level_9_Button',
-            'Conservation_Level_10_Button',
-            'Conservation_Score_Button',
-            'Linker_Residues_Button',
-            'Linker_Score_Button'
+            'PROTEIN_SCORES 0',
+            'PROTEIN_SCORES 1',
+            'PROTEIN_SCORES 2'
         ];
 
         if (resetButtons.includes(buttonId)) {

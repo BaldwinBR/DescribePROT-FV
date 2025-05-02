@@ -12,17 +12,17 @@ const entries = {
   index: { import: "./feature-constructor.ts" }, 
 
   // Panel Entries
-  Main_Panel: { import: "./panels/Main_Panel.ts" },
-  Disorder_Panel: { import: "./panels/Disorder_Panel.ts" }, 
-  ASA_Panel: { import: "./panels/ASA_Panel.ts" }, 
-  SS_Panel: { import: "./panels/SS_Panel.ts" }, 
-  Protein_Panel: { import: "./panels/Protein_Panel.ts" }, 
-  DNA_Panel: { import: "./panels/DNA_Panel.ts" }, 
-  RNA_Panel: { import: "./panels/RNA_Panel.ts" }, 
-  SignalP_Panel: { import: "./panels/SignalP_Panel.ts" }, 
-  Conservation_Panel: { import: "./panels/Conservation_Panel.ts" }, 
-  Linker_Panel: { import: "./panels/Linker_Panel.ts" }, 
-  PTM_Panel_allrow: { import: "./panels/PTM_Panel_allrow.ts" }, 
+  Main_Panel_Canvas: { import: "./panels/Main_Panel.ts" },
+  Disorder_Panel_Canvas: { import: "./panels/Disorder_Panel.ts" }, 
+  ASA_Panel_Canvas: { import: "./panels/ASA_Panel.ts" }, 
+  SS_Panel_Canvas: { import: "./panels/SS_Panel.ts" }, 
+  Protein_Panel_Canvas: { import: "./panels/Protein_Panel.ts" }, 
+  DNA_Panel_Canvas: { import: "./panels/DNA_Panel.ts" }, 
+  RNA_Panel_Canvas: { import: "./panels/RNA_Panel.ts" }, 
+  SignalP_Panel_Canvas: { import: "./panels/SignalP_Panel.ts" }, 
+  Conservation_Panel_Canvas: { import: "./panels/Conservation_Panel.ts" }, 
+  Linker_Panel_Canvas: { import: "./panels/Linker_Panel.ts" }, 
+  PTM_Panel_allrow_Canvas: { import: "./panels/PTM_Panel_allrow.ts" }, 
 };
 
 const config = {

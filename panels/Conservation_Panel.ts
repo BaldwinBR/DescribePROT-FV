@@ -58,10 +58,10 @@ window.onload = () => {
             flagColor: 'white',
             flagTrack: 155,
             flagTrackMobile: 155,
-            sideBar: 225
+            sideBar: 230
         },
         [
-             // ** CONSERVATION PANEL **
+            // ** CONSERVATION PANEL **
             {
                 type: 'rect',
                 id: 'Conservation_Levels',
@@ -183,9 +183,19 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #1f282e; margin-right: 5px;"></span>
                             Conservation Level 10
                         </button>`
-                    },
-                    {
-                        id: 'Conservation_Score_Button',
+                    }
+                ]
+            },
+            {
+                type: 'curve',
+                id: 'CONSERVATION_SCORES',
+                label: ' ',
+                color: '#607c8e',
+                flag: 8,
+                data: mmseqScoreData,
+                sidebar: [
+                     {
+                        id: 'CONSERVATION_SCORES 0',
                         label: 'Conservation Score Button',
                         tooltip: 'Click to Turn Off Line',
                         content: `
@@ -195,14 +205,6 @@ window.onload = () => {
                         </button>`
                     }
                 ]
-            },
-            {
-                type: 'curve',
-                id: 'Conservation_Score',
-                label: ' ',
-                color: '#607c8e',
-                flag: 8,
-                data: mmseqScoreData
             }
         ]);
 
@@ -210,33 +212,6 @@ window.onload = () => {
     const buttonId = event.detail.id;
 
         const resetButtons = [
-            'Native_Disorder_Button',
-            'Putative_Disorder_Button',
-            'Predictive_Disorder_Scores',
-            'Native_RSA_Binary_Button',
-            'Putative_Buried_Residue_Button',
-            'ASA_SCORES_Native_Button',
-            'ASA_SCORES_Predicted_Button',
-            'Native_Sec_Struc_Unavailable_Button',
-            'Native_Sec_Struc_Coil_Button',
-            'Native_Sec_Struc_Helix_Button',
-            'Native_Sec_Struc_Strand_Button',
-            'Secondary_Struc_Score_Button',
-            'DisoRDPbind_Binding_Button',
-            'Scriber_Binding_Button',
-            'MoRFchibi_Binding_Button',
-            'DisoRDPbind_Score_Button',
-            'Scriber_Score_Button',
-            'MoRFchibi_Score_Button',
-            'DisoRDPbindDNA_Button',
-            'DRNApredDNA_Button',
-            'DisoRDPbindDNA_Score_Button',
-            'DRNApredDNA_Score_Button',
-            'DisoRDPbindRNA_Button',
-            'DRNApredRNA_Button',
-            'DisoRDPbindRNA_Score_Button',
-            'DRNApredRNA_Score_Button',
-            'Signal_Peptide_Button',
             'Signal_Peptide_Score_Button',
             'Conservation_Level_1_Button',
             'Conservation_Level_2_Button',
@@ -248,9 +223,7 @@ window.onload = () => {
             'Conservation_Level_8_Button',
             'Conservation_Level_9_Button',
             'Conservation_Level_10_Button',
-            'Conservation_Score_Button',
-            'Linker_Residues_Button',
-            'Linker_Score_Button'
+            'CONSERVATION_SCORES 0',
         ];
 
         if (resetButtons.includes(buttonId)) {
