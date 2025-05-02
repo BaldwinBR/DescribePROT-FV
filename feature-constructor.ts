@@ -409,7 +409,7 @@ window.onload = () => {
             flagColor: 'white',
             flagTrack: 155,
             flagTrackMobile: 155,
-            sideBar: 225
+            sideBar: 231
         },
         [
             // ** DISORDER PANEL **
@@ -420,8 +420,8 @@ window.onload = () => {
                 data: mergedNativeDisorder,
                 color: "black",
                 className : 'Native_Disorder',
-                // All buttons are loaded into first feature's sidebar element
-                // Allows for consistent spacing and behavior between button elements 
+                // First sidebar element
+                // So load header and sequence information at top
                 sidebar: [
                     {
                         id: 'Header',
@@ -437,7 +437,7 @@ window.onload = () => {
                             Sequence
                         </button>`
                     },
-
+                   
                     {
                         id: 'Native_Disorder_Button',
                         label: 'Native Disorder Button',
@@ -447,8 +447,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #2ca02c; margin-right: 5px;"></span>
                             Native Disordered Regions
                         </button>`
-                    },
-                    {
+                    }
+                ]
+            },
+            {
+                type: 'rect',
+                id: 'Putative_Disorder',
+                label: 'Putative Disorder',
+                data: putativeDisorder,
+                color: 'black',
+                sidebar: [
+                     {
                         id: 'Putative_Disorder_Button',
                         label: 'Putative Disorder Button',
                         tooltip: 'Click to Turn Off Line',
@@ -457,7 +466,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #75fd63; margin-right: 5px;"></span>
                             Putative Disordered Regions
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'curve',
+                id: 'PREDICTIVE_DISORDER_SCORES',
+                label: ' ',
+                color: '#76fd63',
+                flag: 6,
+                data: vslScoreData,
+                sidebar: [
                     {
                         id: 'PREDICTIVE_DISORDER_SCORES 0',
                         label: 'Predictive Disorder Button',
@@ -467,8 +486,18 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #75fd63; margin-right: 5px; vertical-align: middle;"></span>
                             Predictive Disordered Regions
                         </button>`
-                    },
-                     {
+                    }
+                ]
+            },
+            // ** ASA PANEL **
+            {
+                type: 'rect',
+                id: 'Native_RSA_Binary',
+                label: 'Native Buried Residues',
+                data: mergedRSABinary,
+                color: "black",
+                sidebar: [
+                    {
                         id: 'Native_RSA_Binary_Button',
                         label: 'Native RSA Binary Button',
                         tooltip: 'Click to Turn Off Line',
@@ -477,7 +506,16 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #fc0080; margin-right: 5px;"></span>
                             Native Buried Residue
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'rect',
+                id: 'Putative_Buried_Residue',
+                label: 'Putative Buried Residue',
+                data: buriedResiduesResults,
+                color: 'black',
+                sidebar: [
                     {
                         id: 'Putative_Buried_Residue_Button',
                         label: 'Putative Buried Residue Button',
@@ -487,7 +525,18 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #ffd2df; margin-right: 5px;"></span>
                             Native Buried Residue
                         </button>`
-                     },
+                     }
+                ]
+            },
+            {
+                type: 'curve',
+                id: 'ASA_SCORES',
+                label: ' ',
+                color: ['#ffd2df', '#fc0080'],
+                stroke: "black",
+                flag: 2,
+                data: [asaScoreData,  rsaScoreData],
+                sidebar: [
                      {
                         id: 'ASA_SCORES 0',
                         label: 'ASA SCORES Native Button',
@@ -508,6 +557,17 @@ window.onload = () => {
                             Predicted Solvent Accesibility
                         </button>`
                     },
+                ]
+            },
+            // ** Secondary Structure PANEL **
+            {
+                type: 'rect',
+                id: 'Native_Sec_Struc',
+                label: 'Native Sec.Struc',
+                color: 'black',
+                flag: 2,
+                data: mergedSECSSBinary, 
+                sidebar:[
                     {
                         id: 'Native_Sec_Struc_Unavailable_Button',
                         label: 'Native Sec Struc Unavailable Button',
@@ -547,7 +607,24 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #fffd01; margin-right: 5px;"></span>
                             Strand
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'rect',
+                id: 'Putative_Sec_Struc',
+                label: 'Putative Sec.Struc',
+                color: 'black',
+                flag: 2,
+                data: mergedPsiPrepBinary, 
+            },
+            {
+                type: 'curve',
+                id: 'SECONDARY_STRUC_SCORES',
+                label: ' ',
+                flag: 1,
+                data: PsiPredScoreDataColored,
+                sidebar: [
                     {
                         id: 'SECONDARY_STRUC_SCORES 0',
                         label: 'Secondary Struc Score Button',
@@ -557,7 +634,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #25a36f; margin-right: 5px; vertical-align: middle;"></span>
                             Secondary struc.score
                         </button>`
-                    },
+                    }
+                ] 
+            },
+            // ** PROTEIN PANEL **
+            {
+                type: 'rect',
+                id: 'DisoRDPbind_Binding',
+                label: 'DisoRDPbind-Protein',
+                data: disoRDPbindSegments,
+                color: '#3d7afd',
+                sidebar: [
                     {
                         id: 'DisoRDPbind_Binding_Button',
                         label: 'DisoRDPbind Binding Button',
@@ -567,7 +654,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #3d7afd; margin-right: 5px;"></span>
                             DisoRDPbind Protein Binding
                         </button>`
-                    }, 
+                    }
+                ]
+            },
+            
+            {
+                type: 'rect',
+                id: 'Scriber_Binding',
+                label: 'SCRIBER',
+                data: scriberSegments,
+                color: '#3b5b92',
+                sidebar: [
                     {
                         id: 'Scriber_Binding_Button',
                         label: 'Scriber Binding Button',
@@ -577,7 +674,16 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #3b5b92; margin-right: 5px;"></span>
                             SCRIBER Protein Binding
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'rect',
+                id: 'MoRFchibi_Binding',
+                label: 'MoRFchibi',
+                data: morfChibiSegments,
+                color: '#01889f',
+                sidebar: [
                     {
                         id: 'MoRFchibi_Binding_Button',
                         label: 'MoRFchibi Binding Button',
@@ -587,7 +693,18 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #01889f; margin-right: 5px;"></span>
                             MoRFchibi Protein Binding
                         </button>`
-                    },
+                    }
+                ]
+                
+            },
+            {
+                type: 'curve',
+                id: 'PROTEIN_SCORES',
+                label: ' ',
+                color: ['#3d7afd', '#3b5b92', '#01889f'],
+                flag: 3,
+                data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData],
+                sidebar: [
                     {
                         id: 'PROTEIN_SCORES 0',
                         label: 'DisoRDPbind Score Button',
@@ -617,7 +734,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #01889f; margin-right: 5px; vertical-align: middle;"></span>
                             MoRFchibi Score
                         </button>`
-                    },
+                    }
+                ]
+            },            
+            // ** DNA PANEL **
+            { 
+                type: 'rect', 
+                id: 'DisoRDPbindDNA', 
+                label: 'DisoRDPbind-DNA', 
+                data: disoRDPbindDNAColour, 
+                color: "#c071fe",
+                sidebar: [
                     {
                         id: 'DisoRDPbindDNA_Button',
                         label: 'DisoRDPbind DNA binding Button',
@@ -627,7 +754,16 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #c071fe; margin-right: 5px;"></span>
                             DisoRDPbind DNA Binding
                         </button>`
-                    },
+                    }
+                ]
+            },
+            { 
+                type: 'rect', 
+                id: 'DRNApredDNA', 
+                label: 'DRNApred-DNA', 
+                data: dRNApredDNAColour, 
+                color: "#ce5dae",
+                sidebar: [
                     {
                         id: 'DRNApredDNA_Button',
                         label: 'DRNApred DNA binding Button',
@@ -637,7 +773,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #ce5dae; margin-right: 5px;"></span>
                             DRNApred DNA Binding
                         </button>`
-                    },
+                    }
+                ]
+            },
+            { 
+                type: 'curve', 
+                id: 'DNA_SCORES', 
+                label: ' ', 
+                color: ['#c071fe', '#ce5dae'],
+                flag: 4,
+                data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData],
+                sidebar: [
                     {
                         id: 'DNA_SCORES 0',
                         label: 'DisoRDPbind DNA Score Button',
@@ -657,7 +803,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #ce5dae; margin-right: 5px; vertical-align: middle;"></span>
                             DRNApred DNA Score 
                         </button>`
-                    },
+                    }
+                ]
+            },
+            // ** RNA PANEL ** 
+            { 
+                type: 'rect', 
+                id: 'DisoRDPbindRNA', 
+                label: 'DisoRDPbind-RNA', 
+                data: disoRDPbindRNAColour, 
+                color: "#fcc006",
+                sidebar: [
                     {
                         id: 'DisoRDPbindRNA_Button',
                         label: 'DisoRDPbind RNA binding Button',
@@ -667,7 +823,16 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #fcc006; margin-right: 5px;"></span>
                             DisoRDPbind RNA Binding
                         </button>`
-                    },
+                    }
+                ]
+            },
+            { 
+                type: 'rect', 
+                id: 'DRNApredRNA', 
+                label: 'DRNApred-RNA', 
+                data: dRNApredRNAColour, 
+                color: "#fdff38",
+                sidebar: [
                     {
                         id: 'DRNApredRNA_Button',
                         label: 'DRNApred RNA binding Button',
@@ -677,8 +842,18 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #fdff38; margin-right: 5px;"></span>
                             DRNApred RNA Binding
                         </button>`
-                    },
-                    {
+                    }
+                ]
+            },
+            { 
+                type: 'curve', 
+                id: 'RNA_SCORES', 
+                label: ' ', 
+                color: ['#fcc006', '#fdff38'], 
+                flag: 5,
+                data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData],
+                sidebar: [
+                     {
                         id: 'RNA_SCORES 0',
                         label: 'DisoRDPbind RNA Score Button',
                         tooltip: 'Click to Turn Off Line',
@@ -697,7 +872,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #fdff38; margin-right: 5px; vertical-align: middle;"></span>
                             DRNApred RNA Score 
                         </button>`
-                    },
+                    }
+                ]
+            },
+            // ** SIGNAL PEPTIDE **
+              { 
+                type: 'rect', 
+                id: 'Signal_Peptide', 
+                label: 'Signal Peptides', 
+                data: signalPeptideSegments, 
+                color: "#964e02",
+                sidebar: [
                     {
                         id: 'Signal_Peptide_Button',
                         label: 'Signal Peptide Button',
@@ -707,7 +892,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #964e02; margin-right: 5px;"></span>
                             Signal Peptides
                         </button>`
-                    },
+                    }
+                ]
+            },
+            { 
+                type: 'curve', 
+                id: 'SIGNAL_PEPTIDE_SCORES', 
+                label: ' ', 
+                color: '#964e02',
+                flag: 7,
+                data: signalPeptideScoreData,
+                sidebar: [
                     {
                         id: 'SIGNAL_PEPTIDE_SCORES 0',
                         label: 'Signal Peptides Score Button',
@@ -717,7 +912,18 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #964e02; margin-right: 5px; vertical-align: middle;"></span>
                             Signal Peptides Score
                         </button>`
-                    },
+                    }
+                ]
+            },
+             // ** CONSERVATION PANEL **
+            {
+                type: 'rect',
+                id: 'Conservation_Levels',
+                label: 'Conservation',
+                color: 'black',
+                flag: 4,
+                data: mergedConservationLevels,
+                sidebar: [
                     {
                         id: 'Conservation_Level_1_Button',
                         label: 'Conservation Level 1 Button',
@@ -817,8 +1023,18 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #1f282e; margin-right: 5px;"></span>
                             Conservation Level 10
                         </button>`
-                    },
-                    {
+                    }
+                ]
+            },
+            {
+                type: 'curve',
+                id: 'CONSERVATION_SCORES',
+                label: ' ',
+                color: '#607c8e',
+                flag: 8,
+                data: mmseqScoreData,
+                sidebar: [
+                     {
                         id: 'CONSERVATION_SCORES 0',
                         label: 'Conservation Score Button',
                         tooltip: 'Click to Turn Off Line',
@@ -827,7 +1043,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #607c8e; margin-right: 5px; vertical-align: middle;"></span>
                             Conservation Score
                         </button>`
-                    },
+                    }
+                ]
+            },
+            // ** LINKER PANEL **
+            {
+                type: 'rect',
+                id: 'Linker_Residues',
+                label: 'Linker',
+                data: linkerSegments,
+                color: '#ff9408',
+                sidebar: [
                     {
                         id: 'Linker_Residues_Button',
                         label: 'Linker Residues Button',
@@ -837,7 +1063,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #ff9408; margin-right: 5px;"></span>
                             Linker Residues
                         </button>`
-                    },
+                    }
+                ]
+            },
+            {
+                type: 'curve',
+                id: 'LINKER_SCORES',
+                label: ' ',
+                color: '#ff9408',
+                flag: 9,
+                data: linkerScoreData,
+                sidebar: [
                     {
                         id: 'LINKER_SCORES 0',
                         label: 'Linker Score Button',
@@ -847,7 +1083,17 @@ window.onload = () => {
                             <span style="display: inline-block; width: 10px; height: 2px; background-color: #ff9408; margin-right: 5px; vertical-align: middle;"></span>
                             Linker Score
                         </button>`
-                    },
+                    }
+                ]
+            },
+            // ** PTM PANEL **
+            {
+                type: 'ptmTriangle',
+                id: 'PTM_Sites',
+                label: 'PTM Sites',
+                data: ptmEntries,
+                color: 'black',
+                sidebar: [
                     {
                         id: 'PTM_Sites 0',
                         label: 'PTM Phophorylation Button',
@@ -938,208 +1184,7 @@ window.onload = () => {
                             Hydroxylation
                         </button>`
                     }
-
                 ]
-            },
-            {
-                type: 'rect',
-                id: 'Putative_Disorder',
-                label: 'Putative Disorder',
-                data: putativeDisorder,
-                color: 'black'
-            },
-            {
-                type: 'curve',
-                id: 'PREDICTIVE_DISORDER_SCORES',
-                label: ' ',
-                color: '#76fd63',
-                flag: 6,
-                data: vslScoreData
-            },
-            // ** ASA PANEL **
-            {
-                type: 'rect',
-                id: 'Native_RSA_Binary',
-                label: 'Native Buried Residues',
-                data: mergedRSABinary,
-                color: "black"
-            },
-            {
-                type: 'rect',
-                id: 'Putative_Buried_Residue',
-                label: 'Putative Buried Residue',
-                data: buriedResiduesResults,
-                color: 'black'
-            },
-            {
-                type: 'curve',
-                id: 'ASA_SCORES',
-                label: ' ',
-                color: ['#ffd2df', '#fc0080'],
-                stroke: "black",
-                flag: 2,
-                data: [asaScoreData,  rsaScoreData]
-            },
-            // ** Secondary Structure PANEL **
-            {
-                type: 'rect',
-                id: 'Native_Sec_Struc',
-                label: 'Native Sec.Struc',
-                color: 'black',
-                flag: 2,
-                data: mergedSECSSBinary, 
-            },
-            {
-                type: 'rect',
-                id: 'Putative_Sec_Struc',
-                label: 'Putative Sec.Struc',
-                color: 'black',
-                flag: 2,
-                data: mergedPsiPrepBinary, 
-            },
-            {
-                type: 'curve',
-                id: 'SECONDARY_STRUC_SCORES',
-                label: ' ',
-                flag: 1,
-                data: PsiPredScoreDataColored, 
-            },
-            // ** PROTEIN PANEL **
-            {
-                type: 'rect',
-                id: 'DisoRDPbind_Binding',
-                label: 'DisoRDPbind-Protein',
-                data: disoRDPbindSegments,
-                color: '#3d7afd'
-            },
-            
-            {
-                type: 'rect',
-                id: 'Scriber_Binding',
-                label: 'SCRIBER',
-                data: scriberSegments,
-                color: '#3b5b92'
-            },
-            {
-                type: 'rect',
-                id: 'MoRFchibi_Binding',
-                label: 'MoRFchibi',
-                data: morfChibiSegments,
-                color: '#01889f'
-                
-            },
-            {
-                type: 'curve',
-                id: 'PROTEIN_SCORES',
-                label: ' ',
-                color: ['#3d7afd', '#3b5b92', '#01889f'],
-                flag: 3,
-                data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData]
-            },            
-            // ** DNA PANEL **
-            { 
-                type: 'rect', 
-                id: 'DisoRDPbindDNA', 
-                label: 'DisoRDPbind-DNA', 
-                data: disoRDPbindDNAColour, 
-                color: "#c071fe"
-            },
-            { 
-                type: 'rect', 
-                id: 'DRNApredDNA', 
-                label: 'DRNApred-DNA', 
-                data: dRNApredDNAColour, 
-                color: "#ce5dae"
-            },
-            { 
-                type: 'curve', 
-                id: 'DNA_SCORES', 
-                label: ' ', 
-                color: ['#c071fe', '#ce5dae'],
-                flag: 4,
-                data: [disoRDPbindDNAScoreData, dRNApredDNAScoreData]
-            },
-            // ** RNA PANEL ** 
-            { 
-                type: 'rect', 
-                id: 'DisoRDPbindRNA', 
-                label: 'DisoRDPbind-RNA', 
-                data: disoRDPbindRNAColour, 
-                color: "#fcc006"
-            },
-            { 
-                type: 'rect', 
-                id: 'DRNApredRNA', 
-                label: 'DRNApred-RNA', 
-                data: dRNApredRNAColour, 
-                color: "#fdff38"
-            },
-            { 
-                type: 'curve', 
-                id: 'RNA_SCORES', 
-                label: ' ', 
-                color: ['#fcc006', '#fdff38'], 
-                flag: 5,
-                data: [disoRDPbindRNAScoreData, dRNApredRNAScoreData]
-            },
-            // ** SIGNAL PEPTIDE **
-              { 
-                type: 'rect', 
-                id: 'Signal_Peptide', 
-                label: 'Signal Peptides', 
-                data: signalPeptideSegments, 
-                color: "#964e02",
-            },
-            { 
-                type: 'curve', 
-                id: 'SIGNAL_PEPTIDE_SCORES', 
-                label: ' ', 
-                color: '#964e02',
-                flag: 7,
-                data: signalPeptideScoreData
-            },
-             // ** CONSERVATION PANEL **
-            {
-                type: 'rect',
-                id: 'Conservation_Levels',
-                label: 'Conservation',
-                color: 'black',
-                flag: 4,
-                data: mergedConservationLevels
-            },
-            {
-                type: 'curve',
-                id: 'CONSERVATION_SCORES',
-                label: ' ',
-                color: '#607c8e',
-                flag: 8,
-                data: mmseqScoreData
-            },
-            // ** LINKER PANEL **
-            {
-                type: 'rect',
-                id: 'Linker_Residues',
-                label: 'Linker',
-                data: linkerSegments,
-                color: '#ff9408',
-                sidebar: [
-                ]
-            },
-            {
-                type: 'curve',
-                id: 'LINKER_SCORES',
-                label: ' ',
-                color: '#ff9408',
-                flag: 9,
-                data: linkerScoreData
-            },
-            // ** PTM PANEL **
-            {
-                type: 'ptmTriangle',
-                id: 'PTM_Sites',
-                label: 'PTM Sites',
-                data: ptmEntries,
-                color: 'black'
               }
         ]);
 
