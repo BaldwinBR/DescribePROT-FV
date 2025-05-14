@@ -59,7 +59,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_1_Button',
                 label: 'Conservation Level 1 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #f0f3f5; margin-right: 5px;"></span>
@@ -69,7 +68,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_2_Button',
                 label: 'Conservation Level 2 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #f0f3f5; margin-right: 5px;"></span>
@@ -79,7 +77,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_3_Button',
                 label: 'Conservation Level 3 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #d1dae0; margin-right: 5px;"></span>
@@ -89,7 +86,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_4_Button',
                 label: 'Conservation Level 4 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #b3c2cb; margin-right: 5px;"></span>
@@ -99,7 +95,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_5_Button',
                 label: 'Conservation Level 5 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #95aab7; margin-right: 5px;"></span>
@@ -109,7 +104,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_6_Button',
                 label: 'Conservation Level 6 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #7691a2; margin-right: 5px;"></span>
@@ -119,7 +113,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_7_Button',
                 label: 'Conservation Level 7 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #5d7889; margin-right: 5px;"></span>
@@ -129,7 +122,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_8_Button',
                 label: 'Conservation Level 8 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #485d6a; margin-right: 5px;"></span>
@@ -139,7 +131,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_9_Button',
                 label: 'Conservation Level 9 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #34434c; margin-right: 5px;"></span>
@@ -149,7 +140,6 @@ export const ConservationPanel = [
             {
                 id: 'Conservation_Level_10_Button',
                 label: 'Conservation Level 10 Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #1f282e; margin-right: 5px;"></span>

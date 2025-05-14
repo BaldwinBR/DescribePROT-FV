@@ -62,7 +62,6 @@ export const ProteinPanel = [
                     {
                         id: 'DisoRDPbind_Binding_Button',
                         label: 'DisoRDPbind Binding Button',
-                        tooltip: 'Click to Turn Off Line',
                         content: `
                         <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #3d7afd; margin-right: 5px;"></span>
@@ -82,7 +81,6 @@ export const ProteinPanel = [
                     {
                         id: 'Scriber_Binding_Button',
                         label: 'Scriber Binding Button',
-                        tooltip: 'Click to Turn Off Line',
                         content: `
                         <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #3b5b92; margin-right: 5px;"></span>
@@ -101,7 +99,6 @@ export const ProteinPanel = [
                     {
                         id: 'MoRFchibi_Binding_Button',
                         label: 'MoRFchibi Binding Button',
-                        tooltip: 'Click to Turn Off Line',
                         content: `
                         <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                             <span style="display: inline-block; width: 10px; height: 10px; background-color: #01889f; margin-right: 5px;"></span>

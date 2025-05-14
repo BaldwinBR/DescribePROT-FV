@@ -54,7 +54,6 @@ export const asaPanel = [
             {
                 id: 'Native_RSA_Binary_Button',
                 label: 'Native RSA Binary Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #fc0080; margin-right: 5px;"></span>
@@ -73,7 +72,6 @@ export const asaPanel = [
             {
                 id: 'Putative_Buried_Residue_Button',
                 label: 'Putative Buried Residue Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #ffd2df; margin-right: 5px;"></span>

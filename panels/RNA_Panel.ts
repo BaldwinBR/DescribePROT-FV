@@ -49,7 +49,6 @@ export const RNAPanel = [
             {
                 id: 'DisoRDPbindRNA_Button',
                 label: 'DisoRDPbind RNA binding Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #fcc006; margin-right: 5px;"></span>
@@ -68,7 +67,6 @@ export const RNAPanel = [
             {
                 id: 'drnaPredRNA_Button',
                 label: 'DRNApred RNA binding Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #fdff38; margin-right: 5px;"></span>

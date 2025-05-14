@@ -87,7 +87,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 0',
                 label: 'PTM Phophorylation Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #DC143C; margin-right: 5px;"></span>
@@ -97,7 +97,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 1',
                 label: 'PTM Glycosylation Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #1E90FF; margin-right: 5px;"></span>
@@ -107,7 +107,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 2',
                 label: 'PTM Ubiquitination Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #FF4500; margin-right: 5px;"></span>
@@ -117,7 +117,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 3',
                 label: 'PTM SUMOylation Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #C71585; margin-right: 5px;"></span>
@@ -127,7 +127,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 4',
                 label: 'PTM Acetyllysine Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #00CED1; margin-right: 5px;"></span>
@@ -137,7 +137,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 5',
                 label: 'PTM Methylation Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #DAA520; margin-right: 5px;"></span>
@@ -147,7 +147,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 6',
                 label: 'PTM Pyrrolidone carboxylic acid Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #228B22; margin-right: 5px;"></span>
@@ -157,7 +157,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 7',
                 label: 'PTM Palmitoylation Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #9932CC; margin-right: 5px;"></span>
@@ -167,7 +167,7 @@ export const PTMPanel = [
             {
                 id: 'PTM_Sites 8',
                 label: 'PTM Hydroxylation Button',
-                tooltip: 'Click to Turn Off Line',
+                tooltip: 'Click to Turn Off Site',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
                     <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #6A5ACD; margin-right: 5px;"></span>

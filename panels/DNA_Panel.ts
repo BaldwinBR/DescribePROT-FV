@@ -50,7 +50,6 @@ export const DNAPanel = [
             {
                 id: 'DisoRDPbindDNA_Button',
                 label: 'DisoRDPbind DNA binding Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #c071fe; margin-right: 5px;"></span>
@@ -69,7 +68,6 @@ export const DNAPanel = [
             {
                 id: 'drnaPredDNA_Button',
                 label: 'DRNApred DNA binding Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #ce5dae; margin-right: 5px;"></span>

@@ -36,7 +36,6 @@ export const LinkerPanel = [
             {
                 id: 'Linker_Residues_Button',
                 label: 'Linker Residues Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #ff9408; margin-right: 5px;"></span>
