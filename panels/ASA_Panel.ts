@@ -18,29 +18,31 @@ const asaScore = panelData.asaScore;
 
 // SET COLORS FOR DATA
 const COLORS = {
-    rsaAvailable: "#fc0080",
-    rsaUnavailable: "#c0c0c0",
-    asaAvailable: "#ffd2df"
+    rsaAvailable: "#fc0080", rsaAvailableSegmentType: "Native Buried Residue",
+    rsaAvailableType: "Native Solvent Accessibility",
+    rsaUnavailable: "#c0c0c0", unavailableType: "Unavailable",
+    asaAvailable: "#ffd2df", asaAvailableSegmentType: "Putative Buried Residue",
+    asaAvailableType: "Predicted Solvent Accessibility"
 };
 
 // PROCESS RSA BINARY SEGMENTS
 const rsaSegments: Segment[] = [
-    ...extractSegments(rsaBinary, 1, COLORS.rsaAvailable),
-    ...extractSegments(rsaBinary, 2, COLORS.rsaUnavailable)
+    ...extractSegments(rsaBinary, 1, COLORS.rsaAvailable, COLORS.rsaAvailableSegmentType),
+    ...extractSegments(rsaBinary, 2, COLORS.rsaUnavailable, COLORS.unavailableType)
 ];
 
 // EXTRACT RSA SCORES FOR LINE GRAPH
-const rsaLines = extractLines(rsaScore);
-const rsaScoreSegments: Segment[] = extractScoreSegments(rsaScore, 0, COLORS.rsaAvailable);
+const rsaLines = extractLines(rsaScore, COLORS.rsaAvailableType);
+const rsaScoreSegments: Segment[] = extractScoreSegments(rsaScore, 0, COLORS.rsaAvailable, COLORS.rsaAvailableType);
 const rsaScoreData = lineColorSegments(rsaLines, rsaScoreSegments);
 
 // EXTRACT ASA SCORES FOR LINE GRAPH
-const asaLines = extractLines(asaScore);
-const asaScoreSegments: Segment[] = extractScoreSegments(asaScore, 0, COLORS.asaAvailable);
+const asaLines = extractLines(asaScore, COLORS.asaAvailableType);
+const asaScoreSegments: Segment[] = extractScoreSegments(asaScore, 0, COLORS.asaAvailable, COLORS.asaAvailableType);
 const asaScoreData = lineColorSegments(asaLines, asaScoreSegments);
 
 // PROCESS ASA BINARY SEGMENTS
-const asaSegments: Segment[] = extractSegments(asaBinary, 1, COLORS.asaAvailable);
+const asaSegments: Segment[] = extractSegments(asaBinary, 1, COLORS.asaAvailable, COLORS.asaAvailableSegmentType);
 
 // EXPORT DATA
 export const asaPanel = [
@@ -69,7 +71,6 @@ export const asaPanel = [
         id: 'ASA_SCORES',
         label: ' ',
         color: [COLORS.asaAvailable, COLORS.rsaAvailable],
-        flag: 2,
         data: [asaScoreData, rsaScoreData],
         sidebar: [
             createSidebarButton('ASA_SCORES', 'Native Solvent Accessibility', COLORS.rsaAvailable, 'line', 1),

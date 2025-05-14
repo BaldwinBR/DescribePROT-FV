@@ -16,14 +16,15 @@ const signalPeptideScore = panelData.signalPeptideScore
 
 // SET COLORS FOR DATA
 const COLORS = {
-    signalPeptide: "#964e02",
+    signalPeptide: "#964e02", signalPeptideSegmentType: "Signal Peptides",
+    signalPeptideType: "Signal Peptides Score"
 };
 
 // SEGMENTS
-const signalPeptideSegments: Segment[] = extractSegments(signalPeptideBinary, 1, COLORS.signalPeptide);
+const signalPeptideSegments: Segment[] = extractSegments(signalPeptideBinary, 1, COLORS.signalPeptide, COLORS.signalPeptideSegmentType);
 
 // LINE DATA
-const signalPeptideScoreData = extractLines(signalPeptideScore);
+const signalPeptideScoreData = extractLines(signalPeptideScore, COLORS.signalPeptideType);
 
 // EXPORT DATA
 export const SignalPPanel = [
@@ -42,7 +43,6 @@ export const SignalPPanel = [
     id: 'SIGNAL_PEPTIDE_SCORES',
     label: ' ',
     color: COLORS.signalPeptide,
-    flag: 7,
     data: signalPeptideScoreData,
     sidebar: [
       createSidebarButton('SIGNAL_PEPTIDE_SCORES', 'Signal Peptides Score', COLORS.signalPeptide, 'line', 0)

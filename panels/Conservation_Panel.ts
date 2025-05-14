@@ -16,36 +16,36 @@ const mmseqScore = panelData.mmseqScore
 
 // SET COLORS FOR CONSERVATION LEVELS
 const COLORS = {
-    conv_0: "#f0f3f5",
-    conv_1: "#f0f3f5",
-    conv_2: "#d1dae0",
-    conv_3: "#b3c2cb",
-    conv_4: "#95aab7",
-    conv_5: "#7691a2",
-    conv_6: "#5d7889",
-    conv_7: "#485d6a",
-    conv_8: "#34434c",
-    conv_9: "#1f282e",
-    conv_score: "#607c8e"
+    conv_0: "#f0f3f5", conv0Type: "Conservation Level 1",
+    conv_1: "#f0f3f5", conv1Type: "Conservation Level 2",
+    conv_2: "#d1dae0", conv2Type: "Conservation Level 3",
+    conv_3: "#b3c2cb", conv3Type: "Conservation Level 4",
+    conv_4: "#95aab7", conv4Type: "Conservation Level 5",
+    conv_5: "#7691a2", conv5Type: "Conservation Level 6",
+    conv_6: "#5d7889", conv6Type: "Conservation Level 7",
+    conv_7: "#485d6a", conv7Type: "Conservation Level 8",
+    conv_8: "#34434c", conv8Type: "Conservation Level 9",
+    conv_9: "#1f282e", conv9Type: "Conservation Level 10",
+    conv_score: "#607c8e", convScoreType: "Conservation Score"
 };
 
 // PROCESS CONSERVATION SEGMENTS
 const conservationSegments: Segment[] = [
-    ...extractSegments(mmseqBinary, 0, COLORS.conv_0),
-    ...extractSegments(mmseqBinary, 1, COLORS.conv_1),
-    ...extractSegments(mmseqBinary, 2, COLORS.conv_2),
-    ...extractSegments(mmseqBinary, 3, COLORS.conv_3),
-    ...extractSegments(mmseqBinary, 4, COLORS.conv_4),
-    ...extractSegments(mmseqBinary, 5, COLORS.conv_5),
-    ...extractSegments(mmseqBinary, 6, COLORS.conv_6),
-    ...extractSegments(mmseqBinary, 7, COLORS.conv_7),
-    ...extractSegments(mmseqBinary, 8, COLORS.conv_8),
-    ...extractSegments(mmseqBinary, 9, COLORS.conv_9)
+    ...extractSegments(mmseqBinary, 0, COLORS.conv_0, COLORS.conv0Type),
+    ...extractSegments(mmseqBinary, 1, COLORS.conv_1, COLORS.conv1Type),
+    ...extractSegments(mmseqBinary, 2, COLORS.conv_2, COLORS.conv2Type),
+    ...extractSegments(mmseqBinary, 3, COLORS.conv_3, COLORS.conv3Type),
+    ...extractSegments(mmseqBinary, 4, COLORS.conv_4, COLORS.conv4Type),
+    ...extractSegments(mmseqBinary, 5, COLORS.conv_5, COLORS.conv5Type),
+    ...extractSegments(mmseqBinary, 6, COLORS.conv_6, COLORS.conv6Type),
+    ...extractSegments(mmseqBinary, 7, COLORS.conv_7, COLORS.conv7Type),
+    ...extractSegments(mmseqBinary, 8, COLORS.conv_8, COLORS.conv8Type),
+    ...extractSegments(mmseqBinary, 9, COLORS.conv_9, COLORS.conv9Type)
 ];
 
 // RESCALE THEN EXTRACT MMSEQ SCORE LINE DATA
 const mmseqScoreRescaled = mmseqRescaleScores(mmseqScore);
-const mmseqScoreData = extractLines(mmseqScoreRescaled);
+const mmseqScoreData = extractLines(mmseqScoreRescaled, COLORS.convScoreType);
 
 // EXPORT DATA
 export const ConservationPanel = [
@@ -54,7 +54,6 @@ export const ConservationPanel = [
     id: 'Conservation_Levels',
     label: 'Conservation',
     color: '#000000',
-    flag: 4,
     data: conservationSegments,
     sidebar: [
       createSidebarButton('Conservation_Levels', 'Conservation Level 1', COLORS.conv_0, 'box', 0),
@@ -74,7 +73,6 @@ export const ConservationPanel = [
     id: 'CONSERVATION_SCORES',
     label: ' ',
     color: COLORS.conv_score,
-    flag: 8,
     data: mmseqScoreData,
     sidebar: [
       createSidebarButton('CONSERVATION_SCORES', 'Conservation Score', COLORS.conv_score, 'line', 0)

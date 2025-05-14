@@ -85,6 +85,7 @@ export interface Segment {
     color: string;
     stroke: string;
     opacity?: number;
+    type: string;
 }
 
 /**
@@ -94,7 +95,7 @@ export interface Segment {
  * @param color - Segment fill color
  * @returns Array of Segment objects
  */
-export function extractScoreSegments(scoreArray, threshold, color) {
+export function extractScoreSegments(scoreArray, threshold, color, type) {
     const segments: Segment[] = [];
     let inSegment = false;
     let start = 0;
@@ -106,13 +107,13 @@ export function extractScoreSegments(scoreArray, threshold, color) {
                 inSegment = true;
             }
         } else if (inSegment) {
-            segments.push({ x: start + 1, y: i, color, stroke: "black" });
+            segments.push({ x: start + 1, y: i, color, type, stroke: "black" });
             inSegment = false;
         }
     }
 
     if (inSegment) {
-        segments.push({ x: start + 1, y: scoreArray.length, color, stroke: "black" });
+        segments.push({ x: start + 1, y: scoreArray.length, color, type, stroke: "black" });
     }
 
     return segments;
@@ -125,7 +126,7 @@ export function extractScoreSegments(scoreArray, threshold, color) {
  * @param color - Segment fill color
  * @returns Array of Segment objects
  */
-export function extractSegments(binaryArray: number[], targetValue: number, color: string): Segment[] {
+export function extractSegments(binaryArray: number[], targetValue: number, color: string, type: string): Segment[] {
     const segments: Segment[] = [];
     let inSegment = false;
     let start = 0;
@@ -137,13 +138,13 @@ export function extractSegments(binaryArray: number[], targetValue: number, colo
                 inSegment = true;
             }
         } else if (inSegment) {
-            segments.push({ x: start + 1, y: i, color, stroke: "black" });
+            segments.push({ x: start + 1, y: i, color, type, stroke: "black" });
             inSegment = false;
         }
     }
 
     if (inSegment) {
-        segments.push({ x: start + 1, y: binaryArray.length, color, stroke: "black" });
+        segments.push({ x: start + 1, y: binaryArray.length, color, type, stroke: "black" });
     }
 
     return segments;
@@ -187,7 +188,7 @@ export function lineColorSegments(data : {x: number; y: number;}[], segments: Se
  * @param {number[]} scoreArray - An array of numerical scores representing Y-values.
  * @returns {{x: number; y: number}[]} An array of objects, where each object contains an X (position) and Y (score) value.
  */
-export function extractLines(scoreArray: number[]): { x: number; y: number }[] {
+export function extractLines(scoreArray: number[], type: string): { x: number; y: number }[] {
     return scoreArray.map((value, index) => ({
         x: index + 1,
         y: value

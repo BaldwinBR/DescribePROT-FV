@@ -20,33 +20,36 @@ const morfChibiScore = panelData.morfChibiScore
 
 // SET COLORS FOR DATA
 const COLORS = {
-    disoRDPbind: "#3d7afd",
-    morfChibi: "#01889f",
-    scriber: "#3b5b92"
+    disoRDPbind: "#3d7afd", disoRDPbindSegmentType: "DisoRDPbind Protein Binding",
+    disoRDPbindType: "DisoRDPbind Score",
+    morfChibi: "#01889f", morfChibiSegmentType: "MoRFchibi Protein Binding",
+    morfChibiType: "MoRFchibi Score",
+    scriber: "#3b5b92", scriberSegmentType: "SCRIBER Protein Binding",
+    scriberType: "SCRIBER Score"
 };
 
 // PROCESS BINARY SEGMENTS
-const disoRDPbindSegments: Segment[] = extractSegments(disoRDPbindBinary, 1, COLORS.disoRDPbind);
-const morfChibiSegments: Segment[] = extractSegments(morfChibiBinary, 1, COLORS.morfChibi);
-const scriberSegments: Segment[] = extractSegments(scriberBinary, 1, COLORS.scriber);
+const disoRDPbindSegments: Segment[] = extractSegments(disoRDPbindBinary, 1, COLORS.disoRDPbind, COLORS.disoRDPbindSegmentType);
+const morfChibiSegments: Segment[] = extractSegments(morfChibiBinary, 1, COLORS.morfChibi, COLORS.morfChibiSegmentType);
+const scriberSegments: Segment[] = extractSegments(scriberBinary, 1, COLORS.scriber, COLORS.scriberSegmentType);
 
 // PROCESS SCORED SEGMENTS
-const disoRDPbindLines = extractLines(disoRDPbindScore);
+const disoRDPbindLines = extractLines(disoRDPbindScore, COLORS.disoRDPbindType);
 const disoRDPbindScoreData = lineColorSegments(
     disoRDPbindLines,
-    extractScoreSegments(disoRDPbindScore, 0, COLORS.disoRDPbind)
+    extractScoreSegments(disoRDPbindScore, 0, COLORS.disoRDPbind, COLORS.disoRDPbindType)
 );
 
-const scriberLines = extractLines(scriberScore);
+const scriberLines = extractLines(scriberScore, COLORS.scriberType);
 const scriberScoreData = lineColorSegments(
     scriberLines,
-    extractScoreSegments(scriberScore, 0, COLORS.scriber)
+    extractScoreSegments(scriberScore, 0, COLORS.scriber, COLORS.scriberType)
 );
 
-const morfChibiLines = extractLines(morfChibiScore);
+const morfChibiLines = extractLines(morfChibiScore, COLORS.morfChibiType);
 const morfChibiScoreData = lineColorSegments(
     morfChibiLines,
-    extractScoreSegments(morfChibiScore, 0, COLORS.morfChibi)
+    extractScoreSegments(morfChibiScore, 0, COLORS.morfChibi, COLORS.morfChibiType)
 );
 
 export const ProteinPanel = [
@@ -85,7 +88,6 @@ export const ProteinPanel = [
     id: 'PROTEIN_SCORES',
     label: ' ',
     color: [COLORS.disoRDPbind, COLORS.scriber, COLORS.morfChibi],
-    flag: 3,
     data: [disoRDPbindScoreData, scriberScoreData, morfChibiScoreData],
     sidebar: [
       createSidebarButton('PROTEIN_SCORES', 'DisoRDPbind Score', COLORS.disoRDPbind, 'line', 0),

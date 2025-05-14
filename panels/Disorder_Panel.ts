@@ -17,22 +17,23 @@ const vslScore = panelData.vslScore;
 
 // SET COLORS FOR DATA
 const COLORS = {
-    nativeDisorder: "#2da02c",
-    nativeUnavailable: "#c0c0c0",
-    putativeDisorder: "#76fd63"
+    nativeDisorder: "#2da02c", nativeDisorderSegmentType: "Native Disordered Regions",
+    nativeUnavailable: "#c0c0c0", nativeUnavailableType: "Unavailable",
+    putativeDisorder: "#76fd63", putativeDisorderSegmentType: "Putative Disordered Regions",
+    putativeDisorderType: "Predicted Disordered Score"
 };
 
 // PROCESS NATIVE DISORDER SEGMENTS
 const nativeDisorderSegments: Segment[] = [
-    ...extractSegments(disorderBinary, 1, COLORS.nativeDisorder),
-    ...extractSegments(disorderBinary, 2, COLORS.nativeUnavailable)
+    ...extractSegments(disorderBinary, 1, COLORS.nativeDisorder, COLORS.nativeDisorderSegmentType),
+    ...extractSegments(disorderBinary, 2, COLORS.nativeUnavailable, COLORS.nativeUnavailableType)
 ];
 
 // PROCESS PUTATIVE DISORDER SEGMENTS
-const putativeDisorderSegments: Segment[] = extractSegments(vslBinary, 1, COLORS.putativeDisorder);
+const putativeDisorderSegments: Segment[] = extractSegments(vslBinary, 1, COLORS.putativeDisorder, COLORS.putativeDisorderSegmentType);
 
 // EXTRACT VSL SCORES FOR LINE GRAPH
-const vslScoreData = extractLines(vslScore);
+const vslScoreData = extractLines(vslScore, COLORS.putativeDisorderType);
 
 // EXPORT DATA
 export const disorderPanel = [
@@ -64,7 +65,6 @@ export const disorderPanel = [
         id: 'PREDICTIVE_DISORDER_SCORES',
         label: ' ',
         color: COLORS.putativeDisorder,
-        flag: 6,
         data: vslScoreData,
         sidebar: [
             createSidebarButton('PREDICTIVE_DISORDER_SCORES', 'Predictive Disordered', COLORS.putativeDisorder, 'line', 0)

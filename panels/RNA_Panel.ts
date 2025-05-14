@@ -18,23 +18,25 @@ const drnaPredRNAScore = panelData.drnaPredRNAScore
 
 // SET COLORS FOR DATA
 const COLORS = {
-    disoRDPbind: "#fcc006", 
-    drnaPred: "#fdff38"   
+    disoRDPbind: "#fcc006", disoRDPbindSegmentType: "DisoRDPbind RNA Binding",
+    disoRDPbindType: "DisoRDPbind RNA Score",
+    drnaPred: "#fdff38", drnaPredSegmentType: "DRNApred RNA Binding",
+    drnaPredType: "DRNApred RNA Score"
 };
 
 // SEGMENTS
-const disoRDPbindRNAColour: Segment[] = extractSegments(disoRDPbindRNA, 1, COLORS.disoRDPbind);
-const drnaPredRNAColour: Segment[] = extractSegments(drnaPredRNA, 1, COLORS.drnaPred);
+const disoRDPbindRNAColour: Segment[] = extractSegments(disoRDPbindRNA, 1, COLORS.disoRDPbind, COLORS.disoRDPbindSegmentType);
+const drnaPredRNAColour: Segment[] = extractSegments(drnaPredRNA, 1, COLORS.drnaPred, COLORS.drnaPredSegmentType);
 
 // LINES & COLORED SCORE DATA
 const disoRDPbindRNAScoreData = lineColorSegments(
-    extractLines(disoRDPbindRNAScore),
-    extractScoreSegments(disoRDPbindRNAScore, 0, COLORS.disoRDPbind)
+    extractLines(disoRDPbindRNAScore, COLORS.disoRDPbindType),
+    extractScoreSegments(disoRDPbindRNAScore, 0, COLORS.disoRDPbind, COLORS.disoRDPbindType)
 );
 
 const drnaPredRNAScoreData = lineColorSegments(
-    extractLines(drnaPredRNAScore),
-    extractScoreSegments(drnaPredRNAScore, 0, COLORS.drnaPred)
+    extractLines(drnaPredRNAScore, COLORS.drnaPredType),
+    extractScoreSegments(drnaPredRNAScore, 0, COLORS.drnaPred, COLORS.drnaPredType)
 );
 
 // EXPORT DATA
@@ -64,7 +66,6 @@ export const RNAPanel = [
     id: 'RNA_SCORES',
     label: ' ',
     color: [COLORS.disoRDPbind, COLORS.drnaPred],
-    flag: 5,
     data: [disoRDPbindRNAScoreData, drnaPredRNAScoreData],
     sidebar: [
       createSidebarButton('RNA_SCORES', 'DisoRDPbind RNA Score', COLORS.disoRDPbind, 'line', 0),

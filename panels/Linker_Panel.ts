@@ -16,12 +16,13 @@ const linkerScore = panelData.linkerScore
 
 // SET COLORS FOR DATA
 const COLORS = {
-    linker: "#ff9408"
+    linker: "#ff9408", linkerSegmentType: "Linker Residues",
+    linkerType: "Linker Score"
 };
 
 // **Linker Panel**
-const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, COLORS.linker);
-const linkerScoreData = extractLines(linkerScore);
+const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, COLORS.linker, COLORS.linkerSegmentType);
+const linkerScoreData = extractLines(linkerScore, COLORS.linkerType);
 
 
 // EXPORT DATA
@@ -41,7 +42,6 @@ export const LinkerPanel = [
         id: 'LINKER_SCORES',
         label: ' ',
         color: COLORS.linker,
-        flag: 9,
         data: linkerScoreData,
         sidebar: [
             createSidebarButton('LINKER_SCORES', 'Linker Score', COLORS.linker, 'line', 0)
