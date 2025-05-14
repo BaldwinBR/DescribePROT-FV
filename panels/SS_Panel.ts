@@ -87,7 +87,6 @@ export const SSPanel = [
             {
                 id: 'Native_Sec_Struc_Coil_Button',
                 label: 'Native Sec Struc Coil Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #25a36f; margin-right: 5px;"></span>
@@ -97,7 +96,6 @@ export const SSPanel = [
             {
                 id: 'Native_Sec_Struc_Helix_Button',
                 label: 'Native Sec Struc Helix Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #cf6275; margin-right: 5px;"></span>
@@ -107,7 +105,6 @@ export const SSPanel = [
             {
                 id: 'Native_Sec_Struc_Strand_Button',
                 label: 'Native Sec Struc Stand Button',
-                tooltip: 'Click to Turn Off Line',
                 content: `
                 <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
                     <span style="display: inline-block; width: 10px; height: 10px; background-color: #fffd01; margin-right: 5px;"></span>
