@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment, psipredRescaleScores, lineColorSegments} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, psipredRescaleScores, lineColorSegments} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -80,46 +80,22 @@ export const SSPanel = [
         type: 'rect',
         id: 'Native_Sec_Struc',
         label: 'Native Sec.Struc',
-        color: 'black',
+        color: '#000000',
         flag: 2,
-        data: secssSegments, 
+        data: secssSegments,
         sidebar: [
-            {
-                id: 'Native_Sec_Struc_Coil_Button',
-                label: 'Native Sec Struc Coil Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #25a36f; margin-right: 5px;"></span>
-                    Coil
-                </button>`
-            },
-            {
-                id: 'Native_Sec_Struc_Helix_Button',
-                label: 'Native Sec Struc Helix Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #cf6275; margin-right: 5px;"></span>
-                    Helix
-                </button>`
-            },
-            {
-                id: 'Native_Sec_Struc_Strand_Button',
-                label: 'Native Sec Struc Stand Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #fffd01; margin-right: 5px;"></span>
-                    Strand
-                </button>`
-            }
+            createSidebarButton('Native_Sec_Struc', 'Coil', COLORS.coil, 'box', 0),
+            createSidebarButton('Native_Sec_Struc', 'Helix', COLORS.helix, 'box', 1),
+            createSidebarButton('Native_Sec_Struc', 'Strand', COLORS.strand, 'box', 2)
         ]
     },
     {
         type: 'rect',
         id: 'Putative_Sec_Struc',
         label: 'Putative Sec.Struc',
-        color: 'black',
+        color: '#000000',
         flag: 2,
-        data: psiPredSegments, 
+        data: psiPredSegments
     },
     {
         type: 'curve',
@@ -128,41 +104,14 @@ export const SSPanel = [
         flag: 1,
         data: psiPredScoreDataColored,
         sidebar: [
-            {
-                id: 'SECONDARY_STRUC_SCORES 0',
-                label: 'Secondary Struc Score Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #25a36f; margin-right: 5px; vertical-align: middle;"></span>
-                    Secondary struc.score
-                </button>`
-            }
-        ] 
-    }                 
+            createSidebarButton('SECONDARY_STRUC_SCORES', 'Secondary Struc.Score', COLORS.coil, 'line', 0)
+        ]
+    }
 ];
+
 
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    const viewer = initializeViewer(sequence, SSPanel);
-
-    viewer.onButtonSelected((event) => {
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'Native_Sec_Struc_Unavailable_Button',
-            'Native_Sec_Struc_Coil_Button',
-            'Native_Sec_Struc_Helix_Button',
-            'Native_Sec_Struc_Strand_Button',
-            'SECONDARY_STRUC_SCORES 0'
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            //panels.resetAll();
-            viewer.featureToggle(buttonId);
-            
-        }
-
-    });
-
+    initializeViewer(sequence, SSPanel);
 };
 

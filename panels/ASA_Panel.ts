@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -49,17 +49,9 @@ export const asaPanel = [
         id: 'Native_RSA_Binary',
         label: 'Native Buried Residues',
         data: rsaSegments,
-        color: "black",
+        color: "#000000",
         sidebar: [
-            {
-                id: 'Native_RSA_Binary_Button',
-                label: 'Native RSA Binary Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #fc0080; margin-right: 5px;"></span>
-                    Native Buried Residue
-                </button>`
-            }
+            createSidebarButton('Native_RSA_Binary', 'Native Buried Residue', COLORS.rsaAvailable, 'box', 0)
         ]
     },
     {
@@ -67,73 +59,28 @@ export const asaPanel = [
         id: 'Putative_Buried_Residue',
         label: 'Putative Buried Residue',
         data: asaSegments,
-        color: 'black',
+        color: '#000000',
         sidebar: [
-            {
-                id: 'Putative_Buried_Residue_Button',
-                label: 'Putative Buried Residue Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #ffd2df; margin-right: 5px;"></span>
-                    Native Buried Residue
-                </button>`
-                }
+            createSidebarButton('Putative_Buried_Residue', 'Putative Buried Residue', COLORS.asaAvailable, 'box', 0)
         ]
     },
     {
         type: 'curve',
         id: 'ASA_SCORES',
         label: ' ',
-        color: ['#ffd2df', '#fc0080'],
-        stroke: "black",
+        color: [COLORS.asaAvailable, COLORS.rsaAvailable],
         flag: 2,
-        data: [asaScoreData,  rsaScoreData],
+        data: [asaScoreData, rsaScoreData],
         sidebar: [
-                {
-                id: 'ASA_SCORES 1',
-                label: 'ASA SCORES Native Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #fc0080; margin-right: 5px; vertical-align: middle;"></span>
-                    Native Solvent Accesibility
-                </button>`
-            },
-            {
-                id: 'ASA_SCORES 0',
-                label: 'ASA SCORES Predicted Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #ffd2df; margin-right: 5px; vertical-align: middle;"></span>
-                    Predicted Solvent Accesibility
-                </button>`
-            },
+            createSidebarButton('ASA_SCORES', 'Native Solvent Accessibility', COLORS.rsaAvailable, 'line', 1),
+            createSidebarButton('ASA_SCORES', 'Predicted Solvent Accessibility', COLORS.asaAvailable, 'line', 0)
         ]
     }
 ];
 
+
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    
-    const viewer = initializeViewer(sequence, asaPanel);
-
-    viewer.onButtonSelected((event) => {
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'Native_RSA_Binary_Button',
-            'Putative_Buried_Residue_Button',
-            'ASA_SCORES 0',
-            'ASA_SCORES 1'
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            //panels.resetAll();
-            viewer.featureToggle(buttonId);
-            
-        }
-
-    });
-
+    initializeViewer(sequence, asaPanel);
 };
 

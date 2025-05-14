@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment, mmseqRescaleScores} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, mmseqRescaleScores} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -25,7 +25,8 @@ const COLORS = {
     conv_6: "#5d7889",
     conv_7: "#485d6a",
     conv_8: "#34434c",
-    conv_9: "#1f282e"
+    conv_9: "#1f282e",
+    conv_score: "#607c8e"
 };
 
 // PROCESS CONSERVATION SEGMENTS
@@ -48,156 +49,42 @@ const mmseqScoreData = extractLines(mmseqScoreRescaled);
 
 // EXPORT DATA
 export const ConservationPanel = [
-    {
-        type: 'rect',
-        id: 'Conservation_Levels',
-        label: 'Conservation',
-        color: 'black',
-        flag: 4,
-        data: conservationSegments,
-        sidebar: [
-            {
-                id: 'Conservation_Level_1_Button',
-                label: 'Conservation Level 1 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #f0f3f5; margin-right: 5px;"></span>
-                    Conservation Level 1
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_2_Button',
-                label: 'Conservation Level 2 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #f0f3f5; margin-right: 5px;"></span>
-                    Conservation Level 2
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_3_Button',
-                label: 'Conservation Level 3 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #d1dae0; margin-right: 5px;"></span>
-                    Conservation Level 3
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_4_Button',
-                label: 'Conservation Level 4 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #b3c2cb; margin-right: 5px;"></span>
-                    Conservation Level 4
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_5_Button',
-                label: 'Conservation Level 5 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #95aab7; margin-right: 5px;"></span>
-                    Conservation Level 5
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_6_Button',
-                label: 'Conservation Level 6 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #7691a2; margin-right: 5px;"></span>
-                    Conservation Level 6
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_7_Button',
-                label: 'Conservation Level 7 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #5d7889; margin-right: 5px;"></span>
-                    Conservation Level 7
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_8_Button',
-                label: 'Conservation Level 8 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #485d6a; margin-right: 5px;"></span>
-                    Conservation Level 8
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_9_Button',
-                label: 'Conservation Level 9 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #34434c; margin-right: 5px;"></span>
-                    Conservation Level 9
-                </button>`
-            },
-            {
-                id: 'Conservation_Level_10_Button',
-                label: 'Conservation Level 10 Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #1f282e; margin-right: 5px;"></span>
-                    Conservation Level 10
-                </button>`
-            }
-        ]
-    },
-    {
-        type: 'curve',
-        id: 'CONSERVATION_SCORES',
-        label: ' ',
-        color: '#607c8e',
-        flag: 8,
-        data: mmseqScoreData,
-        sidebar: [
-                {
-                id: 'CONSERVATION_SCORES 0',
-                label: 'Conservation Score Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #607c8e; margin-right: 5px; vertical-align: middle;"></span>
-                    Conservation Score
-                </button>`
-            }
-        ]
-    }
+  {
+    type: 'rect',
+    id: 'Conservation_Levels',
+    label: 'Conservation',
+    color: '#000000',
+    flag: 4,
+    data: conservationSegments,
+    sidebar: [
+      createSidebarButton('Conservation_Levels', 'Conservation Level 1', COLORS.conv_0, 'box', 0),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 2', COLORS.conv_1, 'box', 1),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 3', COLORS.conv_2, 'box', 2),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 4', COLORS.conv_3, 'box', 3),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 5', COLORS.conv_4, 'box', 4),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 6', COLORS.conv_5, 'box', 5),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 7', COLORS.conv_6, 'box', 6),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 8', COLORS.conv_7, 'box', 7),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 9', COLORS.conv_8, 'box', 8),
+      createSidebarButton('Conservation_Levels', 'Conservation Level 10', COLORS.conv_9, 'box', 9)
+    ]
+  },
+  {
+    type: 'curve',
+    id: 'CONSERVATION_SCORES',
+    label: ' ',
+    color: COLORS.conv_score,
+    flag: 8,
+    data: mmseqScoreData,
+    sidebar: [
+      createSidebarButton('CONSERVATION_SCORES', 'Conservation Score', COLORS.conv_score, 'line', 0)
+    ]
+  }
 ];
+
 
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    const viewer = initializeViewer(sequence,ConservationPanel);
-    
-    viewer.onButtonSelected((event) => {
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'Signal_Peptide_Score_Button',
-            'Conservation_Level_1_Button',
-            'Conservation_Level_2_Button',
-            'Conservation_Level_3_Button',
-            'Conservation_Level_4_Button',
-            'Conservation_Level_5_Button',
-            'Conservation_Level_6_Button',
-            'Conservation_Level_7_Button',
-            'Conservation_Level_8_Button',
-            'Conservation_Level_9_Button',
-            'Conservation_Level_10_Button',
-            'CONSERVATION_SCORES 0',
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            //panels.resetAll();
-            viewer.featureToggle(buttonId);
-            
-        }
-
-    });
-
+    initializeViewer(sequence,ConservationPanel);  
 };
 

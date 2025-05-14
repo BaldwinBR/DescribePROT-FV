@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -31,17 +31,9 @@ export const LinkerPanel = [
         id: 'Linker_Residues',
         label: 'Linker',
         data: linkerSegments,
-        color: COLORS.linker,
+        color: '#000000',
         sidebar: [
-            {
-                id: 'Linker_Residues_Button',
-                label: 'Linker Residues Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #ff9408; margin-right: 5px;"></span>
-                    Linker Residues
-                </button>`
-            }
+            createSidebarButton('Linker_Residues', 'Linker Residues', COLORS.linker, 'box', 0)
         ]
     },
     {
@@ -52,38 +44,14 @@ export const LinkerPanel = [
         flag: 9,
         data: linkerScoreData,
         sidebar: [
-            {
-                id: 'LINKER_SCORES 0',
-                label: 'Linker Score Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #ff9408; margin-right: 5px; vertical-align: middle;"></span>
-                    Linker Score
-                </button>`
-            }
+            createSidebarButton('LINKER_SCORES', 'Linker Score', COLORS.linker, 'line', 0)
         ]
     },
 ];
 
+
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    const viewer = initializeViewer(sequence, LinkerPanel);
-    
-    viewer.onButtonSelected((event) => {
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'Linker_Residues_Button',
-            'LINKER_SCORES 0'
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            //panels.resetAll();
-            viewer.featureToggle(buttonId);
-            
-        }
-
-    });
-
+    initializeViewer(sequence, LinkerPanel);
 };
 

@@ -1,7 +1,9 @@
 import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
 
-export function initializeViewer(sequence: string, panel: any, elementId: string = '#feature-viewer'){
-    return new FeatureViewer(sequence, elementId, {
+// Initializes a FeatureViewer instance with the provided sequence and panel data.
+export function initializeViewer(sequence: string, panel: any, elementId: string = '#feature-viewer') {
+  
+    const viewer = new FeatureViewer(sequence, elementId, {
         toolbar: true,
         toolbarPosition: 'left',
         brushActive: true,
@@ -10,7 +12,70 @@ export function initializeViewer(sequence: string, panel: any, elementId: string
         flagTrack: 155,
         flagTrackMobile: 155,
         sideBar: 235
-    }, panel);
+    }, 
+    panel);
+
+    // Handle sidebar button selections
+    const sidebarButtonIds = panel.flatMap(
+        feature => feature.sidebar ? feature.sidebar.map(button => button.id) 
+        : []);
+
+    viewer.onButtonSelected((event) => {
+        const buttonId = event.detail.id;
+
+        if (sidebarButtonIds.includes(buttonId)) {
+        viewer.featureToggle(buttonId);
+        }
+    });
+    
+    return viewer;
+}
+
+/**
+ * Creates a sidebar button for a given feature, with customizable label, color, and shape.
+ * The button's ID is constructed from the feature ID and an index number, which is used
+ * for matching the button to the corresponding feature in toggle logic.
+ *
+ * Helpful Tips:
+ * - The `id` of your feature and the `id` of the button should match.
+ * - The `label` is what will be displayed as text in the button
+ * - The `index` number helps the toggle method find and operate on the correct feature.
+ */
+export function createSidebarButton(featureId: string, label: string, color: string, shape: 'box' | 'line' | 'triangle', index: number = 0): {
+    // Returns:
+    id: string;
+    label: string;
+    content: string;
+    tooltip?: string;
+} 
+{
+    // Line Styling
+    const lineVisual = `<span style="display: inline-block; width: 10px; height: 2px; background-color: ${color}; margin-right: 5px; vertical-align: middle;"></span>`;
+    
+    // Box Styling
+    const boxVisual = `<span style="display: inline-block; width: 10px; height: 10px; background-color: ${color}; margin-right: 5px;"></span>`;
+    
+    // Triangle Styling
+    const triangleVisual = `<span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid ${color}; margin-right: 5px;"></span>`;
+
+    // Choose the visual based on the shape type
+    const visual = shape === 'line' ? lineVisual 
+        : shape === 'triangle' ? triangleVisual 
+        : boxVisual;  // default to box
+
+    // Tooltip for line type, optional for others
+    const tooltip = shape === 'line' ? 'Click to Turn Off Line' : undefined;
+
+    return {
+        id: `${featureId} ${index}`,
+        label: `${label} Button`,
+        content: `
+        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+            ${visual}
+            ${label}
+        </button>`,
+        ...(tooltip ? { tooltip } : {}) // include tooltip only if it's defined
+    };
 }
 
 // **Segment Interface**

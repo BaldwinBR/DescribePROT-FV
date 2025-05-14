@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment } from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment } from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -18,7 +18,7 @@ const vslScore = panelData.vslScore;
 // SET COLORS FOR DATA
 const COLORS = {
     nativeDisorder: "#2da02c",
-    nativeUnavailable: "grey",
+    nativeUnavailable: "#c0c0c0",
     putativeDisorder: "#76fd63"
 };
 
@@ -41,18 +41,10 @@ export const disorderPanel = [
         id: 'Native_Disorder',
         label: 'Native Disorder',
         data: nativeDisorderSegments,
-        color: "black",
+        color: "#000000",
         className : 'Native_Disorder',
         sidebar: [
-            {
-                id: 'Native_Disorder_Button',
-                label: 'Native Disorder Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #2ca02c; margin-right: 5px;"></span>
-                    Native Disordered Regions
-                </button>`
-            }
+            createSidebarButton('Native_Disorder', 'Native Disordered', COLORS.nativeDisorder, 'box', 0)
         ]
     },
     {
@@ -60,59 +52,27 @@ export const disorderPanel = [
         id: 'Putative_Disorder',
         label: 'Putative Disorder',
         data: putativeDisorderSegments,
-        color: 'black',
+        color: '#000000',
         sidebar: [
-                {
-                id: 'Putative_Disorder_Button',
-                label: 'Putative Disorder Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #75fd63; margin-right: 5px;"></span>
-                    Putative Disordered Regions
-                </button>`
-            }
+                
+            createSidebarButton('Putative_Disorder', 'Putative Disordered', COLORS.putativeDisorder, 'box', 0)
+            
         ]
     },
     {
         type: 'curve',
         id: 'PREDICTIVE_DISORDER_SCORES',
         label: ' ',
-        color: '#76fd63',
+        color: COLORS.putativeDisorder,
         flag: 6,
         data: vslScoreData,
         sidebar: [
-            {
-                id: 'PREDICTIVE_DISORDER_SCORES 0',
-                label: 'Predictive Disorder Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #75fd63; margin-right: 5px; vertical-align: middle;"></span>
-                    Predictive Disordered Regions
-                </button>`
-            }
+            createSidebarButton('PREDICTIVE_DISORDER_SCORES', 'Predictive Disordered', COLORS.putativeDisorder, 'line', 0)
         ]
     }
 ];
 
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    const viewer = initializeViewer(sequence, disorderPanel);
-    
-    viewer.onButtonSelected((event) => {
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'DisoRDPbindDNA_Button',
-            'drnaPredDNA_Button',
-            'DNA_SCORES 0',
-            'DNA_SCORES 1',
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            viewer.featureToggle(buttonId);
-        }
-    });
+    initializeViewer(sequence, disorderPanel);
 };
-
-
-

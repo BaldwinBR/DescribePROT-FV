@@ -1,7 +1,5 @@
-import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
-import { initializeViewer, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
-import '../feature-constructor.scss';
 
 // RETRIEVE DATA 
 declare var inputValues: string;
@@ -52,124 +50,53 @@ const morfChibiScoreData = lineColorSegments(
 );
 
 export const ProteinPanel = [
-            {
-                type: 'rect',
-                id: 'DisoRDPbind_Binding',
-                label: 'DisoRDPbind-Protein',
-                data: disoRDPbindSegments,
-                color: '#3d7afd',
-                sidebar: [
-                    {
-                        id: 'DisoRDPbind_Binding_Button',
-                        label: 'DisoRDPbind Binding Button',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #3d7afd; margin-right: 5px;"></span>
-                            DisoRDPbind Protein Binding
-                        </button>`
-                    }
-                ]
-            },
-            
-            {
-                type: 'rect',
-                id: 'Scriber_Binding',
-                label: 'SCRIBER',
-                data: scriberSegments,
-                color: '#3b5b92',
-                sidebar: [
-                    {
-                        id: 'Scriber_Binding_Button',
-                        label: 'Scriber Binding Button',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #3b5b92; margin-right: 5px;"></span>
-                            SCRIBER Protein Binding
-                        </button>`
-                    }
-                ]
-            },
-            {
-                type: 'rect',
-                id: 'MoRFchibi_Binding',
-                label: 'MoRFchibi',
-                data: morfChibiSegments,
-                color: '#01889f',
-                sidebar: [
-                    {
-                        id: 'MoRFchibi_Binding_Button',
-                        label: 'MoRFchibi Binding Button',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #01889f; margin-right: 5px;"></span>
-                            MoRFchibi Protein Binding
-                        </button>`
-                    }
-                ]
-                
-            },
-            {
-                type: 'curve',
-                id: 'PROTEIN_SCORES',
-                label: ' ',
-                color: ['#3d7afd', '#3b5b92', '#01889f'],
-                flag: 3,
-                data:[disoRDPbindScoreData, scriberScoreData, morfChibiScoreData],
-                sidebar: [
-                    {
-                        id: 'PROTEIN_SCORES 0',
-                        label: 'DisoRDPbind Score Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #3d7afd; margin-right: 5px; vertical-align: middle;"></span>
-                            DisoRDPbind Score
-                        </button>`
-                    },
-                    {
-                        id: 'PROTEIN_SCORES 1',
-                        label: 'Scriber Score Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #3b5b92; margin-right: 5px; vertical-align: middle;"></span>
-                            Scriber Score
-                        </button>`
-                    },
-                    {
-                        id: 'PROTEIN_SCORES 2',
-                        label: 'MoRFchibi Score Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #01889f; margin-right: 5px; vertical-align: middle;"></span>
-                            MoRFchibi Score
-                        </button>`
-                    }
-                ]
-            },  
+  {
+    type: 'rect',
+    id: 'DisoRDPbind_Binding',
+    label: 'DisoRDPbind-Protein',
+    data: disoRDPbindSegments,
+    color: '#000000',
+    sidebar: [
+      createSidebarButton('DisoRDPbind_Binding', 'DisoRDPbind Protein Binding', COLORS.disoRDPbind, 'box', 0)
+    ]
+  },
+  {
+    type: 'rect',
+    id: 'Scriber_Binding',
+    label: 'SCRIBER',
+    data: scriberSegments,
+    color: '#000000',
+    sidebar: [
+      createSidebarButton('Scriber_Binding', 'SCRIBER Protein Binding', COLORS.scriber, 'box', 0)
+    ]
+  },
+  {
+    type: 'rect',
+    id: 'MoRFchibi_Binding',
+    label: 'MoRFchibi',
+    data: morfChibiSegments,
+    color: '#000000',
+    sidebar: [
+      createSidebarButton('MoRFchibi_Binding', 'MoRFchibi Protein Binding', COLORS.morfChibi, 'box', 0)
+    ]
+  },
+  {
+    type: 'curve',
+    id: 'PROTEIN_SCORES',
+    label: ' ',
+    color: [COLORS.disoRDPbind, COLORS.scriber, COLORS.morfChibi],
+    flag: 3,
+    data: [disoRDPbindScoreData, scriberScoreData, morfChibiScoreData],
+    sidebar: [
+      createSidebarButton('PROTEIN_SCORES', 'DisoRDPbind Score', COLORS.disoRDPbind, 'line', 0),
+      createSidebarButton('PROTEIN_SCORES', 'Scriber Score', COLORS.scriber, 'line', 1),
+      createSidebarButton('PROTEIN_SCORES', 'MoRFchibi Score', COLORS.morfChibi, 'line', 2)
+    ]
+  }
 ];
 
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    const viewer = initializeViewer(sequence, ProteinPanel);
-
-    viewer.onButtonSelected((event) => {
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'DisoRDPbind_Binding_Button',
-            'Scriber_Binding_Button',
-            'MoRFchibi_Binding_Button',
-            'PROTEIN_SCORES 0',
-            'PROTEIN_SCORES 1',
-            'PROTEIN_SCORES 2'
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            //panels.resetAll();
-            viewer.featureToggle(buttonId);
-            
-        }
-    });
+    initializeViewer(sequence, ProteinPanel);
 };
 
