@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -39,93 +39,43 @@ const drnaPredRNAScoreData = lineColorSegments(
 
 // EXPORT DATA
 export const RNAPanel = [
-    { 
-        type: 'rect', 
-        id: 'DisoRDPbindRNA', 
-        label: 'DisoRDPbind-RNA', 
-        data: disoRDPbindRNAColour, 
-        color: "#fcc006",
-        sidebar: [
-            {
-                id: 'DisoRDPbindRNA_Button',
-                label: 'DisoRDPbind RNA binding Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #fcc006; margin-right: 5px;"></span>
-                    DisoRDPbind RNA Binding
-                </button>`
-            }
-        ]
-    },
-    { 
-        type: 'rect', 
-        id: 'drnaPredRNA', 
-        label: 'DRNApred-RNA', 
-        data: drnaPredRNAColour, 
-        color: "#fdff38",
-        sidebar: [
-            {
-                id: 'drnaPredRNA_Button',
-                label: 'DRNApred RNA binding Button',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #fdff38; margin-right: 5px;"></span>
-                    DRNApred RNA Binding
-                </button>`
-            }
-        ]
-    },
-    { 
-        type: 'curve', 
-        id: 'RNA_SCORES', 
-        label: ' ', 
-        color: ['#fcc006', '#fdff38'], 
-        flag: 5,
-        data: [disoRDPbindRNAScoreData, drnaPredRNAScoreData],
-        sidebar: [
-                {
-                id: 'RNA_SCORES 0',
-                label: 'DisoRDPbind RNA Score Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #fcc006; margin-right: 5px; vertical-align: middle;"></span>
-                    DisoRDPbind RNA Score
-                </button>`
-            },
-            {
-                id: 'RNA_SCORES 1',
-                label: 'DRNApred RNA Score Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #fdff38; margin-right: 5px; vertical-align: middle;"></span>
-                    DRNApred RNA Score 
-                </button>`
-            }
-        ]
-    },
+  {
+    type: 'rect',
+    id: 'DisoRDPbindRNA',
+    label: 'DisoRDPbind-RNA',
+    data: disoRDPbindRNAColour,
+    color: '#000000',
+    sidebar: [
+      createSidebarButton('DisoRDPbindRNA', 'DisoRDPbind RNA Binding', COLORS.disoRDPbind, 'box', 0)
+    ]
+  },
+  {
+    type: 'rect',
+    id: 'drnaPredRNA',
+    label: 'DRNApred-RNA',
+    data: drnaPredRNAColour,
+    color: '#000000',
+    sidebar: [
+      createSidebarButton('drnaPredRNA', 'DRNApred RNA Binding', COLORS.drnaPred, 'box', 0)
+    ]
+  },
+  {
+    type: 'curve',
+    id: 'RNA_SCORES',
+    label: ' ',
+    color: [COLORS.disoRDPbind, COLORS.drnaPred],
+    flag: 5,
+    data: [disoRDPbindRNAScoreData, drnaPredRNAScoreData],
+    sidebar: [
+      createSidebarButton('RNA_SCORES', 'DisoRDPbind RNA Score', COLORS.disoRDPbind, 'line', 0),
+      createSidebarButton('RNA_SCORES', 'DRNApred RNA Score', COLORS.drnaPred, 'line', 1)
+    ]
+  }
 ];
+
 
 // LOAD WINDOW IF SINGULAR PANEL VIEW
 window.onload = () => {
-    const viewer = initializeViewer(sequence, RNAPanel);
-    viewer.onButtonSelected((event) => {   
-        const buttonId = event.detail.id;
-        const resetButtons = [
-            'DisoRDPbindRNA_Button',
-            'drnaPredRNA_Button',
-            'RNA_SCORES 0',
-            'RNA_SCORES 1'
-        ];
-
-        if (resetButtons.includes(buttonId)) {
-            //panels.resetAll();
-            viewer.featureToggle(buttonId);
-            
-        }
-
-    });
-
+    initializeViewer(sequence, RNAPanel);
 };
 
