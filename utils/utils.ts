@@ -9,7 +9,7 @@ export function initializeViewer(sequence: string, panel: any, elementId: string
         flagColor: 'white',
         flagTrack: 155,
         flagTrackMobile: 155,
-        sideBar: 230
+        sideBar: 235
     }, panel);
 }
 

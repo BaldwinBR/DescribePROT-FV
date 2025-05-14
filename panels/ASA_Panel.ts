@@ -19,7 +19,7 @@ const asaScore = panelData.asaScore;
 // SET COLORS FOR DATA
 const COLORS = {
     rsaAvailable: "#fc0080",
-    rsaUnavailable: "grey",
+    rsaUnavailable: "#c0c0c0",
     asaAvailable: "#ffd2df"
 };
 

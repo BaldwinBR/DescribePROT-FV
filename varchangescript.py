@@ -38,14 +38,10 @@ def main():
     ]
 
     for name in file_names:
-        # Webpack must have name set exactly to index for serve
-        # index_Canvas would break serve functionality 
-        if name == "index":
-            input_html = Path(f"dist/{name}.html")
-        else:
-            input_html = Path(f"dist/{name}_Canvas.html")
-
+    
+        input_html = Path(f"dist/{name}.html")
         output_html = Path(f"dist/{name}.html")
+
         inject_data(input_html, output_html, data)
 
 
