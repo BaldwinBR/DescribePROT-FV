@@ -1,159 +1,127 @@
-import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
-import { extractSegments, extractLines, Segment, extractScoreSegments, psipredRescaleScores, mmseqRescaleScores, lineColorSegments} from "../utils/utils";
-import '../feature-constructor.scss';
+import { initializeViewer, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
+import { PanelDataService } from '../utils/PanelDataService'; 
 
+// RETRIEVE DATA 
 declare var inputValues: string;
 
-// Split lines into array
-const lines: string[] = inputValues.split('\n');
-const sequence: string = lines[1]?.trim() || "";
+// GET CLEANED PANEL SPECIFIC DATA 
+const panelParser = new PanelDataService();
+panelParser.initialize(inputValues);
 
-// **ASA Panel Data**
-const rawRSABinary: string = lines[32]?.trim() || "";
-const rawRSAScore: string = lines[33]?.trim() || "";
-const rawASABinary: string = lines[14]?.trim() || "";
-const rawASAScore: string = lines[15]?.trim() || "";
+const panelData = panelParser.getPanelData("ASA_Panel");
 
-const rsaBinary: number[] = rawRSABinary ? Array.from(rawRSABinary, Number) : [];
-const rsaScore: number[] = rawRSAScore.trim().split(',').map(val => parseFloat(val));
-const asaBinary: number[] = rawASABinary ? Array.from(rawASABinary, Number) : [];
-const asaScore: number[] = rawASAScore.trim().split(',').map(val => parseFloat(val));
+const sequence = panelData.sequence;
+const rsaBinary = panelData.rsaBinary;
+const rsaScore = panelData.rsaScore;
+const asaBinary = panelData.asaBinary;
+const asaScore = panelData.asaScore;
 
+// SET COLORS FOR DATA
+const COLORS = {
+    rsaAvailable: "#fc0080",
+    rsaUnavailable: "grey",
+    asaAvailable: "#ffd2df"
+};
 
-// **RSA panel**
-const nativeRSABinaryColor: Segment[] = extractSegments(rsaBinary, 1, "#fc0080"); // assigned color for available RSA data
-const nativeRSABinaryGrey: Segment[] = extractSegments(rsaBinary, 2, "grey"); // Grey for not available RSA data
-
-// This is to plot the available and unavailable data at the same line
-const mergedRSABinary: Segment[] = [
-    ...nativeRSABinaryColor.map(s => ({ ...s, color: "#fc0080" })),
-    ...nativeRSABinaryGrey.map(s => ({ ...s, color: "grey" }))
+// PROCESS RSA BINARY SEGMENTS
+const rsaSegments: Segment[] = [
+    ...extractSegments(rsaBinary, 1, COLORS.rsaAvailable),
+    ...extractSegments(rsaBinary, 2, COLORS.rsaUnavailable)
 ];
 
-// line data for RSA Score
-const rsaLines =  extractLines(rsaScore);
-const rsaSegment: Segment[] = extractScoreSegments(rsaScore, 0, "#fc0080");
-const mergedRSA: Segment[] = [
-    ...rsaSegment.map(s => ({ ...s, color: "#fc0080"})),
-];
-const rsaScoreData = lineColorSegments(rsaLines, mergedRSA);
+// EXTRACT RSA SCORES FOR LINE GRAPH
+const rsaLines = extractLines(rsaScore);
+const rsaScoreSegments: Segment[] = extractScoreSegments(rsaScore, 0, COLORS.rsaAvailable);
+const rsaScoreData = lineColorSegments(rsaLines, rsaScoreSegments);
 
-// line data for ASA Score
-const asaLines =  extractLines(asaScore);
-const asaSegment: Segment[] = extractScoreSegments(asaScore, 0, "#ffd2df");
-const mergedASA: Segment[] = [
-    ...asaSegment.map(s => ({ ...s, color: "#ffd2df"})),
-];
-const asaScoreData = lineColorSegments(asaLines, mergedASA);
+// EXTRACT ASA SCORES FOR LINE GRAPH
+const asaLines = extractLines(asaScore);
+const asaScoreSegments: Segment[] = extractScoreSegments(asaScore, 0, COLORS.asaAvailable);
+const asaScoreData = lineColorSegments(asaLines, asaScoreSegments);
 
-// Extract ASA and RSA Binary Data
-const buriedResiduesResults: Segment[] = extractSegments(asaBinary, 1, "#ffd2df");
+// PROCESS ASA BINARY SEGMENTS
+const asaSegments: Segment[] = extractSegments(asaBinary, 1, COLORS.asaAvailable);
 
-
-
-window.onload = () => {
-    let panels = new FeatureViewer(sequence, '#feature-viewer',
-
-        {
-            toolbar: true,
-            toolbarPosition: 'left',
-            brushActive: true,
-            zoomMax: 7,
-            flagColor: 'white',
-            flagTrack: 155,
-            flagTrackMobile: 155,
-            sideBar: 230
-        },
-        [
-            // ** ASA PANEL **
+// EXPORT DATA
+export const asaPanel = [
+    {
+        type: 'rect',
+        id: 'Native_RSA_Binary',
+        label: 'Native Buried Residues',
+        data: rsaSegments,
+        color: "black",
+        sidebar: [
             {
-                type: 'rect',
-                id: 'Native_RSA_Binary',
-                label: 'Native Buried Residues',
-                data: mergedRSABinary,
-                color: "black",
-                sidebar: [
-                    {
-                        id: 'Header',
-                        label: 'Header',
-                        content: '<span style="font-size: .8125rem; font-family: sans-serif;">Click on Legend Item to Show/Hide</span>'
-                    },
-                    {
-                        id: 'Sequence_Button',
-                        label: 'Sequence Button',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 12px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 5px; height: 5px; background-color: black; border-radius: 50%; margin-right: 12px;"></span>
-                            Sequence
-                        </button>`
-                    },
-                    {
-                        id: 'Native_RSA_Binary_Button',
-                        label: 'Native RSA Binary Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #fc0080; margin-right: 5px;"></span>
-                            Native Buried Residue
-                        </button>`
-                    }
-                ]
-            },
-            {
-                type: 'rect',
-                id: 'Putative_Buried_Residue',
-                label: 'Putative Buried Residue',
-                data: buriedResiduesResults,
-                color: 'black',
-                sidebar: [
-                    {
-                        id: 'Putative_Buried_Residue_Button',
-                        label: 'Putative Buried Residue Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 10px; background-color: #ffd2df; margin-right: 5px;"></span>
-                            Native Buried Residue
-                        </button>`
-                     }
-                ]
-            },
-            {
-                type: 'curve',
-                id: 'ASA_SCORES',
-                label: ' ',
-                color: ['#ffd2df', '#fc0080'],
-                stroke: "black",
-                flag: 2,
-                data: [asaScoreData,  rsaScoreData],
-                sidebar: [
-                     {
-                        id: 'ASA_SCORES 1',
-                        label: 'ASA SCORES Native Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #fc0080; margin-right: 5px; vertical-align: middle;"></span>
-                            Native Solvent Accesibility
-                        </button>`
-                    },
-                    {
-                        id: 'ASA_SCORES 0',
-                        label: 'ASA SCORES Predicted Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                            <span style="display: inline-block; width: 10px; height: 2px; background-color: #ffd2df; margin-right: 5px; vertical-align: middle;"></span>
-                            Predicted Solvent Accesibility
-                        </button>`
-                    },
-                ]
+                id: 'Native_RSA_Binary_Button',
+                label: 'Native RSA Binary Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #fc0080; margin-right: 5px;"></span>
+                    Native Buried Residue
+                </button>`
             }
-        ]);
+        ]
+    },
+    {
+        type: 'rect',
+        id: 'Putative_Buried_Residue',
+        label: 'Putative Buried Residue',
+        data: asaSegments,
+        color: 'black',
+        sidebar: [
+            {
+                id: 'Putative_Buried_Residue_Button',
+                label: 'Putative Buried Residue Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #ffd2df; margin-right: 5px;"></span>
+                    Native Buried Residue
+                </button>`
+                }
+        ]
+    },
+    {
+        type: 'curve',
+        id: 'ASA_SCORES',
+        label: ' ',
+        color: ['#ffd2df', '#fc0080'],
+        stroke: "black",
+        flag: 2,
+        data: [asaScoreData,  rsaScoreData],
+        sidebar: [
+                {
+                id: 'ASA_SCORES 1',
+                label: 'ASA SCORES Native Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #fc0080; margin-right: 5px; vertical-align: middle;"></span>
+                    Native Solvent Accesibility
+                </button>`
+            },
+            {
+                id: 'ASA_SCORES 0',
+                label: 'ASA SCORES Predicted Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
+                    <span style="display: inline-block; width: 10px; height: 2px; background-color: #ffd2df; margin-right: 5px; vertical-align: middle;"></span>
+                    Predicted Solvent Accesibility
+                </button>`
+            },
+        ]
+    }
+];
 
-    panels.onButtonSelected((event) => {
-    const buttonId = event.detail.id;
+// LOAD WINDOW IF SINGULAR PANEL VIEW
+window.onload = () => {
+    
+    const viewer = initializeViewer(sequence, asaPanel);
 
+    viewer.onButtonSelected((event) => {
+        const buttonId = event.detail.id;
         const resetButtons = [
             'Native_RSA_Binary_Button',
             'Putative_Buried_Residue_Button',
@@ -163,7 +131,7 @@ window.onload = () => {
 
         if (resetButtons.includes(buttonId)) {
             //panels.resetAll();
-            panels.featureToggle(buttonId);
+            viewer.featureToggle(buttonId);
             
         }
 

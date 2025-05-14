@@ -1,3 +1,17 @@
+import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
+
+export function initializeViewer(sequence: string, panel: any, elementId: string = '#feature-viewer'){
+    return new FeatureViewer(sequence, elementId, {
+        toolbar: true,
+        toolbarPosition: 'left',
+        brushActive: true,
+        zoomMax: 7,
+        flagColor: 'white',
+        flagTrack: 155,
+        flagTrackMobile: 155,
+        sideBar: 230
+    }, panel);
+}
 
 // **Segment Interface**
 export interface Segment {
@@ -70,45 +84,7 @@ export function extractSegments(binaryArray: number[], targetValue: number, colo
     return segments;
 }
 
-
-/**
- * Converts an array of numerical scores into an array of coordinate points `{x, y}` 
- * for line plotting in FeatureViewer.
- *
- * @param {number[]} scoreArray - An array of numerical scores representing Y-values.
- * @returns {{x: number; y: number}[]} An array of objects, where each object contains an X (position) and Y (score) value.
- */
-export function extractLines(scoreArray: number[]): { x: number; y: number }[] {
-    return scoreArray.map((value, index) => ({
-        x: index + 1,
-        y: value
-    }));
-}
-
-
-// **Rescaling for psi pred score**
-export function psipredRescaleScores(scores) {
-    // find min and max values in array
-    const min = Math.min(...scores);
-    const max = Math.max(...scores);
-    
-    // apply min-max scaling
-    return scores.map(value => 0.33 + ((value - min) / (max - min)) * (1 - 0.33));
-}
-
-// **Rescaling for mmseq score**
-export function mmseqRescaleScores(scores) {
-    // find min and max values in array
-    const min = Math.min(...scores);
-    const max = Math.max(...scores);
-    
-    // apply min-max scaling
-    return scores.map(value => (value - min) / (max - min));
-}
-
-// TODO: Potenitally overhaul --Ben
-// Works for testing
-// Sort and nested for loop bring complexity questions
+// Give Segments color data
 export function lineColorSegments(data : {x: number; y: number;}[], segments: Segment[]): any {
 
     const colorData = data.map(point => ({...point, color: ""}));
@@ -137,4 +113,38 @@ export function lineColorSegments(data : {x: number; y: number;}[], segments: Se
 
     }
     return colorData;
+}
+
+/**
+ * Converts an array of numerical scores into an array of coordinate points `{x, y}` 
+ * for line plotting in FeatureViewer.
+ *
+ * @param {number[]} scoreArray - An array of numerical scores representing Y-values.
+ * @returns {{x: number; y: number}[]} An array of objects, where each object contains an X (position) and Y (score) value.
+ */
+export function extractLines(scoreArray: number[]): { x: number; y: number }[] {
+    return scoreArray.map((value, index) => ({
+        x: index + 1,
+        y: value
+    }));
+}
+
+// **Rescaling for psi pred score**
+export function psipredRescaleScores(scores) {
+    // find min and max values in array
+    const min = Math.min(...scores);
+    const max = Math.max(...scores);
+    
+    // apply min-max scaling
+    return scores.map(value => 0.33 + ((value - min) / (max - min)) * (1 - 0.33));
+}
+
+// **Rescaling for mmseq score**
+export function mmseqRescaleScores(scores) {
+    // find min and max values in array
+    const min = Math.min(...scores);
+    const max = Math.max(...scores);
+    
+    // apply min-max scaling
+    return scores.map(value => (value - min) / (max - min));
 }
