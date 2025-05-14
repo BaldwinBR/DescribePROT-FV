@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === "production";
 // Define multiple entry points
 const entries = {
   //For Webpack Serve 
-  index: { import: "./feature-constructor.ts" }, 
+  index: { import: "./feature-constructor.ts"}, 
 
   // Panel Entries
   Main_Panel_Canvas: { import: "./panels/Main_Panel.ts" },

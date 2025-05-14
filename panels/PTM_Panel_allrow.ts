@@ -1,24 +1,15 @@
-import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
-import { extractSegments, extractLines, Segment, extractScoreSegments, psipredRescaleScores, mmseqRescaleScores, lineColorSegments} from "../utils/utils";
-import '../feature-constructor.scss';
+import { initializeViewer } from "../utils/utils";
+import { PanelDataService } from '../utils/PanelDataService'; 
 
-declare var inputValues: string;
-
-// Split lines into array
-const lines: string[] = inputValues.split('\n');
-const sequence: string = lines[1]?.trim() || "";
-
+// ---------------------------- PTM SPECIFIC HELPERS ----------------------------
 
 interface PTMEntry {
-    // For plotting
-    x: number;
-    // PTM Type name (ex: Phosphorylation)
-    type: string;
+    x: number; // For plotting
+    type: string; // PTM Type name (ex: Phosphorylation)
     color: string;
     stroke?: string;
     opacity?: number;
-     // For stacking in fillSvg
-    _stackY?: number;
+    _stackY?: number; // For stacking in fillSvg
 }
 
 const ptmTypes: Record<string, { type: string; color: string }> = {
@@ -33,12 +24,12 @@ const ptmTypes: Record<string, { type: string; color: string }> = {
     '9': { type: 'Hydroxylation', color: '#6A5ACD' },
 };
 
-// Parse PTM data from lines[] and return an array of PTMEntry
+// Parse PTM data from givenn array and return an array of PTMEntry
 function parsePTMPanel(lines: string[]): PTMEntry[] {
     const ptmEntries: PTMEntry[] = [];
 
     // PTM data starts from line 34
-    for (let i = 34; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
 
@@ -62,142 +53,137 @@ function parsePTMPanel(lines: string[]): PTMEntry[] {
     return ptmEntries;
 }
 
-// Raw PTM data
+// ---------------------------- START OF LOGIC HERE ----------------------------
+
+// RETRIEVE DATA 
+declare var inputValues: string;
+
+// GET PANEL SPECIFIC DATA 
+const panelParser = new PanelDataService();
+panelParser.initialize(inputValues);
+
+const panelData = panelParser.getPanelData("PTM_Panel_allrow");
+const sequence = panelData.sequence
+
+// FORMAT DATA RECEIVED (Only need data not keys) 
+const lines = Object.entries(panelData)
+  .filter(([key]) => key !== "sequence")
+  .map(([, value]) => value);
+
+// CALL ENTRIES METHOD
 const ptmEntries = parsePTMPanel(lines);
 
-window.onload = () => {
-    let panels = new FeatureViewer(sequence, '#feature-viewer',
+// ---------------------------- PANEL CONSTRUCTION ----------------------------
 
-        {
-            toolbar: true,
-            toolbarPosition: 'left',
-            brushActive: true,
-            zoomMax: 7,
-            flagColor: 'white',
-            flagTrack: 155,
-            flagTrackMobile: 155,
-            sideBar: 230
-        },
-        [
-            // ** PTM PANEL **
+// EXPORT DATA
+export const PTMPanel = [
+    {
+        type: 'ptmTriangle',
+        id: 'PTM_Sites',
+        label: 'PTM Sites',
+        data: ptmEntries,
+        color: 'black',
+        sidebar: [
             {
-                type: 'ptmTriangle',
-                id: 'PTM_Sites',
-                label: 'PTM Sites',
-                data: ptmEntries,
-                color: 'black',
-                sidebar: [
-                    {
-                        id: 'Header',
-                        label: 'Header',
-                        content: '<span style="font-size: .8125rem; font-family: sans-serif;">Click on Legend Item to Show/Hide</span>'
-                    },
-                    {
-                        id: 'Sequence_Button',
-                        label: 'Sequence Button',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 12px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 5px; height: 5px; background-color: black; border-radius: 50%; margin-right: 12px;"></span>
-                            Sequence
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 0',
-                        label: 'PTM Phophorylation Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #DC143C; margin-right: 5px;"></span>
-                            Phophorylation
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 1',
-                        label: 'PTM Glycosylation Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #1E90FF; margin-right: 5px;"></span>
-                            Glycosylation
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 2',
-                        label: 'PTM Ubiquitination Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #FF4500; margin-right: 5px;"></span>
-                            Ubiquitination
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 3',
-                        label: 'PTM SUMOylation Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #C71585; margin-right: 5px;"></span>
-                            SUMOylation
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 4',
-                        label: 'PTM Acetyllysine Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #00CED1; margin-right: 5px;"></span>
-                            Acetyllysine
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 5',
-                        label: 'PTM Methylation Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #DAA520; margin-right: 5px;"></span>
-                            Methylation
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 6',
-                        label: 'PTM Pyrrolidone carboxylic acid Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #228B22; margin-right: 5px;"></span>
-                            Pyrrolidone carboxylic acid
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 7',
-                        label: 'PTM Palmitoylation Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #9932CC; margin-right: 5px;"></span>
-                            Palmitoylation
-                        </button>`
-                    },
-                    {
-                        id: 'PTM_Sites 8',
-                        label: 'PTM Hydroxylation Button',
-                        tooltip: 'Click to Turn Off Line',
-                        content: `
-                        <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #6A5ACD; margin-right: 5px;"></span>
-                            Hydroxylation
-                        </button>`
-                    }
-                ]
-              }
-        ]);
+                id: 'PTM_Sites 0',
+                label: 'PTM Phophorylation Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #DC143C; margin-right: 5px;"></span>
+                    Phophorylation
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 1',
+                label: 'PTM Glycosylation Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #1E90FF; margin-right: 5px;"></span>
+                    Glycosylation
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 2',
+                label: 'PTM Ubiquitination Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #FF4500; margin-right: 5px;"></span>
+                    Ubiquitination
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 3',
+                label: 'PTM SUMOylation Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #C71585; margin-right: 5px;"></span>
+                    SUMOylation
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 4',
+                label: 'PTM Acetyllysine Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #00CED1; margin-right: 5px;"></span>
+                    Acetyllysine
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 5',
+                label: 'PTM Methylation Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #DAA520; margin-right: 5px;"></span>
+                    Methylation
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 6',
+                label: 'PTM Pyrrolidone carboxylic acid Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #228B22; margin-right: 5px;"></span>
+                    Pyrrolidone carboxylic acid
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 7',
+                label: 'PTM Palmitoylation Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #9932CC; margin-right: 5px;"></span>
+                    Palmitoylation
+                </button>`
+            },
+            {
+                id: 'PTM_Sites 8',
+                label: 'PTM Hydroxylation Button',
+                tooltip: 'Click to Turn Off Line',
+                content: `
+                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none; display: flex; align-items: center;">
+                    <span style="display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 10px solid #6A5ACD; margin-right: 5px;"></span>
+                    Hydroxylation
+                </button>`
+            }
+        ]
+    }
+];
 
-    panels.onButtonSelected((event) => {
-    const buttonId = event.detail.id;
-
+// LOAD WINDOW IF SINGULAR PANEL VIEW
+window.onload = () => {
+    const viewer = initializeViewer(sequence, PTMPanel);
+    
+    viewer.onButtonSelected((event) => { 
+        const buttonId = event.detail.id;
         const resetButtons = [
             'PTM_Sites 0',
             'PTM_Sites 1',
@@ -212,7 +198,7 @@ window.onload = () => {
 
         if (resetButtons.includes(buttonId)) {
             //panels.resetAll();
-            panels.featureToggle(buttonId);
+            viewer.featureToggle(buttonId);
             
         }
 
