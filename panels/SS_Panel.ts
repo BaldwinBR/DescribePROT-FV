@@ -84,17 +84,6 @@ export const SSPanel = [
         flag: 2,
         data: secssSegments, 
         sidebar: [
-        
-            {
-                id: 'Native_Sec_Struc_Unavailable_Button',
-                label: 'Native Sec Struc Unavailable Button',
-                tooltip: 'Click to Turn Off Line',
-                content: `
-                <button class="btn" style="background-color: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;">
-                    <span style="display: inline-block; width: 10px; height: 10px; background-color: #c0c0c0; margin-right: 5px;"></span>
-                    Unavaliable_native
-                </button>`
-            },
             {
                 id: 'Native_Sec_Struc_Coil_Button',
                 label: 'Native Sec Struc Coil Button',

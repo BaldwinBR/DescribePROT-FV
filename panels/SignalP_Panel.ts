@@ -1,4 +1,4 @@
-import { initializeViewer, extractSegments, extractLines, Segment, extractScoreSegments, psipredRescaleScores, mmseqRescaleScores, lineColorSegments} from "../utils/utils";
+import { initializeViewer, extractSegments, extractLines, Segment} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
