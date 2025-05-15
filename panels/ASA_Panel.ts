@@ -1,4 +1,5 @@
-import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegmentsNEW, extractLinesNEW} from "../utils/utils";
+import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -24,23 +25,17 @@ const COLORS = {
 };
 
 // PROCESS RSA BINARY SEGMENTS
-const rsaSegments: Segment[] = [
-    ...extractSegments(rsaBinary, 1, COLORS.rsaAvailable),
-    ...extractSegments(rsaBinary, 2, COLORS.rsaUnavailable)
+const rsaSegments: FeatureData[] = [
+    ...extractSegmentsNEW(rsaBinary, 1, COLORS.rsaAvailable, "Native Buried Residues"),
+    ...extractSegmentsNEW(rsaBinary, 2, COLORS.rsaUnavailable, "Unavailable")
 ];
 
-// EXTRACT RSA SCORES FOR LINE GRAPH
-const rsaLines = extractLines(rsaScore);
-const rsaScoreSegments: Segment[] = extractScoreSegments(rsaScore, 0, COLORS.rsaAvailable);
-const rsaScoreData = lineColorSegments(rsaLines, rsaScoreSegments);
-
-// EXTRACT ASA SCORES FOR LINE GRAPH
-const asaLines = extractLines(asaScore);
-const asaScoreSegments: Segment[] = extractScoreSegments(asaScore, 0, COLORS.asaAvailable);
-const asaScoreData = lineColorSegments(asaLines, asaScoreSegments);
-
 // PROCESS ASA BINARY SEGMENTS
-const asaSegments: Segment[] = extractSegments(asaBinary, 1, COLORS.asaAvailable);
+const asaSegments: FeatureData[] = extractSegmentsNEW(asaBinary, 1, COLORS.asaAvailable, "Putative Buried Residue");
+
+// PROCESS SCORES
+const rsaScoreData = extractLinesNEW(rsaScore, COLORS.rsaAvailable, "Native Solvent Accessibility");
+const asaScoreData = extractLinesNEW(asaScore, COLORS.asaAvailable, "Predicted Solvent Accessibility");
 
 // EXPORT DATA
 export const asaPanel = [
@@ -49,7 +44,7 @@ export const asaPanel = [
         id: 'Native_RSA_Binary',
         label: 'Native Buried Residues',
         data: rsaSegments,
-        color: "#000000",
+        color: "#000000", 
         sidebar: [
             createSidebarButton('Native_RSA_Binary', 'Native Buried Residue', COLORS.rsaAvailable, 'box', 0)
         ]
@@ -68,8 +63,6 @@ export const asaPanel = [
         type: 'curve',
         id: 'ASA_SCORES',
         label: ' ',
-        color: [COLORS.asaAvailable, COLORS.rsaAvailable],
-        flag: 2,
         data: [asaScoreData, rsaScoreData],
         sidebar: [
             createSidebarButton('ASA_SCORES', 'Native Solvent Accessibility', COLORS.rsaAvailable, 'line', 1),

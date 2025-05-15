@@ -1,4 +1,5 @@
-import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegmentsNEW, extractLinesNEW} from "../utils/utils";
+import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -19,9 +20,9 @@ const COLORS = {
     linker: "#ff9408"
 };
 
-// **Linker Panel**
-const linkerSegments: Segment[] = extractSegments(linkerBinary, 1, COLORS.linker);
-const linkerScoreData = extractLines(linkerScore);
+// PROCESS DATA
+const linkerSegments: FeatureData[] = extractSegmentsNEW(linkerBinary, 1, COLORS.linker, "Linker Residues");
+const linkerScoreData = extractLinesNEW(linkerScore, COLORS.linker, "Linker Score");
 
 
 // EXPORT DATA

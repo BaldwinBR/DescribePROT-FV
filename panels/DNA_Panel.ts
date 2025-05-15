@@ -1,4 +1,5 @@
-import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment, extractScoreSegments, lineColorSegments} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegmentsNEW, extractLinesNEW} from "../utils/utils";
+import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -23,19 +24,13 @@ const COLORS = {
 };
 
 // CONSTRUCT SEGMENTS
-const disoRDPbindDNAColour: Segment[] = extractSegments(disoRDPbindDNA, 1, COLORS.disoRDPbind);
-const drnaPredDNAColour: Segment[] = extractSegments(drnaPredDNA, 1, COLORS.drnaPred);
+const disoRDPbindDNAColour: FeatureData[] = extractSegmentsNEW(disoRDPbindDNA, 1, COLORS.disoRDPbind, "DisoRDPbind DNA Binding");
+const drnaPredDNAColour: FeatureData[] = extractSegmentsNEW(drnaPredDNA, 1, COLORS.drnaPred, "DRNApred DNA Binding");
 
 // CONSTRUCT LINES & COLORED SCORE DATA
-const disoRDPbindDNAScoreData = lineColorSegments(
-    extractLines(disoRDPbindDNAScore),
-    extractScoreSegments(disoRDPbindDNAScore, 0, COLORS.disoRDPbind)
-);
+const disoRDPbindDNAScoreData = extractLinesNEW(disoRDPbindDNAScore, COLORS.disoRDPbind, "DisoRDPbind DNA Score")
+const drnaPredDNAScoreData =  extractLinesNEW(drnaPredDNAScore, COLORS.drnaPred, "DRNApred DNA Score")
 
-const drnaPredDNAScoreData = lineColorSegments(
-    extractLines(drnaPredDNAScore),
-    extractScoreSegments(drnaPredDNAScore, 0, COLORS.drnaPred)
-);
 
 // EXPORT DATA
 export const DNAPanel = [         
@@ -63,8 +58,6 @@ export const DNAPanel = [
     type: 'curve',
     id: 'DNA_SCORES',
     label: ' ',
-    color: [COLORS.disoRDPbind, COLORS.drnaPred],
-    flag: 4,
     data: [disoRDPbindDNAScoreData, drnaPredDNAScoreData],
     sidebar: [
       createSidebarButton('DNA_SCORES', 'DisoRDPbind DNA Score', COLORS.disoRDPbind, 'line', 0),
