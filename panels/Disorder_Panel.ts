@@ -1,4 +1,5 @@
-import { initializeViewer, createSidebarButton, extractSegments, extractLines, Segment } from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractLinesNEW, extractSegmentsNEW } from "../utils/utils";
+import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // RETRIEVE DATA 
@@ -23,16 +24,16 @@ const COLORS = {
 };
 
 // PROCESS NATIVE DISORDER SEGMENTS
-const nativeDisorderSegments: Segment[] = [
-    ...extractSegments(disorderBinary, 1, COLORS.nativeDisorder),
-    ...extractSegments(disorderBinary, 2, COLORS.nativeUnavailable)
+const nativeDisorderSegments: FeatureData[] = [
+    ...extractSegmentsNEW(disorderBinary, 1, COLORS.nativeDisorder, "Native Disordered Regions"),
+    ...extractSegmentsNEW(disorderBinary, 2, COLORS.nativeUnavailable, "Unavailable")
 ];
 
 // PROCESS PUTATIVE DISORDER SEGMENTS
-const putativeDisorderSegments: Segment[] = extractSegments(vslBinary, 1, COLORS.putativeDisorder);
+const putativeDisorderSegments: FeatureData[] = extractSegmentsNEW(vslBinary, 1, COLORS.putativeDisorder, "Putative Disordered Regions");
 
 // EXTRACT VSL SCORES FOR LINE GRAPH
-const vslScoreData = extractLines(vslScore);
+const vslScoreData = extractLinesNEW(vslScore, COLORS.putativeDisorder, "Predicted Disordered Score");
 
 // EXPORT DATA
 export const disorderPanel = [
@@ -44,7 +45,7 @@ export const disorderPanel = [
         color: "#000000",
         className : 'Native_Disorder',
         sidebar: [
-            createSidebarButton('Native_Disorder', 'Native Disordered', COLORS.nativeDisorder, 'box', 0)
+            createSidebarButton('Native_Disorder', 'Native Disordered Region', COLORS.nativeDisorder, 'box', 0)
         ]
     },
     {
@@ -55,7 +56,7 @@ export const disorderPanel = [
         color: '#000000',
         sidebar: [
                 
-            createSidebarButton('Putative_Disorder', 'Putative Disordered', COLORS.putativeDisorder, 'box', 0)
+            createSidebarButton('Putative_Disorder', 'Putative Disordered Region', COLORS.putativeDisorder, 'box', 0)
             
         ]
     },
@@ -63,11 +64,10 @@ export const disorderPanel = [
         type: 'curve',
         id: 'PREDICTIVE_DISORDER_SCORES',
         label: ' ',
-        color: COLORS.putativeDisorder,
         flag: 6,
         data: vslScoreData,
         sidebar: [
-            createSidebarButton('PREDICTIVE_DISORDER_SCORES', 'Predictive Disordered', COLORS.putativeDisorder, 'line', 0)
+            createSidebarButton('PREDICTIVE_DISORDER_SCORES', 'Predictive Disordered Score', COLORS.putativeDisorder, 'line', 0)
         ]
     }
 ];
