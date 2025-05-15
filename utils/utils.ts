@@ -97,7 +97,7 @@ export function createSidebarButton(featureId: string, label: string, color: str
  * @param type - (Optional) A type descriptor to include in each segment object. Used by tooltips
  * @returns An array of FeatureData objects representing the start and end positions of each extracted segment.
  */
-export function extractSegmentsNEW(binaryArray: number[], targetValue: number, color: string, title: string, type?: string): FeatureData[] {
+export function extractSegments(binaryArray: number[], targetValue: number, color: string, title: string, type?: string): FeatureData[] {
     const segments: FeatureData[] = [];
     let inSegment = false;
     let start = 0;
@@ -129,7 +129,7 @@ export function extractSegmentsNEW(binaryArray: number[], targetValue: number, c
  * @param title Title to assign to each point. Used by tooltips.
  * @returns Array of FeatureData objects.
  */
-export function extractLinesNEW(scoreArray: number[], color: string, title: string): FeatureData[] {
+export function extractLines(scoreArray: number[], color: string, title: string): FeatureData[] {
   return scoreArray.map((value, index) => ({
     x: index + 1,
     y: value,
