@@ -1,7 +1,15 @@
 import { FeatureViewer } from "../FeatureViewerTypeScript/src/feature-viewer";
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 
-// Initializes a FeatureViewer instance with the provided sequence and panel data.
+/**
+ * Initializes and configures a FeatureViewer instance with a given sequence and panel configuration.
+ * 
+ * @param sequence - The sequence of the protein to visualize.
+ * @param panel - An array of panel configurations, each defining tracks, features, and sidebar buttons.
+ * @param elementId - The CSS selector of the DOM element where the viewer will be rendered. Defaults to '#feature-viewer'.
+ * 
+ * @returns The initialized FeatureViewer instance with sidebar button interactions.
+ */ 
 export function initializeViewer(sequence: string, panel: any, elementId: string = '#feature-viewer') {
   
     const viewer = new FeatureViewer(sequence, elementId, {
@@ -81,13 +89,15 @@ export function createSidebarButton(featureId: string, label: string, color: str
 }
 
 /**
- * Extract contiguous segments from binary arrays
- * @param binaryArray - The array containing binary values (0,1,2)
- * @param targetValue - The value to extract as a segment
- * @param color - Segment fill color
- * @returns Array of Segment objects
+ * Extracts contiguous segments from a binary array based on a target value.
+ * @param binaryArray - An array of numeric values.
+ * @param targetValue - The value to extract segments for (e.g., 1 to extract all 1s).
+ * @param color - The color to assign to the extracted segments.
+ * @param title - The title or to assign to each segment. Used by tooltips.
+ * @param type - (Optional) A type descriptor to include in each segment object. Used by tooltips
+ * @returns An array of FeatureData objects representing the start and end positions of each extracted segment.
  */
-export function extractSegmentsNEW(binaryArray: number[], targetValue: number, color: string, title: string, type?: string): FeatureData[] {
+export function extractSegments(binaryArray: number[], targetValue: number, color: string, title: string, type?: string): FeatureData[] {
     const segments: FeatureData[] = [];
     let inSegment = false;
     let start = 0;
@@ -112,14 +122,14 @@ export function extractSegmentsNEW(binaryArray: number[], targetValue: number, c
 }
 
 /**
- * Converts an array of numerical scores into FeatureData points with color and label.
+ * Converts an array of numerical scores into FeatureData points with color and title.
  *
  * @param scoreArray Array of numerical scores (Y-values).
  * @param color Color to assign to each point.
- * @param label Label to assign to each point.
+ * @param title Title to assign to each point. Used by tooltips.
  * @returns Array of FeatureData objects.
  */
-export function extractLinesNEW(scoreArray: number[], color: string, title: string): FeatureData[] {
+export function extractLines(scoreArray: number[], color: string, title: string): FeatureData[] {
   return scoreArray.map((value, index) => ({
     x: index + 1,
     y: value,

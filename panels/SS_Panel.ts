@@ -1,4 +1,4 @@
-import { initializeViewer, createSidebarButton, extractSegmentsNEW} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments} from "../utils/utils";
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
@@ -122,19 +122,19 @@ const psiPredScoreRescaled = psipredRescaleScores(psiPredScore);
 
 // PROCESS SECSS BINARY SEGMENTS
 const secssSegments: FeatureData[] = [
-    ...extractSegmentsNEW(secssBinary, 1, COLORS.helix, "Helix", "Helix"),
-    ...extractSegmentsNEW(secssBinary, 2, COLORS.strand, "Strand", "Strand"),
-    ...extractSegmentsNEW(secssBinary, 3, COLORS.coil, "Coil", "Coil"),
-    ...extractSegmentsNEW(secssBinary, 0, COLORS.unavailable, "Unavaliable", "Unavaliable")
+    ...extractSegments(secssBinary, 1, COLORS.helix, "Helix", "Helix"),
+    ...extractSegments(secssBinary, 2, COLORS.strand, "Strand", "Strand"),
+    ...extractSegments(secssBinary, 3, COLORS.coil, "Coil", "Coil"),
+    ...extractSegments(secssBinary, 0, COLORS.unavailable, "Unavaliable", "Unavaliable")
 ];
 
 // PROCESS PSIPRED BINARY SEGMENTS
 const psiPredSegments: FeatureData[] = [
-    ...extractSegmentsNEW(psiPredBinary, 0, COLORS.helix, "Helix", "Helix"),
-    ...extractSegmentsNEW(psiPredBinary, 1, COLORS.strand, "Strand", "Strand"),
-    ...extractSegmentsNEW(psiPredBinary, 2, COLORS.coil, "Coil", "Coil"),
+    ...extractSegments(psiPredBinary, 0, COLORS.helix, "Helix", "Helix"),
+    ...extractSegments(psiPredBinary, 1, COLORS.strand, "Strand", "Strand"),
+    ...extractSegments(psiPredBinary, 2, COLORS.coil, "Coil", "Coil"),
     //For unknown assignment from DSSP on AF-derived structures
-    ...extractSegmentsNEW(psiPredBinary, 3, COLORS.unavailable, "Unavaliable", "Unavaliable")
+    ...extractSegments(psiPredBinary, 3, COLORS.unavailable, "Unavaliable", "Unavaliable")
 ];
 
 //PROCESS SCORE DATA
@@ -142,11 +142,11 @@ var coloredScoreData: FeatureData[]
 //PLddt case needs different line color for all the segments
 if (isPLDDT){
     const PsiPredBinaryPLDDT: FeatureData[] =  [
-        ...extractSegmentsNEW(psiPredBinary, 0, COLORS.plddt, "Helix", "Helix"),
-        ...extractSegmentsNEW(psiPredBinary, 1, COLORS.plddt, "Strand", "Strand"),
-        ...extractSegmentsNEW(psiPredBinary, 2, COLORS.plddt, "Coil", "Coil"),
+        ...extractSegments(psiPredBinary, 0, COLORS.plddt, "Helix", "Helix"),
+        ...extractSegments(psiPredBinary, 1, COLORS.plddt, "Strand", "Strand"),
+        ...extractSegments(psiPredBinary, 2, COLORS.plddt, "Coil", "Coil"),
         //For unknown assignment from DSSP on AF-derived structures
-        ...extractSegmentsNEW(psiPredBinary, 3, COLORS.plddt, "Unavaliable", "X")
+        ...extractSegments(psiPredBinary, 3, COLORS.plddt, "Unavaliable", "X")
     ];
 
     coloredScoreData = extractAndColorLines(psiPredScoreRescaled, "pLDDT Score From AlphaFold", PsiPredBinaryPLDDT);

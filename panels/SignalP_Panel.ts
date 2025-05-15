@@ -1,4 +1,4 @@
-import { initializeViewer, createSidebarButton, extractSegmentsNEW, extractLinesNEW} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines} from "../utils/utils";
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
@@ -21,10 +21,10 @@ const COLORS = {
 };
 
 // SEGMENTS
-const signalPeptideSegments: FeatureData[] = extractSegmentsNEW(signalPeptideBinary, 1, COLORS.signalPeptide, "Signal Peptides");
+const signalPeptideSegments: FeatureData[] = extractSegments(signalPeptideBinary, 1, COLORS.signalPeptide, "Signal Peptides");
 
 // LINE DATA
-const signalPeptideScoreData = extractLinesNEW(signalPeptideScore, COLORS.signalPeptide, "Signal Peptides Score");
+const signalPeptideScoreData = extractLines(signalPeptideScore, COLORS.signalPeptide, "Signal Peptides Score");
 
 // EXPORT DATA
 export const SignalPPanel = [

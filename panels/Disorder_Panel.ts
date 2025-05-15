@@ -1,4 +1,4 @@
-import { initializeViewer, createSidebarButton, extractLinesNEW, extractSegmentsNEW } from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractLines, extractSegments } from "../utils/utils";
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
@@ -25,15 +25,15 @@ const COLORS = {
 
 // PROCESS NATIVE DISORDER SEGMENTS
 const nativeDisorderSegments: FeatureData[] = [
-    ...extractSegmentsNEW(disorderBinary, 1, COLORS.nativeDisorder, "Native Disordered Regions"),
-    ...extractSegmentsNEW(disorderBinary, 2, COLORS.nativeUnavailable, "Unavailable")
+    ...extractSegments(disorderBinary, 1, COLORS.nativeDisorder, "Native Disordered Regions"),
+    ...extractSegments(disorderBinary, 2, COLORS.nativeUnavailable, "Unavailable")
 ];
 
 // PROCESS PUTATIVE DISORDER SEGMENTS
-const putativeDisorderSegments: FeatureData[] = extractSegmentsNEW(vslBinary, 1, COLORS.putativeDisorder, "Putative Disordered Regions");
+const putativeDisorderSegments: FeatureData[] = extractSegments(vslBinary, 1, COLORS.putativeDisorder, "Putative Disordered Regions");
 
 // EXTRACT VSL SCORES FOR LINE GRAPH
-const vslScoreData = extractLinesNEW(vslScore, COLORS.putativeDisorder, "Predicted Disordered Score");
+const vslScoreData = extractLines(vslScore, COLORS.putativeDisorder, "Predicted Disordered Score");
 
 // EXPORT DATA
 export const disorderPanel = [
