@@ -1,4 +1,4 @@
-import { initializeViewer, createSidebarButton, extractSegmentsNEW, extractLinesNEW} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines} from "../utils/utils";
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
@@ -27,14 +27,14 @@ const COLORS = {
 };
 
 // PROCESS BINARY SEGMENTS
-const disoRDPbindSegments: FeatureData[] = extractSegmentsNEW(disoRDPbindBinary, 1, COLORS.disoRDPbind, "DisoRDPbind Protein Binding");
-const scriberSegments: FeatureData[] = extractSegmentsNEW(scriberBinary, 1, COLORS.scriber, "SCRIBER Protein Binding");
-const morfChibiSegments: FeatureData[] = extractSegmentsNEW(morfChibiBinary, 1, COLORS.morfChibi, "MoRFchibi Protein Binding");
+const disoRDPbindSegments: FeatureData[] = extractSegments(disoRDPbindBinary, 1, COLORS.disoRDPbind, "DisoRDPbind Protein Binding");
+const scriberSegments: FeatureData[] = extractSegments(scriberBinary, 1, COLORS.scriber, "SCRIBER Protein Binding");
+const morfChibiSegments: FeatureData[] = extractSegments(morfChibiBinary, 1, COLORS.morfChibi, "MoRFchibi Protein Binding");
 
 // PROCESS SCORED SEGMENTS
-const disoRDPbindScoreData = extractLinesNEW(disoRDPbindScore, COLORS.disoRDPbind, "DisoRDPbind Score")
-const scriberScoreData = extractLinesNEW(scriberScore, COLORS.scriber, "SCRIBER Score")
-const morfChibiScoreData = extractLinesNEW(morfChibiScore, COLORS.morfChibi, "MoRFchibi Score")
+const disoRDPbindScoreData = extractLines(disoRDPbindScore, COLORS.disoRDPbind, "DisoRDPbind Score")
+const scriberScoreData = extractLines(scriberScore, COLORS.scriber, "SCRIBER Score")
+const morfChibiScoreData = extractLines(morfChibiScore, COLORS.morfChibi, "MoRFchibi Score")
 
 
 export const ProteinPanel = [

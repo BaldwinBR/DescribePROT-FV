@@ -1,5 +1,5 @@
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
-import { initializeViewer, createSidebarButton, extractLinesNEW, extractSegmentsNEW} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractLines, extractSegments} from "../utils/utils";
 import { PanelDataService } from '../utils/PanelDataService'; 
 
 // ---------------------------- CONSERVATION SPECIFIC HELPERS ----------------------------
@@ -46,21 +46,21 @@ const COLORS = {
 
 // PROCESS CONSERVATION SEGMENTS
 const conservationSegments: FeatureData[] = [
-    ...extractSegmentsNEW(mmseqBinary, 0, COLORS.conv_0, "Conservation Level 1"),
-    ...extractSegmentsNEW(mmseqBinary, 1, COLORS.conv_1, "Conservation Level 2"),
-    ...extractSegmentsNEW(mmseqBinary, 2, COLORS.conv_2, "Conservation Level 3"),
-    ...extractSegmentsNEW(mmseqBinary, 3, COLORS.conv_3, "Conservation Level 4"),
-    ...extractSegmentsNEW(mmseqBinary, 4, COLORS.conv_4, "Conservation Level 5"),
-    ...extractSegmentsNEW(mmseqBinary, 5, COLORS.conv_5, "Conservation Level 6"),
-    ...extractSegmentsNEW(mmseqBinary, 6, COLORS.conv_6, "Conservation Level 7"),
-    ...extractSegmentsNEW(mmseqBinary, 7, COLORS.conv_7, "Conservation Level 8"),
-    ...extractSegmentsNEW(mmseqBinary, 8, COLORS.conv_8, "Conservation Level 9"),
-    ...extractSegmentsNEW(mmseqBinary, 9, COLORS.conv_9, "Conservation Level 10")
+    ...extractSegments(mmseqBinary, 0, COLORS.conv_0, "Conservation Level 1"),
+    ...extractSegments(mmseqBinary, 1, COLORS.conv_1, "Conservation Level 2"),
+    ...extractSegments(mmseqBinary, 2, COLORS.conv_2, "Conservation Level 3"),
+    ...extractSegments(mmseqBinary, 3, COLORS.conv_3, "Conservation Level 4"),
+    ...extractSegments(mmseqBinary, 4, COLORS.conv_4, "Conservation Level 5"),
+    ...extractSegments(mmseqBinary, 5, COLORS.conv_5, "Conservation Level 6"),
+    ...extractSegments(mmseqBinary, 6, COLORS.conv_6, "Conservation Level 7"),
+    ...extractSegments(mmseqBinary, 7, COLORS.conv_7, "Conservation Level 8"),
+    ...extractSegments(mmseqBinary, 8, COLORS.conv_8, "Conservation Level 9"),
+    ...extractSegments(mmseqBinary, 9, COLORS.conv_9, "Conservation Level 10")
 ];
 
 // RESCALE THEN EXTRACT MMSEQ SCORE LINE DATA
 const mmseqScoreRescaled = mmseqRescaleScores(mmseqScore);
-const mmseqScoreData = extractLinesNEW(mmseqScoreRescaled, COLORS.conv_score, "Conservation Score");
+const mmseqScoreData = extractLines(mmseqScoreRescaled, COLORS.conv_score, "Conservation Score");
 
 // EXPORT DATA
 export const ConservationPanel = [

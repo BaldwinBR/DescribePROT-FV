@@ -1,4 +1,4 @@
-import { initializeViewer, createSidebarButton, extractSegmentsNEW, extractLinesNEW} from "../utils/utils";
+import { initializeViewer, createSidebarButton, extractSegments, extractLines} from "../utils/utils";
 import { FeatureData } from '../FeatureViewerTypeScript/src/interfaces';
 import { PanelDataService } from '../utils/PanelDataService'; 
 
@@ -26,16 +26,16 @@ const COLORS = {
 
 // PROCESS RSA BINARY SEGMENTS
 const rsaSegments: FeatureData[] = [
-    ...extractSegmentsNEW(rsaBinary, 1, COLORS.rsaAvailable, "Native Buried Residues"),
-    ...extractSegmentsNEW(rsaBinary, 2, COLORS.rsaUnavailable, "Unavailable")
+    ...extractSegments(rsaBinary, 1, COLORS.rsaAvailable, "Native Buried Residues"),
+    ...extractSegments(rsaBinary, 2, COLORS.rsaUnavailable, "Unavailable")
 ];
 
 // PROCESS ASA BINARY SEGMENTS
-const asaSegments: FeatureData[] = extractSegmentsNEW(asaBinary, 1, COLORS.asaAvailable, "Putative Buried Residue");
+const asaSegments: FeatureData[] = extractSegments(asaBinary, 1, COLORS.asaAvailable, "Putative Buried Residue");
 
 // PROCESS SCORES
-const rsaScoreData = extractLinesNEW(rsaScore, COLORS.rsaAvailable, "Native Solvent Accessibility");
-const asaScoreData = extractLinesNEW(asaScore, COLORS.asaAvailable, "Predicted Solvent Accessibility");
+const rsaScoreData = extractLines(rsaScore, COLORS.rsaAvailable, "Native Solvent Accessibility");
+const asaScoreData = extractLines(asaScore, COLORS.asaAvailable, "Predicted Solvent Accessibility");
 
 // EXPORT DATA
 export const asaPanel = [
