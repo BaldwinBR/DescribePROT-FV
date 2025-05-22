@@ -41,8 +41,6 @@ export const LinkerPanel = [
         type: 'curve',
         id: 'LINKER_SCORES',
         label: ' ',
-        color: COLORS.linker,
-        flag: 9,
         data: linkerScoreData,
         sidebar: [
             createSidebarButton('LINKER_SCORES', 'Linker Score', COLORS.linker, 'line', 0)
