@@ -64,7 +64,6 @@ export const disorderPanel = [
         type: 'curve',
         id: 'PREDICTIVE_DISORDER_SCORES',
         label: ' ',
-        flag: 6,
         data: vslScoreData,
         sidebar: [
             createSidebarButton('PREDICTIVE_DISORDER_SCORES', 'Predictive Disordered Score', COLORS.putativeDisorder, 'line', 0)

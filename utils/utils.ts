@@ -48,7 +48,7 @@ export function initializeViewer(sequence: string, panel: any, elementId: string
  * Helpful Tips:
  * - The `id` of your feature and the `id` of the button should match.
  * - The `label` is what will be displayed as text in the button
- * - The `index` number helps the toggle method find and operate on the correct feature.
+ * - The `index` number helps the toggle method find and operate on the correct feature (Use 0 unless multi-line feature)
  */
 export function createSidebarButton(featureId: string, label: string, color: string, shape: 'box' | 'line' | 'triangle', index: number = 0): {
         

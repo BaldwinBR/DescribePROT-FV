@@ -69,7 +69,6 @@ export const ConservationPanel = [
     id: 'Conservation_Levels',
     label: 'Conservation',
     color: '#000000',
-    flag: 4,
     data: conservationSegments,
     sidebar: [
       createSidebarButton('Conservation_Levels', 'Conservation Level 1', COLORS.conv_0, 'box', 0),
